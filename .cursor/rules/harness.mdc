@@ -1,0 +1,7 @@
+---
+description: Agent-agnostic SDD harness for this Next.js project
+alwaysApply: true
+---
+
+Read `AGENTS.md` first. It is the canonical contract for all AI agents working in
+this repository. If this Cursor rule conflicts with `AGENTS.md`, follow `AGENTS.md`.
