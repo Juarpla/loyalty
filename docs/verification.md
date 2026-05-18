@@ -12,6 +12,15 @@ Run the full harness check before marking any feature `done`:
 
 The script validates harness files, SDD state, lint, and production build.
 
+For edit-time feedback, hooks and agents may run:
+
+```bash
+./init.sh --quick
+```
+
+Quick mode validates harness files, hook configuration, SDD state, and lint. It skips
+the production build so post-edit hooks stay fast.
+
 ## Next.js checks
 
 - Lint: `pnpm lint`

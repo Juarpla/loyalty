@@ -33,6 +33,7 @@ Useful local guides:
 
 | Path | Purpose | When to read |
 | --- | --- | --- |
+| `.agents/subagents/` | Canonical role contracts for leader, spec author, implementer, and reviewer | Before doing role-specific work |
 | `feature_list.json` | Feature queue and lifecycle state | Always at start |
 | `progress/current.md` | Live session notes and blockers | Always at start |
 | `progress/history.md` | Append-only session history | When historical context matters |
@@ -46,6 +47,9 @@ Useful local guides:
 ## Hard rules
 
 - One feature at a time. Do not mix unrelated product changes in one session.
+- Use the role contract in `.agents/subagents/` that matches the work you are doing.
+- The leader orchestrates; the spec author writes specs; the implementer writes product
+  changes; the reviewer verifies and rejects or accepts.
 - Do not implement a feature with `"sdd": true` while it is `pending`.
 - Do not skip the human approval gate between `spec_ready` and `in_progress`.
 - Do not mark work `done` without passing `./init.sh`.
@@ -56,17 +60,33 @@ Useful local guides:
 ## SDD workflow
 
 ```text
-pending -> spec_ready -> HUMAN APPROVAL -> in_progress -> done
+pending -> spec_author -> spec_ready -> HUMAN APPROVAL -> leader marks in_progress -> implementer -> reviewer -> done
 ```
 
-1. For a `pending` feature with `"sdd": true`, create
+1. The leader selects exactly one feature and delegates based on `feature_list.json`.
+2. For a `pending` feature with `"sdd": true`, the spec author creates
    `specs/<feature>/{requirements.md,design.md,tasks.md}` and mark it `spec_ready`.
-2. Stop. The human reviews the spec and approves or requests changes.
-3. After approval, mark the feature `in_progress` and implement only from the spec.
-4. Update `tasks.md` as tasks complete.
-5. Verify traceability from requirements to tests or smoke checks.
-6. Run `./init.sh`, then mark the feature `done` and append a summary to
-   `progress/history.md`.
+3. Stop. The human reviews the spec and approves or requests changes.
+4. After approval, the leader marks the feature `in_progress`.
+5. The implementer changes only what the approved spec requires, updates `tasks.md`,
+   and writes `progress/impl_<feature>.md`.
+6. The reviewer runs verification, checks `CHECKPOINTS.md` C1-C6, writes
+   `progress/review_<feature>.md`, and rejects if any required box remains `[ ]`.
+7. Only after reviewer acceptance may the leader mark the feature `done` and append
+   the final summary to `progress/history.md`.
+
+## Subagent roles
+
+- `leader`: reads all handoffs, controls feature state, and delegates. It must not
+  write product code.
+- `spec_author`: writes requirements, design, and tasks. It must not edit product
+  code.
+- `implementer`: implements one approved feature. It must not mark features `done`.
+- `reviewer`: verifies work, marks checkpoint results, and rejects incomplete work.
+  It must not edit implementation code.
+
+Canonical role definitions live in `.agents/subagents/`. Claude-compatible shims live
+in `.claude/agents/` and must point back to the canonical definitions.
 
 ## Commands
 
@@ -74,7 +94,19 @@ pending -> spec_ready -> HUMAN APPROVAL -> in_progress -> done
 - Start dev server: `pnpm dev`
 - Lint: `pnpm lint`
 - Production build: `pnpm build`
+- Quick harness check: `./init.sh --quick`
 - Full harness check: `./init.sh`
+
+## Harness hooks
+
+Claude Code project hooks are configured in `.claude/settings.json`. They call only
+scripts in `.harness/hooks/`:
+
+- `.harness/hooks/post-each-edit.sh` runs `./init.sh --quick` after edit/write tools.
+- `.harness/hooks/post-complete-session-work.sh` runs `./init.sh` before the turn closes.
+
+Agents must not weaken, bypass, or replace these hook commands. Other tools that do
+not support hooks still follow the same checks through this file and `./init.sh`.
 
 ## Agent compatibility
 

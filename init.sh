@@ -11,9 +11,18 @@ ok() { printf "${GREEN}[OK]${NC} %s\n" "$1"; }
 warn() { printf "${YELLOW}[WARN]${NC} %s\n" "$1"; }
 fail() { printf "${RED}[FAIL]${NC} %s\n" "$1"; }
 
+MODE="full"
+if [ "${1:-}" = "--quick" ]; then
+  MODE="quick"
+elif [ "${1:-}" != "" ]; then
+  fail "unknown argument: $1"
+  echo "usage: ./init.sh [--quick]"
+  exit 1
+fi
+
 EXIT_CODE=0
 
-echo "== 1. Environment =="
+echo "== 1. Checking System Environment & Dependencies ==="
 
 if ! command -v node >/dev/null 2>&1; then
   fail "node is not installed"
@@ -28,13 +37,24 @@ fi
 ok "pnpm -> $(pnpm --version)"
 
 echo ""
-echo "== 2. Harness files =="
+echo "== 2. Auditing Agent Harness & Spec Files ==="
 
 BASE_FILES=(
   "AGENTS.md"
   "CLAUDE.md"
   "opencode.json"
   ".cursor/rules/harness.mdc"
+  ".agents/subagents/leader.md"
+  ".agents/subagents/spec_author.md"
+  ".agents/subagents/implementer.md"
+  ".agents/subagents/reviewer.md"
+  ".claude/agents/leader.md"
+  ".claude/agents/spec_author.md"
+  ".claude/agents/implementer.md"
+  ".claude/agents/reviewer.md"
+  ".claude/settings.json"
+  ".harness/hooks/post-each-edit.sh"
+  ".harness/hooks/post-complete-session-work.sh"
   "feature_list.json"
   "progress/current.md"
   "progress/history.md"
@@ -54,8 +74,43 @@ for file in "${BASE_FILES[@]}"; do
   fi
 done
 
+for file in ".harness/hooks/post-each-edit.sh" ".harness/hooks/post-complete-session-work.sh" "init.sh"; do
+  if [ -x "$file" ]; then
+    ok "executable $file"
+  else
+    fail "not executable $file"
+    EXIT_CODE=1
+  fi
+done
+
 echo ""
-echo "== 3. Feature state and specs =="
+echo "== 3. Validating Git Hooks & Claude Agent Automation Settings ==="
+
+node -e '
+const fs = require("fs");
+const settings = JSON.parse(fs.readFileSync(".claude/settings.json", "utf8"));
+const hooks = settings.hooks || {};
+
+const postToolUse = hooks.PostToolUse || [];
+const stop = hooks.Stop || [];
+const postCommands = JSON.stringify(postToolUse);
+const stopCommands = JSON.stringify(stop);
+
+if (!postCommands.includes(".harness/hooks/post-each-edit.sh")) {
+  throw new Error("PostToolUse must call .harness/hooks/post-each-edit.sh");
+}
+if (!postCommands.includes("Edit|Write|MultiEdit")) {
+  throw new Error("PostToolUse matcher must include Edit|Write|MultiEdit");
+}
+if (!stopCommands.includes(".harness/hooks/post-complete-session-work.sh")) {
+  throw new Error("Stop must call .harness/hooks/post-complete-session-work.sh");
+}
+
+console.log("[OK] .claude/settings.json hooks valid");
+' || EXIT_CODE=1
+
+echo ""
+echo "== 4. Analyzing Feature Lifecycle State & SDD Spec Completeness ==="
 
 node -e '
 const fs = require("fs");
@@ -101,7 +156,7 @@ console.log(`[OK] feature_list.json valid (${data.features.length} features)`);
 ' || EXIT_CODE=1
 
 echo ""
-echo "== 4. Next.js checks =="
+echo "== 5. Executing Next.js Linter & Production Build Compilations ==="
 
 if pnpm lint; then
   ok "pnpm lint passed"
@@ -110,20 +165,24 @@ else
   EXIT_CODE=1
 fi
 
-if pnpm build; then
-  ok "pnpm build passed"
+if [ "$MODE" = "full" ]; then
+  if pnpm build; then
+    ok "pnpm build passed"
+  else
+    fail "pnpm build failed"
+    EXIT_CODE=1
+  fi
 else
-  fail "pnpm build failed"
-  EXIT_CODE=1
+  warn "quick mode: skipped pnpm build"
 fi
 
 echo ""
-echo "== 5. Summary =="
+echo "== 6. Final Harness Health Verification Summary ==="
 
 if [ "$EXIT_CODE" -eq 0 ]; then
-  ok "harness ready"
+  ok "harness ready ($MODE)"
 else
-  fail "harness is not ready"
+  fail "harness is not ready ($MODE)"
 fi
 
 exit "$EXIT_CODE"

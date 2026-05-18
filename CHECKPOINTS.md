@@ -2,6 +2,10 @@
 
 Use this checklist to decide whether the repository is healthy after agent work.
 
+The reviewer must inspect C1-C6 and mark every checkbox as `[x]` or `[ ]`. Closure is
+rejected if any required box in C1-C6 remains `[ ]`, if a box is left uninspected, or
+if the review report does not explain the result.
+
 ## C1 - Harness is complete
 
 - [ ] `AGENTS.md` exists and is the canonical agent contract.
@@ -39,3 +43,13 @@ Use this checklist to decide whether the repository is healthy after agent work.
 - [ ] `progress/history.md` includes the final summary.
 - [ ] `feature_list.json` has the correct final state.
 - [ ] There are no unexplained temporary files or TODOs.
+
+## C6 - Spec Driven Development
+
+- [ ] The active role followed the matching contract in `.agents/subagents/`.
+- [ ] `pending` SDD work was handled by `spec_author` before implementation.
+- [ ] Human approval happened before `spec_ready` moved to `in_progress`.
+- [ ] The implementer updated `tasks.md` and wrote `progress/impl_<feature>.md`.
+- [ ] The reviewer wrote `progress/review_<feature>.md` with accept/reject status.
+- [ ] Every `R<n>` maps to at least one concrete verification step.
+- [ ] Reviewer rejected closure if any C1-C6 checkbox was `[ ]`.

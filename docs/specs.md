@@ -13,6 +13,30 @@ This repository uses SDD for feature work that has `"sdd": true` in
 | `done` | Implementation, verification, and review are complete. |
 | `blocked` | Work is stopped; reason must be documented in `progress/current.md`. |
 
+## Subagent flow
+
+The SDD process uses four roles. A single human or AI tool may perform multiple roles
+only when it explicitly follows the active role contract from `.agents/subagents/`.
+
+```text
+leader -> spec_author -> human approval -> leader -> implementer -> reviewer -> leader
+```
+
+| Role | Allowed write scope | Required handoff |
+| --- | --- | --- |
+| `leader` | `feature_list.json`, `progress/current.md`, `progress/history.md` | Current state, chosen feature, delegation reason |
+| `spec_author` | `specs/<feature>/requirements.md`, `design.md`, `tasks.md`, plus progress notes | Complete spec and `spec_ready` recommendation |
+| `implementer` | Files named by the approved spec, `tasks.md`, `progress/impl_<feature>.md` | Implementation summary, task status, verification evidence |
+| `reviewer` | `progress/review_<feature>.md`, checkpoint marks or review notes | Accept/reject decision with concrete reasons |
+
+Role rules:
+
+- The leader does not write product code.
+- The spec author does not implement product code.
+- The implementer does not mark a feature `done`.
+- The reviewer does not edit implementation code.
+- If a role needs to exceed its write scope, it must stop and document why.
+
 ## Required spec files
 
 Each SDD feature uses this directory:
@@ -25,6 +49,60 @@ specs/<feature-name>/
 ```
 
 The `<feature-name>` must match the `name` field in `feature_list.json`.
+
+## leader
+
+The leader is responsible for flow control:
+
+- Read `feature_list.json`, `progress/current.md`, and relevant specs.
+- Keep at most one feature `in_progress`.
+- Delegate `pending` SDD features to `spec_author`.
+- Wait for human approval before moving `spec_ready` to `in_progress`.
+- Delegate approved `in_progress` features to `implementer`.
+- Delegate completed implementation handoffs to `reviewer`.
+- Mark `done` only after reviewer acceptance and `./init.sh` success.
+
+## spec_author
+
+The spec author creates decision-complete SDD artifacts:
+
+- Write EARS requirements in `requirements.md`.
+- Write implementation design, public interfaces, data flow, error handling, and
+  Next.js local docs consulted in `design.md`.
+- Write executable tasks in `tasks.md`, with every task mapped to requirements.
+- Recommend `spec_ready`, then stop for human approval.
+
+The spec author must not edit application code, tests, configuration, or hooks.
+
+## implementer
+
+The implementer executes only an approved spec:
+
+- Confirm the feature is `in_progress`.
+- Read all three spec files before editing.
+- Implement only the files and behavior required by the spec.
+- Mark completed tasks `[x]` in `tasks.md`.
+- Write `progress/impl_<feature>.md` with summary, changed areas, verification, and
+  requirement traceability.
+- Run relevant checks, but leave final acceptance to the reviewer.
+
+The implementer must not mark `feature_list.json` entries as `done`.
+
+## reviewer
+
+The reviewer validates the work independently:
+
+- Read the approved spec, implementation handoff, changed files, and `CHECKPOINTS.md`.
+- Run `./init.sh`.
+- Inspect C1-C6 in `CHECKPOINTS.md`; every checkbox must be explicitly `[x]` or `[ ]`.
+- Reject if any required C1-C6 checkbox is `[ ]`.
+- Reject if any `R<n>` lacks concrete verification.
+- Reject if any `tasks.md` item remains `[ ]` without documented justification.
+- Reject if implementation started before human approval.
+- Write `progress/review_<feature>.md` with the accept/reject decision.
+
+The reviewer must not edit implementation code. If a fix is required, reject and hand
+back to the leader.
 
 ## requirements.md
 

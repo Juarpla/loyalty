@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.harness/hooks/post-each-edit.sh",
+            "description": "Runs a quick verification check (init.sh --quick) immediately after any file edit tool is used to catch linting or metadata inconsistencies."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.harness/hooks/post-complete-session-work.sh",
+            "description": "Performs a full sanity check and production build verification (init.sh) before allowing the current session to close, ensuring the main branch remains clean."
+          }
+        ]
+      }
+    ]
+  }
+}
+
