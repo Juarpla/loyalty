@@ -49,30 +49,27 @@ running shell commands:
 4. **Max output cap:** If the expected output exceeds 50 lines, always pipe through
    `tail -50` or redirect to a temp file and read selectively.
 
-## Reads first
+## Engine Boot Sequence
 
-- `AGENTS.md`
-- `docs/specs.md`
-- `docs/verification.md`
-- `CHECKPOINTS.md`
-- `feature_list.json`
-- Relevant `specs/<feature>/` files
-- `progress/impl_<feature>.md`
+1. **`AGENTS.md`**: Study the canonical contract, rules, and global workflow structure.
+2. **`docs/specs.md`**: Understand EARS criteria and feature task structure.
+3. **`docs/verification.md`**: Reference the official verification standards and testing guidelines.
+4. **`CHECKPOINTS.md`**: Review checkpoints C1-C6 that must be completely verified.
+5. **`feature_list.json`**: Inspect to confirm the active feature is ready for review.
+6. **`specs/<feature>/`**: Check the feature requirements, design, and task list.
+7. **`progress/impl_<feature>.md`**: Read the implementer's report, test outputs, and traceability mapping.
 
-## Responsibilities
+## Workflow
 
-- Run `./init.sh`. It must exit with code 0.
-- Inspect every C1-C6 checkbox in `CHECKPOINTS.md`.
-- Treat any `[ ]` in C1-C6 as a rejection until resolved or explicitly scoped out by
-  the human.
-- Verify traceability: for every `R<n>` in `requirements.md`, locate at least one
-  concrete test in `tests/integration/` (`*.integration.test.ts`) or `tests/e2e/`
-  (`*.e2e.test.ts`). If any `R<n>` lacks coverage, REJECT immediately.
-- Verify `tasks.md` has no unchecked item without documented justification.
-- Verify implementation did not begin before human approval.
-- Verify E2E gate was handled: `progress/impl_<feature>.md` must contain an
-  "E2E gate" section documenting the human decision. If missing, REJECT.
-- Write `progress/review_<feature>.md` with `ACCEPT` or `REJECT`.
+1. **Complete the Engine Boot Sequence**: You must not perform any verification tasks, run tests, or write review reports before reading and understanding all boot files.
+2. Execute `./init.sh` to ensure the integration environment runs and passes perfectly.
+3. Independently verify and evaluate each checkpoint C1-C6 in `CHECKPOINTS.md`.
+4. Reject the feature if any checkpoint C1-C6 box remains unchecked or unaddressed.
+5. Cross-reference all requirements `R<n>` to verify they map to passing integration/E2E tests.
+6. Check `specs/<feature>/tasks.md` to ensure all tasks are fully completed or justified.
+7. Confirm implementation changes remained strictly within spec boundaries and did not predate human approval.
+8. Verify that the "E2E gate" section is documented and details human approval/decline of Playwright E2E tests.
+9. Generate the review report in `progress/review_<feature>.md` marking it `ACCEPT` or `REJECT`.
 
 ## Review report format
 
@@ -106,3 +103,11 @@ Write `progress/review_<feature>.md` with this structure:
 1. Add test for R2.
 2. Complete T2 or document justification.
 ```
+
+## Communication Flow
+
+- **Task Start**: `Leader` ➡️ `Reviewer` (delegates implementation verification).
+- **ACCEPT Verdict**: `Reviewer` ➡️ `Leader` (submits ACCEPT, allows closing to `done`).
+- **REJECT Verdict**: `Reviewer` ➡️ `Leader` (submits REJECT, returns feature to `in_progress`).
+- **Environment Errors**: `Reviewer` ➡️ `Human` (halts validation, reports corrupted scripts/dependencies).
+- **Uncertainty Protocol**: `Reviewer` ➡️ `Human` (stops and requests manual audit when stuck).

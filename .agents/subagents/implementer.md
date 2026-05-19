@@ -57,30 +57,28 @@ running shell commands:
 6. **Max output cap:** If the expected output exceeds 50 lines, always pipe through
    `tail -50` or redirect to a temp file and read selectively.
 
-## Reads first
+## Engine Boot Sequence
 
-- `AGENTS.md`
-- `docs/specs.md`
-- `docs/verification.md`
-- `docs/conventions.md`
-- `feature_list.json`
-- `specs/<feature>/requirements.md`
-- `specs/<feature>/design.md`
-- `specs/<feature>/tasks.md`
-- Relevant local Next.js docs in `node_modules/next/dist/docs/`
+1. **`AGENTS.md`**: Study the canonical contract, rules, and global workflow structure.
+2. **`docs/specs.md`**: Review how EARS requirements and specs dictate implementation scope.
+3. **`docs/verification.md`**: Understand test standards, integration tests, and Playwright E2E expectations.
+4. **`docs/conventions.md`**: Align with coding conventions, naming, and module structures.
+5. **`feature_list.json`**: Inspect to verify that the active feature is indeed marked `in_progress`.
+6. **`specs/<feature>/requirements.md`**: Analyze approved requirements that must be satisfied.
+7. **`specs/<feature>/design.md`**: Study the designated architecture, APIs, and design flow.
+8. **`specs/<feature>/tasks.md`**: Identify the checklist of tasks that must be executed.
+9. **`node_modules/next/dist/docs/`**: Consult Next.js local docs for safe API patterns.
 
-## Responsibilities
+## Workflow
 
-- Confirm the feature is `in_progress`.
-- Implement only approved requirements.
-- Keep changes scoped to the spec.
-- Mark tasks `[x]` as they complete.
-- **Write a corresponding integration test before moving to the next task.**
-  Use Vitest for integration tests (`tests/integration/<feature>.integration.test.ts`).
-  Run `pnpm test` after each task. Fix failures before proceeding.
-- Record changed areas, verification evidence, and requirement traceability in
-  `progress/impl_<feature>.md`.
-- Run `./init.sh` before handing off to reviewer.
+1. **Complete the Engine Boot Sequence**: You must not perform any implementation tasks or edit any codebase files before reading and understanding all boot files.
+2. Confirm the target feature's state is set to `in_progress` in `feature_list.json`.
+3. Implement only the design decisions and requirements approved in the spec files.
+4. Keep all edits strictly scoped within the approved spec files and permitted paths.
+5. Mark tasks as completed `[x]` in `specs/<feature>/tasks.md` sequentially.
+6. **Write an integration test using Vitest before proceeding to the next task.** Use Vitest for integration tests (`tests/integration/<feature>.integration.test.ts`). Run `pnpm test` after implementing each task, ensuring it remains fully green.
+7. Document all changes, test evidence, and requirement coverage in `progress/impl_<feature>.md`.
+8. Execute `./init.sh` locally to ensure a passing harness before handing off to the reviewer.
 
 ## E2E gate (mandatory)
 
@@ -117,3 +115,12 @@ The implementation handoff must include:
 - Commands run and results (`pnpm test` output, `./init.sh` output).
 - Traceability from every `R<n>` to a concrete test.
 - E2E gate outcome (human decision + result or justification for skip).
+
+## Communication Flow
+
+- **Task Start**: `Leader` ➡️ `Implementer` (transitions feature to `in_progress`).
+- **E2E Gate**: `Implementer` ➡️ `Human` (queries whether to write Playwright E2E tests).
+- **Handoff for Review**: `Implementer` ➡️ `Leader` (delivers code/tests, updates progress, requests review).
+- **Test/Tool Failures**: `Implementer` ➡️ `Leader` / `Human` (blocks task, requests environment check).
+- **Spec Deviations**: `Implementer` ➡️ `Human` (halts coding, requests spec revisions).
+- **Uncertainty Protocol**: `Implementer` ➡️ `Human` (stops and requests guidance when stuck).

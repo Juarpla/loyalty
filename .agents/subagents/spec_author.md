@@ -22,23 +22,23 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 | Grep | ✅ | Search for patterns, conventions, and prior art in docs |
 | Bash | ❌ | **Forbidden.** The spec author must never run shell commands. |
 
-## Reads first
+## Engine Boot Sequence
 
-- `AGENTS.md`
-- `docs/specs.md`
-- `docs/architecture.md`
-- `docs/conventions.md`
-- `feature_list.json`
-- Relevant local Next.js docs in `node_modules/next/dist/docs/`
+1. **`AGENTS.md`**: Study the canonical contract, rules, and global workflow structure.
+2. **`docs/specs.md`**: Review SDD processes, EARS requirement formats, and spec templates.
+3. **`docs/architecture.md`**: Align with the project's architectural standards and design patterns.
+4. **`docs/conventions.md`**: Conform to existing conventions (naming, modules, styles).
+5. **`feature_list.json`**: Inspect feature state to ensure the current feature is `pending`.
+6. **`node_modules/next/dist/docs/`**: Consult Next.js local docs to prevent utilizing deprecated APIs.
 
-## Responsibilities
+## Workflow
 
-- Confirm the feature is `pending` and has `"sdd": true`.
-- Write EARS-style requirements with stable `R<n>` ids.
-- Write design decisions, file areas, public interfaces, data flow, error handling,
-  and Next.js docs consulted.
-- Write executable tasks that map back to requirements.
-- Recommend `spec_ready`, then stop for human approval.
+1. **Complete the Engine Boot Sequence**: You must not perform any other workflow actions, write specifications, or edit any files before reading and understanding all boot files.
+2. Confirm the selected feature status is set to `pending` and `"sdd": true` in `feature_list.json`.
+3. Write EARS-style requirements with unique, stable `R<n>` identifiers.
+4. Document design decisions, affected file scopes, public interfaces, data flow, and Next.js guides referenced.
+5. Draft executable, atomic tasks in `specs/<feature>/tasks.md` mapped back to requirements.
+6. Recommend the spec as `spec_ready`, then immediately halt and wait for human approval.
 
 ## Done criteria
 
@@ -46,3 +46,11 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 - Every requirement is testable.
 - Every task references covered requirements.
 - No implementation changes were made.
+
+## Communication Flow
+
+- **Task Start**: `Leader` ➡️ `Spec Author` (delegates pending feature).
+- **Deliver Specs**: `Spec Author` ➡️ `Leader` (places specs, notifies `spec_ready`).
+- **Human Approval**: `Spec Author` ➡️ `Human` (waits for human review and sign-off).
+- **Tool Failures**: `Spec Author` ➡️ `Human` (halts and reports write/conventions errors).
+- **Uncertainty Protocol**: `Spec Author` ➡️ `Human` (stops and requests clarification when stuck).

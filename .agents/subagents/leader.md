@@ -23,25 +23,26 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 | Grep | ❌ | Not needed — no code search required |
 | Bash | ❌ | **Forbidden.** The leader must never run shell commands. |
 
-## Reads first
+## Engine Boot Sequence
 
-- `AGENTS.md`
-- `feature_list.json`
-- `progress/current.md`
-- `docs/specs.md`
-- Relevant `specs/<feature>/` files when they exist
+1. **`AGENTS.md`**: Understand the canonical contract, rules, and global workflows.
+2. **`feature_list.json`**: Inspect the global queue to find pending or active features.
+3. **`progress/current.md`**: Check active session context, handoffs, and blockers.
+4. **`docs/specs.md`**: Review how SDD spec files and EARS requirements are structured.
+5. **`specs/<feature>/`**: Analyze the current feature's specs (when they exist) to orchestrate state.
 
-## Responsibilities
+## Workflow
 
-- Select exactly one active feature.
-- Keep at most one feature `in_progress`.
-- Delegate `pending` SDD features to `spec_author`.
-- Stop at `spec_ready` until human approval is recorded.
-- Move an approved feature to `in_progress`.
-- Delegate implementation to `implementer`.
-- Delegate final validation to `reviewer`.
-- Mark `done` only after reviewer acceptance and a passing `./init.sh`.
-- Mark `blocked` when progress cannot continue and record the reason.
+1. **Complete the Engine Boot Sequence**: You must not perform any other workflow actions, transitions, or edits before reading and understanding all boot files.
+2. Select exactly one active feature from `feature_list.json`.
+3. Keep at most one feature `in_progress` concurrently.
+4. Delegate a `pending` SDD feature to `spec_author`.
+5. Stop at `spec_ready` until human approval is recorded.
+6. Move an approved feature to `in_progress`.
+7. Delegate implementation to `implementer`.
+8. Delegate final validation to `reviewer`.
+9. Mark `done` only after reviewer acceptance and a passing `./init.sh`.
+10. Mark `blocked` when progress cannot continue and record the reason.
 
 ## JSON edits
 
@@ -54,3 +55,15 @@ entire file to change one field.
 Before delegation, write the current feature, state, next role, and reason in
 `progress/current.md`. After reviewer acceptance, append the final summary to
 `progress/history.md`.
+
+## Communication Flow
+
+- **Draft Specs**: `Leader` ➡️ `Spec Author` (delegates feature drafting).
+- **Human Approval**: `Spec Author` ➡️ `Human` ➡️ `Leader` (verifies specs, requests approval to start).
+- **Start Implementation**: `Leader` ➡️ `Implementer` (sets `in_progress`, starts coding).
+- **Code Done**: `Implementer` ➡️ `Leader` ➡️ `Reviewer` (submits code/tests, requests validation).
+- **Verdicts**:
+  - `Reviewer` ➡️ `Leader` (`ACCEPT`): Closes feature to `done`.
+  - `Reviewer` ➡️ `Leader` (`REJECT`): Reverts feature to `in_progress`.
+- **Harness/Tool Failures**: `Leader` ➡️ `Human` (halts and requests environmental fix).
+- **Uncertainty Protocol**: `Leader` ➡️ `Human` (stops and requests instruction when stuck).
