@@ -103,16 +103,17 @@ in `.claude/agents/` and must point back to the canonical definitions.
 - Quick harness check: `./init.sh --quick`
 - Full harness check: `./init.sh`
 
-## Harness hooks
+## Harness hooks & Manual Quality Control
 
-Claude Code project hooks are configured in `.claude/settings.json`. They call
-the initialization scripts directly:
+Automated project hooks are configured in `.claude/settings.json`, `.cursor/hooks.json`, and `.codex/hooks.json`. They call the initialization scripts directly:
 
-- `${CLAUDE_PROJECT_DIR}/init.sh --quick` runs after edit/write tools.
-- `${CLAUDE_PROJECT_DIR}/init.sh` runs before the turn closes.
+- `./init.sh --quick` runs after edit/write tools.
+- `./init.sh` runs before the turn closes.
 
-Agents must not weaken, bypass, or replace these hook commands. Other tools that do
-not support hooks still follow the same checks through this file and `./init.sh`.
+Agents must not weaken, bypass, or replace these hook commands. 
+
+**For agents without automated hook support (e.g., OpenCode, Antigravity, unconfigured apps):**
+If the agent cannot run automated hooks in the background, it MUST explicitly pause after implementing any task and ask the human to manually run a quality control check. The human must execute either `./init.sh --quick` (minimum mandatory) or the full `./init.sh`. The agent must wait for the human to confirm the command passed (`[OK]`) before proceeding or marking the task as `done`.
 
 ## Agent compatibility
 
