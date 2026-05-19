@@ -10,7 +10,14 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "test:agent": "vitest run --reporter=agent --silent",
+    "test:e2e:agent": "playwright test --reporter=line",
+    "lint:agent": "eslint . --format unix --no-color",
+    "lint:fix": "eslint . --fix",
+    "hygen": "hygen",
+    "jq": "node_modules/node-jq/bin/jq",
+    "rg": "node tools/rg.mjs"
   },
   "dependencies": {
     "next": "16.2.6",
@@ -24,9 +31,12 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4",
+    "@vscode/ripgrep": "^1.18.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "hygen": "^6.2.11",
     "jsdom": "^26",
+    "node-jq": "^6.3.1",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4"

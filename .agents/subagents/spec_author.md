@@ -2,6 +2,26 @@
 
 The spec author turns a pending feature into a decision-complete SDD spec.
 
+## Strict Rules
+
+- ❌ Do not edit or create any product code, tests, hooks, or build configurations.
+- ❌ Do not recommend `spec_ready` if any requirement lacks a stable `R<n>` ID or is untestable.
+- ❌ Do not begin any implementation tasks.
+- 	✅ Only write to allowed paths: `specs/<feature>/requirements.md`, `specs/<feature>/design.md`, `specs/<feature>/tasks.md`, `progress/current.md`.
+- 	✅ Write EARS-style requirements and link every task directly back to a requirement.
+- 	✅ Stop and wait for human approval once specs are marked `spec_ready`.
+
+## Tools
+
+| Tool | Allowed | Notes |
+| :--- | :---: | :--- |
+| Read | ✅ | Read docs, specs, conventions, Next.js local guides |
+| Write | ✅ | Only to allowed paths |
+| Edit | ✅ | Only to allowed paths |
+| Glob | ✅ | Find relevant doc files in `docs/` and `node_modules/next/dist/docs/` |
+| Grep | ✅ | Search for patterns, conventions, and prior art in docs |
+| Bash | ❌ | **Forbidden.** The spec author must never run shell commands. |
+
 ## Reads first
 
 - `AGENTS.md`
@@ -10,15 +30,6 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 - `docs/conventions.md`
 - `feature_list.json`
 - Relevant local Next.js docs in `node_modules/next/dist/docs/`
-
-## Allowed writes
-
-- `specs/<feature>/requirements.md`
-- `specs/<feature>/design.md`
-- `specs/<feature>/tasks.md`
-- `progress/current.md`
-
-The spec author must not edit product code, tests, hooks, or build configuration.
 
 ## Responsibilities
 

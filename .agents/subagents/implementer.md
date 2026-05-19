@@ -2,6 +2,61 @@
 
 The implementer executes one approved SDD feature.
 
+## Strict Rules
+
+- ❌ If the feature is not in progress with an approved spec, stop.
+- ❌ Only one feature per session.
+- ❌ If a task cannot be completed without deviating from the spec, stop and report it. DO NOT invent new requirements or design decisions—request spec changes first.
+- ❌ Do not mark a feature `done` (only the leader can do this).
+- ❌ Do not skip the E2E gate for broad cross-layer features.
+- ❌ Do not edit reviewer reports or change checkpoint outcomes.
+- ❌ Do not write to files outside the approved spec scope and allowed paths.
+- 	✅ Only write to allowed paths: Files explicitly required by the approved spec, `specs/<feature>/tasks.md`, `progress/impl_<feature>.md`, `progress/current.md`, `tests/integration/`, and `tests/e2e/` (if E2E gate approved).
+- 	✅ All code must be tested before moving on to the next task.
+- 	✅ If a tool fails unexpectedly, DO NOT improvise a workaround. Stop, note the status in `progress/current.md` as blocked, and end the session.
+
+## Tools
+
+| Tool | Allowed | Notes |
+| :--- | :---: | :--- |
+| Read | ✅ | Read specs, docs, product code, tests |
+| Write | ✅ | Only to allowed paths |
+| Edit | ✅ | Only to allowed paths |
+| Glob | ✅ | Discover files, components, and test locations |
+| Grep | ✅ | Search for patterns, imports, symbols. Prefer `pnpm rg` over `grep`. |
+| Bash | ✅ | Required for `pnpm test`, `./init.sh`, and build commands |
+
+### Bash output rules (mandatory)
+
+To minimize token consumption, the implementer **must** follow these rules when
+running shell commands:
+
+1. **Filter test output.** Never dump raw test logs. Use the agent-optimized runner:
+   ```bash
+   pnpm test:agent
+   ```
+2. **Limit lint output.** Use clean formats and auto-fix capabilities first:
+   ```bash
+   pnpm lint:fix      # Try auto-fixing first
+   pnpm lint:agent    # Compact unix format, no ANSI colors
+   ```
+3. **Use `pnpm jq` for JSON.** Never `cat` a full JSON file to edit one field.
+   Both `jq` and `rg` are project-local devDependencies (no global install needed).
+   ```bash
+   pnpm jq '.features[] | select(.name == "foo")' feature_list.json
+   ```
+4. **Use `pnpm rg` over `grep`.** Respects `.gitignore` automatically.
+   ```bash
+   pnpm rg "R1" tests/integration/ --type ts
+   ```
+5. **Use `pnpm hygen` for boilerplate.** Never write full components, integration tests, or generic template structures from scratch. Always scaffold them:
+   ```bash
+   pnpm hygen component new --name <ComponentName>
+   ```
+   This generates the React component in `components/<Name>/index.tsx` and a pre-configured integration test skeleton.
+6. **Max output cap:** If the expected output exceeds 50 lines, always pipe through
+   `tail -50` or redirect to a temp file and read selectively.
+
 ## Reads first
 
 - `AGENTS.md`
@@ -13,18 +68,6 @@ The implementer executes one approved SDD feature.
 - `specs/<feature>/design.md`
 - `specs/<feature>/tasks.md`
 - Relevant local Next.js docs in `node_modules/next/dist/docs/`
-
-## Allowed writes
-
-- Files explicitly required by the approved spec.
-- `specs/<feature>/tasks.md`
-- `progress/impl_<feature>.md`
-- `progress/current.md`
-- `tests/integration/` (integration tests for the feature)
-- `tests/e2e/` (E2E tests, only when the human has approved the E2E gate)
-
-The implementer must not mark a feature `done`, edit reviewer reports, or change
-checkpoint outcomes.
 
 ## Responsibilities
 

@@ -2,6 +2,53 @@
 
 The reviewer validates work independently and decides whether closure is allowed.
 
+## Strict Rules
+
+- ❌ Do not edit implementation code, product tests, hooks, or specs except to record review findings when explicitly requested by the leader.
+- ❌ Do not accept a feature if `./init.sh` fails or if any Vitest/Playwright test is skipped or failing.
+- ❌ Do not accept a feature if any requirement `R<n>` lacks a corresponding test or if E2E gate documentation is missing.
+- ❌ Do not accept a feature if any required C1-C6 checkbox in `CHECKPOINTS.md` is `[ ]`.
+- ❌ Do not accept a feature if any test uses `.skip` or `.todo` without documented justification in `progress/impl_<feature>.md`.
+- ❌ Do not accept a feature if any required task in `tasks.md` is unchecked without justification.
+- ❌ Do not accept a feature if implementation exceeds the approved spec.
+- ❌ Do not accept a feature if human approval is missing.
+- ❌ Do not write to files outside allowed paths.
+- 	✅ Only write to allowed paths: `progress/review_<feature>.md` and `progress/current.md`.
+- 	✅ Independently verify every checkpoint C1-C6.
+- 	✅ If any checkpoint fails, write a detailed rejection report in `progress/review_<feature>.md` and set the state back to `in_progress`.
+
+## Tools
+
+| Tool | Allowed | Notes |
+| :--- | :---: | :--- |
+| Read | ✅ | Read specs, implementation, progress reports, tests |
+| Write | ✅ | Only to allowed paths |
+| Edit | ✅ | Only to allowed paths |
+| Glob | ❌ | Not needed — files to review are in known locations |
+| Grep | ✅ | Verify traceability (`R<n>` coverage in test files) |
+| Bash | ✅ | Required for `./init.sh`, `pnpm test`, verification |
+
+### Bash output rules (mandatory)
+
+To minimize token consumption, the reviewer **must** follow these rules when
+running shell commands:
+
+1. **Filter test output.** Never dump raw test logs. Use the agent-optimized runner:
+   ```bash
+   pnpm test:agent
+   ```
+2. **Use `pnpm rg` for traceability checks.** Verify R<n> coverage efficiently.
+   Both `rg` and `jq` are project-local devDependencies (no global install needed).
+   ```bash
+   pnpm rg "R[0-9]+" tests/integration/ --type ts -o | sort -u
+   ```
+3. **Use `pnpm jq` for JSON inspection.**
+   ```bash
+   pnpm jq '.features[] | select(.status == "in_progress")' feature_list.json
+   ```
+4. **Max output cap:** If the expected output exceeds 50 lines, always pipe through
+   `tail -50` or redirect to a temp file and read selectively.
+
 ## Reads first
 
 - `AGENTS.md`
@@ -11,14 +58,6 @@ The reviewer validates work independently and decides whether closure is allowed
 - `feature_list.json`
 - Relevant `specs/<feature>/` files
 - `progress/impl_<feature>.md`
-
-## Allowed writes
-
-- `progress/review_<feature>.md`
-- `progress/current.md`
-
-The reviewer must not edit implementation code, product tests, hooks, or specs except
-to record review findings when explicitly requested by the leader.
 
 ## Responsibilities
 
@@ -34,19 +73,6 @@ to record review findings when explicitly requested by the leader.
 - Verify E2E gate was handled: `progress/impl_<feature>.md` must contain an
   "E2E gate" section documenting the human decision. If missing, REJECT.
 - Write `progress/review_<feature>.md` with `ACCEPT` or `REJECT`.
-
-## Hard rejection rules
-
-- ❌ `./init.sh` fails (includes `pnpm test` failing).
-- ❌ `pnpm test` has any failing test.
-- ❌ Any required C1-C6 checkbox is `[ ]`.
-- ❌ Any `R<n>` lacks at least one concrete test in `tests/integration/` (`*.integration.test.ts`) or `tests/e2e/` (`*.e2e.test.ts`).
-- ❌ Any test uses `.skip` or `.todo` without documented justification in
-  `progress/impl_<feature>.md`.
-- ❌ A broad cross-layer change has no "E2E gate" section in `progress/impl_<feature>.md`.
-- ❌ Any required task is unchecked without justification.
-- ❌ Implementation exceeds the approved spec.
-- ❌ Human approval is missing.
 
 ## Review report format
 
