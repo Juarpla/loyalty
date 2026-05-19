@@ -25,11 +25,10 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 
 ## Engine Boot Sequence
 
-1. **`AGENTS.md`**: Understand the canonical contract, rules, and global workflows.
-2. **`feature_list.json`**: Inspect the global queue to find pending or active features.
-3. **`progress/current.md`**: Check active session context, handoffs, and blockers.
-4. **`docs/specs.md`**: Review how SDD spec files and EARS requirements are structured.
-5. **`specs/<feature>/`**: Analyze the current feature's specs (when they exist) to orchestrate state.
+1. **`AGENTS.md`**: Global agent contracts, workflows, and rules.
+2. **`feature_list.json`**: Current feature queue and status tracker.
+3. **`progress/current.md`**: Active session handoffs and blockers context.
+4. **`specs/<feature>/`**: Spec files of the active feature to orchestrate state.
 
 ## Workflow
 

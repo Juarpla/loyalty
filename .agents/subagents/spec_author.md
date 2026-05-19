@@ -24,12 +24,10 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 
 ## Engine Boot Sequence
 
-1. **`AGENTS.md`**: Study the canonical contract, rules, and global workflow structure.
-2. **`docs/specs.md`**: Review SDD processes, EARS requirement formats, and spec templates.
-3. **`docs/architecture.md`**: Align with the project's architectural standards and design patterns.
-4. **`docs/conventions.md`**: Conform to existing conventions (naming, modules, styles).
-5. **`feature_list.json`**: Inspect feature state to ensure the current feature is `pending`.
-6. **`node_modules/next/dist/docs/`**: Consult Next.js local docs to prevent utilizing deprecated APIs.
+1. **`AGENTS.md`**: Global agent contracts, workflows, and rules.
+2. **`docs/specs.md`**: SDD process standards, EARS requirements, and spec templates.
+3. **`docs/architecture.md`**: Technical design principles and application architecture.
+4. **`feature_list.json`**: Global queue to confirm the feature status is `pending`.
 
 ## Workflow
 

@@ -51,13 +51,12 @@ running shell commands:
 
 ## Engine Boot Sequence
 
-1. **`AGENTS.md`**: Study the canonical contract, rules, and global workflow structure.
-2. **`docs/specs.md`**: Understand EARS criteria and feature task structure.
-3. **`docs/verification.md`**: Reference the official verification standards and testing guidelines.
-4. **`CHECKPOINTS.md`**: Review checkpoints C1-C6 that must be completely verified.
-5. **`feature_list.json`**: Inspect to confirm the active feature is ready for review.
-6. **`specs/<feature>/`**: Check the feature requirements, design, and task list.
-7. **`progress/impl_<feature>.md`**: Read the implementer's report, test outputs, and traceability mapping.
+1. **`AGENTS.md`**: Global agent contracts, workflows, and rules.
+2. **`docs/verification.md`**: Testing benchmarks, integration and E2E standards.
+3. **`CHECKPOINTS.md`**: Mandatory checklist items C1-C6.
+4. **`feature_list.json`**: Global queue to verify the feature status is ready for review.
+5. **`specs/<feature>/`**: Approved requirements and tasks to trace coverage.
+6. **`progress/impl_<feature>.md`**: The implementer's execution, testing, and traceability report.
 
 ## Workflow
 

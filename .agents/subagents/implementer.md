@@ -59,15 +59,12 @@ running shell commands:
 
 ## Engine Boot Sequence
 
-1. **`AGENTS.md`**: Study the canonical contract, rules, and global workflow structure.
-2. **`docs/specs.md`**: Review how EARS requirements and specs dictate implementation scope.
-3. **`docs/verification.md`**: Understand test standards, integration tests, and Playwright E2E expectations.
-4. **`docs/conventions.md`**: Align with coding conventions, naming, and module structures.
-5. **`feature_list.json`**: Inspect to verify that the active feature is indeed marked `in_progress`.
-6. **`specs/<feature>/requirements.md`**: Analyze approved requirements that must be satisfied.
-7. **`specs/<feature>/design.md`**: Study the designated architecture, APIs, and design flow.
-8. **`specs/<feature>/tasks.md`**: Identify the checklist of tasks that must be executed.
-9. **`node_modules/next/dist/docs/`**: Consult Next.js local docs for safe API patterns.
+1. **`AGENTS.md`**: Global agent contracts, workflows, and rules.
+2. **`docs/verification.md`**: Testing standards, integration and E2E requirements.
+3. **`docs/conventions.md`**: Coding, module structure, and naming conventions.
+4. **`feature_list.json`**: Global queue to verify the active feature is `in_progress`.
+5. **`specs/<feature>/`**: Approved requirements, design, and task list.
+6. **`node_modules/next/dist/docs/`**: Local Next.js documentation and safe API patterns.
 
 ## Workflow
 
