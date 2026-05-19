@@ -42,3 +42,19 @@ These conventions keep the repository predictable for humans and AI agents.
 
 Default to expressive names over comments. Add comments only for non-obvious
 constraints, tradeoffs, or framework behavior that future agents may misread.
+
+## Testing
+
+- **Integration tests** use Vitest. Files live in `tests/integration/` with `.integration.test.ts`
+  suffix. Test logic, data flow, API route helpers, and server utilities only.
+  Do not use Vitest for browser rendering or DOM interaction.
+- **E2E tests** use Playwright. Files live in `tests/e2e/` with `.e2e.test.ts` suffix.
+  Test complete user flows in a real browser.
+- Test names must be descriptive. For SDD features, prefix with the requirement ID:
+  `'R1: <description of what is being verified>'`.
+- The **E2E gate** applies when a single feature change touches multiple components
+  across both frontend and backend: stop and ask the human before writing E2E tests.
+  Document the decision in `progress/impl_<feature>.md`.
+- Do not use `.skip` or `.todo` without a documented reason in
+  `progress/impl_<feature>.md`. Skipped tests are a reviewer rejection trigger.
+

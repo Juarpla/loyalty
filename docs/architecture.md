@@ -27,6 +27,8 @@ older Next.js memory.
 - `app/page.tsx` exposes `/`.
 - `app/globals.css` contains global styles and Tailwind entrypoints.
 - `public/` contains static SVG assets.
+- `tests/integration/` contains Vitest integration tests (logic, data flow, utilities).
+- `tests/e2e/` contains Playwright E2E tests (user flows; written only on human approval).
 
 ## What not to do
 

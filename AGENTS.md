@@ -43,6 +43,8 @@ Useful local guides:
 | `docs/specs.md` | SDD process and EARS requirements | Before writing or reviewing specs |
 | `docs/verification.md` | How to prove the work works | Before marking anything done |
 | `CHECKPOINTS.md` | Objective final-state checklist | Before closing a session |
+| `tests/integration/` | Vitest integration tests — logic, data flow, API helpers | After implementing any feature task |
+| `tests/e2e/` | Playwright E2E tests — user flows in a real browser | Only when human approves E2E gate |
 
 ## Hard rules
 
@@ -53,6 +55,7 @@ Useful local guides:
 - Do not implement a feature with `"sdd": true` while it is `pending`.
 - Do not skip the human approval gate between `spec_ready` and `in_progress`.
 - Do not mark work `done` without passing `./init.sh`.
+- Do not mark work `done` with any failing test (`pnpm test` must be fully green).
 - Write progress to `progress/current.md`; durable state lives in files, not only chat.
 - Every requirement `R<n>` must map to at least one concrete test or verification step.
 - Prefer existing project patterns and local Next.js docs over memory or assumptions.
@@ -93,17 +96,20 @@ in `.claude/agents/` and must point back to the canonical definitions.
 - Install dependencies: `pnpm install`
 - Start dev server: `pnpm dev`
 - Lint: `pnpm lint`
+- Run integration tests: `pnpm test`
+- Run integration tests in watch mode: `pnpm test:watch`
+- Run E2E tests (requires human approval gate): `pnpm test:e2e`
 - Production build: `pnpm build`
 - Quick harness check: `./init.sh --quick`
 - Full harness check: `./init.sh`
 
 ## Harness hooks
 
-Claude Code project hooks are configured in `.claude/settings.json`. They call only
-scripts in `.harness/hooks/`:
+Claude Code project hooks are configured in `.claude/settings.json`. They call
+the initialization scripts directly:
 
-- `.harness/hooks/post-each-edit.sh` runs `./init.sh --quick` after edit/write tools.
-- `.harness/hooks/post-complete-session-work.sh` runs `./init.sh` before the turn closes.
+- `${CLAUDE_PROJECT_DIR}/init.sh --quick` runs after edit/write tools.
+- `${CLAUDE_PROJECT_DIR}/init.sh` runs before the turn closes.
 
 Agents must not weaken, bypass, or replace these hook commands. Other tools that do
 not support hooks still follow the same checks through this file and `./init.sh`.

@@ -53,8 +53,8 @@ BASE_FILES=(
   ".claude/agents/implementer.md"
   ".claude/agents/reviewer.md"
   ".claude/settings.json"
-  ".harness/hooks/post-each-edit.sh"
-  ".harness/hooks/post-complete-session-work.sh"
+  ".cursor/hooks.json"
+  ".codex/hooks.json"
   "feature_list.json"
   "progress/current.md"
   "progress/history.md"
@@ -74,7 +74,7 @@ for file in "${BASE_FILES[@]}"; do
   fi
 done
 
-for file in ".harness/hooks/post-each-edit.sh" ".harness/hooks/post-complete-session-work.sh" "init.sh"; do
+for file in "init.sh"; do
   if [ -x "$file" ]; then
     ok "executable $file"
   else
@@ -84,29 +84,33 @@ for file in ".harness/hooks/post-each-edit.sh" ".harness/hooks/post-complete-ses
 done
 
 echo ""
-echo "== 3. Validating Git Hooks & Claude Agent Automation Settings ==="
+echo "== 3. Validating Git Hooks & Agent Automation Settings ==="
 
 node -e '
 const fs = require("fs");
-const settings = JSON.parse(fs.readFileSync(".claude/settings.json", "utf8"));
-const hooks = settings.hooks || {};
+const files = [".claude/settings.json", ".cursor/hooks.json", ".codex/hooks.json"];
 
-const postToolUse = hooks.PostToolUse || [];
-const stop = hooks.Stop || [];
-const postCommands = JSON.stringify(postToolUse);
-const stopCommands = JSON.stringify(stop);
+for (const file of files) {
+  const settings = JSON.parse(fs.readFileSync(file, "utf8"));
+  const hooks = settings.hooks || {};
 
-if (!postCommands.includes(".harness/hooks/post-each-edit.sh")) {
-  throw new Error("PostToolUse must call .harness/hooks/post-each-edit.sh");
-}
-if (!postCommands.includes("Edit|Write|MultiEdit")) {
-  throw new Error("PostToolUse matcher must include Edit|Write|MultiEdit");
-}
-if (!stopCommands.includes(".harness/hooks/post-complete-session-work.sh")) {
-  throw new Error("Stop must call .harness/hooks/post-complete-session-work.sh");
+  const postToolUse = hooks.PostToolUse || [];
+  const stop = hooks.Stop || [];
+  const postCommands = JSON.stringify(postToolUse);
+  const stopCommands = JSON.stringify(stop);
+
+  if (!postCommands.includes("init.sh --quick")) {
+    throw new Error(`PostToolUse in ${file} must call init.sh --quick directly`);
+  }
+  if (!postCommands.includes("Edit|Write|MultiEdit")) {
+    throw new Error(`PostToolUse matcher in ${file} must include Edit|Write|MultiEdit`);
+  }
+  if (!stopCommands.includes("init.sh")) {
+    throw new Error(`Stop in ${file} must call init.sh directly`);
+  }
 }
 
-console.log("[OK] .claude/settings.json hooks valid");
+console.log("[OK] Agent hook settings valid (.claude, .cursor, .codex)");
 ' || EXIT_CODE=1
 
 echo ""
@@ -156,7 +160,20 @@ console.log(`[OK] feature_list.json valid (${data.features.length} features)`);
 ' || EXIT_CODE=1
 
 echo ""
-echo "== 5. Executing Next.js Linter & Production Build Compilations ==="
+echo "== 5. Running Integration Tests (Vitest) ==="
+
+# Vitest runs in both --quick and full mode.
+# Integration tests are fast (no server, no browser) — keeping them in quick mode
+# catches regressions immediately after every edit.
+if pnpm test; then
+  ok "pnpm test passed"
+else
+  fail "pnpm test failed — fix before continuing"
+  EXIT_CODE=1
+fi
+
+echo ""
+echo "== 6. Executing Next.js Linter & Production Build Compilations ==="
 
 if pnpm lint; then
   ok "pnpm lint passed"
@@ -177,7 +194,7 @@ else
 fi
 
 echo ""
-echo "== 6. Final Harness Health Verification Summary ==="
+echo "== 7. Final Harness Health Verification Summary ==="
 
 if [ "$EXIT_CODE" -eq 0 ]; then
   ok "harness ready ($MODE)"

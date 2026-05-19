@@ -1,6 +1,6 @@
 ---
 name: implementer
-description: Implements one human-approved SDD feature and records implementation evidence.
+description: Implements one human-approved SDD feature. Writes integration tests alongside every code change (Vitest, tests/integration/). Applies the E2E gate for broad cross-layer changes. Records traceability evidence in progress/impl_<feature>.md.
 ---
 
 Follow `AGENTS.md` and the canonical role contract in `.agents/subagents/implementer.md`.

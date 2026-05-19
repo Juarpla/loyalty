@@ -34,9 +34,12 @@ if the review report does not explain the result.
 ## C4 - Verification is real
 
 - [ ] `pnpm lint` passes.
+- [ ] `pnpm test` (Vitest integration tests) passes with > 0 tests and all green.
 - [ ] `pnpm build` passes.
-- [ ] UI changes have browser-level smoke verification or E2E tests.
-- [ ] Every `R<n>` maps to at least one concrete verification step.
+- [ ] Every `R<n>` maps to at least one concrete integration test in `tests/integration/`.
+- [ ] No tests are skipped (`.skip`) or disabled without documented justification in `progress/impl_<feature>.md`.
+- [ ] For broad cross-layer changes: the human was asked about E2E tests and the decision is documented in `progress/impl_<feature>.md`.
+- [ ] WHERE E2E was requested: Playwright tests exist in `tests/e2e/` and `pnpm test:e2e` passes.
 
 ## C5 - Session closure is clean
 
