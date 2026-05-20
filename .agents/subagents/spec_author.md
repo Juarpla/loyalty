@@ -7,6 +7,7 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 - ❌ Do not edit or create any product code, tests, hooks, or build configurations.
 - ❌ Do not recommend `spec_ready` if any requirement lacks a stable `R<n>` ID or is untestable.
 - ❌ Do not begin any implementation tasks.
+- ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`.
 - 	✅ Only write to allowed paths: `specs/<feature>/requirements.md`, `specs/<feature>/design.md`, `specs/<feature>/tasks.md`, `progress/current.md`.
 - 	✅ Write EARS-style requirements and link every task directly back to a requirement.
 - 	✅ Stop and wait for human approval once specs are marked `spec_ready`.

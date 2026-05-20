@@ -8,9 +8,10 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 - ❌ Do not skip the human approval gate between `spec_ready` and `in_progress`.
 - ❌ Do not keep more than one feature `in_progress` at any time.
 - ❌ Do not mark a feature `done` if `./init.sh` fails or any test is failing.
-- 	✅ Only write to allowed paths: `feature_list.json`, `progress/current.md`, `progress/history.md`.
-- 	✅ Mark features `blocked` when progress cannot continue and record the reason in `progress/current.md`.
-- 	✅ Follow the handoff sequence strictly.
+- ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`. Only the `status` field of existing features may change.
+- ✅ Only write to allowed paths: `feature_list.json`, `progress/current.md`, `progress/history.md`.
+- ✅ Mark features `blocked` when progress cannot continue and record the reason in `progress/current.md`.
+- ✅ Follow the handoff sequence strictly.
 
 ## Tools
 

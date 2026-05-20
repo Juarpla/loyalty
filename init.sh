@@ -160,7 +160,71 @@ console.log(`[OK] feature_list.json valid (${data.features.length} features)`);
 ' || EXIT_CODE=1
 
 echo ""
-echo "== 4.5. Auditing Supabase & Vercel Configuration ==="
+echo "== 4.5. Validating feature_list.json Integrity Against Snapshot ==="
+
+node -e '
+const fs = require("fs");
+
+const snapshotPath = ".feature_snapshot.json";
+const featureListPath = "feature_list.json";
+
+const data = JSON.parse(fs.readFileSync(featureListPath, "utf8"));
+const features = data.features;
+
+// Strip status from a feature object for comparison
+const stripStatus = (f) => {
+  const { status, ...rest } = f;
+  return rest;
+};
+
+if (!fs.existsSync(snapshotPath)) {
+  // First run or fresh clone: create baseline snapshot from current state
+  const snapshot = features.map(stripStatus);
+  fs.writeFileSync(snapshotPath, JSON.stringify(snapshot, null, 2) + "\n");
+  console.log(`[OK] Created feature snapshot baseline (${snapshot.length} features)`);
+} else {
+  const snapshot = JSON.parse(fs.readFileSync(snapshotPath, "utf8"));
+
+  // Check: no features were deleted
+  const snapshotIds = new Set(snapshot.map(f => f.id));
+  const currentIds = new Set(features.map(f => f.id));
+
+  const missing = snapshot.filter(f => !currentIds.has(f.id));
+  if (missing.length > 0) {
+    throw new Error(
+      "FEATURES DELETED from feature_list.json: [" +
+      missing.map(f => "#" + f.id + " " + f.name).join(", ") +
+      "]. Only the \"status\" field may ever change. Restore deleted features before continuing."
+    );
+  }
+
+  // Check: no non-status fields were modified on existing features
+  for (const snapFeature of snapshot) {
+    const currentFeature = features.find(f => f.id === snapFeature.id);
+    if (!currentFeature) continue; // already caught above
+
+    const currentStripped = stripStatus(currentFeature);
+    if (JSON.stringify(currentStripped) !== JSON.stringify(snapFeature)) {
+      const changedFields = Object.keys(currentStripped).filter(
+        k => JSON.stringify(currentStripped[k]) !== JSON.stringify(snapFeature[k])
+      );
+      throw new Error(
+        "NON-STATUS FIELD MODIFIED on feature #" + snapFeature.id + " \"" + snapFeature.name +
+        "\": changed fields: [" + changedFields.join(", ") +
+        "]. Only \"status\" may change. Revert unauthorized modifications."
+      );
+    }
+  }
+
+  // Update snapshot to include any legitimately added features
+  const updatedSnapshot = features.map(stripStatus);
+  fs.writeFileSync(snapshotPath, JSON.stringify(updatedSnapshot, null, 2) + "\n");
+  console.log("[OK] Feature list integrity verified against snapshot (" + features.length + " features)");
+}
+' || EXIT_CODE=1
+
+echo ""
+echo "== 4.6. Auditing Supabase & Vercel Configuration ==="
 
 # Check if supabase config folder is initialized
 if [ -d "supabase" ]; then

@@ -11,6 +11,7 @@ The implementer executes one approved SDD feature.
 - ❌ Do not skip the E2E gate for broad cross-layer features.
 - ❌ Do not edit reviewer reports or change checkpoint outcomes.
 - ❌ Do not write to files outside the approved spec scope and allowed paths.
+- ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`. Only the `status` field of existing features may change.
 - 	✅ Only write to allowed paths: Files explicitly required by the approved spec, `specs/<feature>/tasks.md`, `progress/impl_<feature>.md`, `progress/current.md`, `tests/integration/`, and `tests/e2e/` (if E2E gate approved).
 - 	✅ All code must be tested before moving on to the next task.
 - 	✅ If a tool fails unexpectedly, DO NOT improvise a workaround. Stop, note the status in `progress/current.md` as blocked, and end the session.

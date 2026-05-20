@@ -1,0 +1,794 @@
+[
+  {
+    "id": 1,
+    "name": "db_migration_sales_transactions",
+    "title": "PostgreSQL Migration for Sales Transactions Schema",
+    "description": "Creates the raw PostgreSQL `sales_transactions` table in Supabase with primary key indexing and B-Tree index on `phone_number`.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "WHEN querying the DB schema, the `sales_transactions` table SHALL exist with columns: id (uuid), phone_number (text), amount (numeric), and created_at (timestamp with time zone).",
+      "WHEN indexing metadata is fetched, a B-Tree index SHALL exist on the `phone_number` column.",
+      "Integration tests in `tests/integration/db_migration_sales.test.ts` SHALL assert schema existence and table column constraints."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 2,
+    "name": "model_sales_insert",
+    "title": "Sales DB Model Write Layer",
+    "description": "Implements the raw insertion DAO logic to write transaction records into Supabase in `src/backend/models/sales.model.ts`.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "WHEN a transaction record is parsed, the model SHALL insert details (phone_number, amount) and return the created record.",
+      "IF the database returns a connection failure, THEN the insert method SHALL bubble up a descriptive database error code.",
+      "Integration tests in `tests/integration/model_sales_write.test.ts` SHALL cover successful insertions and exception states."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 3,
+    "name": "model_sales_query",
+    "title": "Sales DB Model Read Layer",
+    "description": "Implements transaction aggregation logic to count visits and average tickets per client in `src/backend/models/sales.model.ts`.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "WHEN a phone number is queried, the model SHALL calculate cumulative transaction count and average ticket size.",
+      "IF no transactions are found for the phone number, THEN the model SHALL return zero counts and zero averages.",
+      "Integration tests in `tests/integration/model_sales_read.test.ts` SHALL assert aggregate calculation logic."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 4,
+    "name": "controller_sales_record",
+    "title": "Sales Record HTTP Controller Action",
+    "description": "Handles request parsing, input sanitization, and maps request bodies to model layers inside `src/backend/controllers/sales.controller.ts`.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "WHEN processing input details, the controller SHALL validate phone format and verify amount is strictly positive.",
+      "IF amount is negative or phone format is invalid, THEN the controller SHALL immediately return a 400 validation error packet.",
+      "Integration tests in `tests/integration/controller_sales_record.test.ts` SHALL assert schema parameter checks."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 5,
+    "name": "api_sales_record_route",
+    "title": "Sales Record API Route Pasamanos",
+    "description": "Thin App Router API route `src/app/api/v1/sales/record/route.ts` mapping POST requests directly to the controller.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "WHEN a POST request is sent to `/api/v1/sales/record`, the route SHALL map the request parameters and return a 201 status with the JSON record.",
+      "Integration tests in `tests/integration/api_sales_record_route.test.ts` SHALL assert endpoint routing mapping and HTTP headers."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 6,
+    "name": "hook_cashier_sales",
+    "title": "Cashier Sales State custom React Hook",
+    "description": "Custom state hook `src/hooks/use-cashier-sales.hook.ts` orchestrating numeric form state, pending loading states, and API fetch executions.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "WHEN invoking the hook registration callback, the hook SHALL set busy loading indicators and trigger POST fetch operations.",
+      "IF registration finishes successfully, THEN the hook SHALL clear local form variables and set a temporary success banner state.",
+      "Integration tests in `tests/integration/hook_cashier_sales.test.ts` SHALL assert loading toggle states and form variable resets."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 7,
+    "name": "component_cashier_form",
+    "title": "Cashier Transaction Input Form UI Component",
+    "description": "Creates pure, tactile input form layout for phones, tablets, and desktop computers in `src/components/cashier/form.component.tsx`.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "WHEN the cashier form is mounted, the component SHALL render numeric touchpads for mobile viewports alongside standard keyboard inputs.",
+      "Playwright E2E tests in `tests/e2e/component_cashier_form.spec.ts` SHALL verify touch input renders correctly across small and large screens."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 8,
+    "name": "page_cashier_dashboard",
+    "title": "Cashier Dashboard Page Route",
+    "description": "App Router Page route `src/app/admin/cash/page.tsx` integrating the form layout component.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "WHEN accessing the cashier dashboard URL, the page SHALL verify server layouts and mount the cashier form layout within the global theme.",
+      "Playwright E2E tests in `tests/e2e/page_cashier_dashboard.spec.ts` SHALL verify layout renders successfully."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 9,
+    "name": "test_e2e_cashier_sales_flow",
+    "title": "Cashier Sales Registration E2E Tests",
+    "description": "E2E Playwright tests verifying the end-to-end touchscreen cashier register workflows.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "Playwright tests in `tests/e2e/cashier_sales_flow.spec.ts` SHALL fill out mobile inputs, submit, assert form clear states, and check temporary success alert indicators."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 10,
+    "name": "service_traffic_distribution",
+    "title": "Peak Hours and Daily Traffic Analytics Service",
+    "description": "Pure backend calculations inside `src/backend/services/traffic.service.ts` analyzing transaction frequencies grouped by hours and weekdays.",
+    "history": "F1 - Story 1.2: Manager views traffic and peak hours chart",
+    "acceptance": [
+      "WHEN calculating metrics, the service SHALL compile transaction frequencies in 24 arrays for hours and 7 arrays for weekdays.",
+      "Integration tests in `tests/integration/service_traffic_distribution.test.ts` SHALL verify analytical correctness using mocked datasets."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 11,
+    "name": "controller_traffic_metrics",
+    "title": "Traffic Metrics Analytics Controller Action",
+    "description": "HTTP coordinator receiving metrics queries and return formatted payload outputs inside `src/backend/controllers/traffic.controller.ts`.",
+    "history": "F1 - Story 1.2: Manager views traffic and peak hours chart",
+    "acceptance": [
+      "WHEN compiling metrics data, the controller SHALL invoke the distribution service and return top aggregates in clean JSON shapes.",
+      "Integration tests in `tests/integration/controller_traffic_metrics.test.ts` SHALL verify payload layouts and status codes."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 12,
+    "name": "api_traffic_metrics_route",
+    "title": "Traffic Metrics API Route Pasamanos",
+    "description": "Thin App Router API route `src/app/api/v1/sales/metrics/route.ts` mapping GET requests directly to the controller.",
+    "history": "F1 - Story 1.2: Manager views traffic and peak hours chart",
+    "acceptance": [
+      "WHEN a GET request is sent to `/api/v1/sales/metrics`, the route SHALL return a 200 JSON payload containing traffic peak maps.",
+      "Integration tests in `tests/integration/api_traffic_metrics_route.test.ts` SHALL assert endpoint routing response headers."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 13,
+    "name": "hook_manager_traffic",
+    "title": "Manager Traffic Fetch React Hook",
+    "description": "Custom state hook `src/hooks/use-traffic.hook.ts` orchestrating traffic analytics network requests and caching state.",
+    "history": "F1 - Story 1.2: Manager views traffic and peak hours chart",
+    "acceptance": [
+      "WHEN executed, the hook SHALL perform API fetching from metrics endpoints and keep loading indicators reactive.",
+      "Integration tests in `tests/integration/hook_manager_traffic.test.ts` SHALL mock responses and assert cache and status flags."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 14,
+    "name": "component_traffic_charts",
+    "title": "Traffic Charts UI Presentation Component",
+    "description": "Renders fluid charts displaying traffic peaks per hour and popular weekdays in `src/components/traffic/chart.component.tsx`.",
+    "history": "F1 - Story 1.2: Manager views traffic and peak hours chart",
+    "acceptance": [
+      "WHEN rendered, the chart component SHALL present fluid visual bars representing busy/profitable periods.",
+      "Playwright E2E tests in `tests/e2e/component_traffic_charts.spec.ts` SHALL verify component renders with mock parameters."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 15,
+    "name": "page_manager_reports",
+    "title": "Manager Sales Reports Page Route",
+    "description": "App Router Page route `src/app/admin/dashboard/page.tsx` integrating sales traffic charts.",
+    "history": "F1 - Story 1.2: Manager views traffic and peak hours chart",
+    "acceptance": [
+      "WHEN the page route loads, the dashboard layout SHALL render charts fluidly inside phone, tablet, and desktop views.",
+      "Playwright E2E tests in `tests/e2e/page_manager_reports.spec.ts` SHALL verify layout CSS and component inclusions."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 16,
+    "name": "test_e2e_manager_reports_responsiveness",
+    "title": "Manager Analytics Dashboard E2E Tests",
+    "description": "E2E Playwright tests checking responsive viewport scaling and layout adaptations for analytics graphs.",
+    "history": "F1 - Story 1.2: Manager views traffic and peak hours chart",
+    "acceptance": [
+      "Playwright tests in `tests/e2e/manager_reports_responsiveness.spec.ts` SHALL assert charts fit nicely and don't clip on mobile viewports."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 17,
+    "name": "service_predictive_alerts",
+    "title": "Predictive Traffic Analytics Engine",
+    "description": "Computes historical week-over-week visit ratios in `src/backend/services/prediction.service.ts` to output alerts when data spans >30 days.",
+    "history": "F1 - Story 1.3: Predictive week alert (if history > 30 days)",
+    "acceptance": [
+      "WHILE data spans over 30 days, the service SHALL predict coming weekend shifts and return an alert projection object.",
+      "IF data spans under 30 days, THEN the service SHALL return an inactive status code.",
+      "Integration tests in `tests/integration/service_predictive_alerts.test.ts` SHALL assert active/inactive boundaries."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 18,
+    "name": "component_predictive_card",
+    "title": "Dashboard Predictive Alert UI Card Component",
+    "description": "Creates pure warning card layouts for the manager's phone dashboard in `src/components/dashboard/predictive-card.component.tsx`.",
+    "history": "F1 - Story 1.3: Predictive week alert (if history > 30 days)",
+    "acceptance": [
+      "WHEN provided with a valid alert projection, the component SHALL render a card displaying the prediction text.",
+      "Playwright E2E tests in `tests/e2e/component_predictive_card.spec.ts` SHALL verify card elements fit nicely on mobile screens."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 19,
+    "name": "test_integration_predictive_alerts_flow",
+    "title": "Predictive Alerts Flow Integration Tests",
+    "description": "Integration tests validating alert rendering states across both service metrics and component models.",
+    "history": "F1 - Story 1.3: Predictive week alert (if history > 30 days)",
+    "acceptance": [
+      "Integration tests in `tests/integration/predictive_alerts_flow.test.ts` SHALL verify no alerts are rendered when dataset lies under 30 days."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 20,
+    "name": "model_customer_segmentation",
+    "title": "Customer Aggregation and Segmentation Model",
+    "description": "Implements aggregate querying algorithms in `src/backend/models/client.model.ts` to cluster customer cohorts based on spending.",
+    "history": "F2 - Story 2.1: Grouping customers into segments based on frequency & ticket",
+    "acceptance": [
+      "WHEN clustering aggregate records, the model SHALL tag groups as 'inactive_30d', 'high_spender', or 'frequent'.",
+      "Integration tests in `tests/integration/model_customer_segmentation.test.ts` SHALL verify mathematical grouping thresholds."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 21,
+    "name": "controller_promotions_segments",
+    "title": "Customer Segments Controller Action",
+    "description": "HTTP coordinator aggregating customer profiles by tags in `src/backend/controllers/promotions.controller.ts`.",
+    "history": "F2 - Story 2.1: Grouping customers into segments based on frequency & ticket",
+    "acceptance": [
+      "WHEN triggered, the controller SHALL coordinate client clustering and return parsed group profiles.",
+      "Integration tests in `tests/integration/controller_promotions_segments.test.ts` SHALL verify JSON shape structures."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 22,
+    "name": "api_promotions_segments_route",
+    "title": "Customer Segments API Route Pasamanos",
+    "description": "Thin route wrapper `src/app/api/v1/promotions/segments/route.ts` mapping GET requests to the controller.",
+    "history": "F2 - Story 2.1: Grouping customers into segments based on frequency & ticket",
+    "acceptance": [
+      "WHEN a GET request is sent, the route SHALL query active database customer clusters and return a 200 payload.",
+      "Integration tests in `tests/integration/api_promotions_segments_route.test.ts` SHALL assert routing configurations."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 23,
+    "name": "service_gemini_recovery_prompt",
+    "title": "Gemini Customer Recovery Copywriter Service",
+    "description": "Prompt builder connecting Gemini models inside `src/backend/services/ai.service.ts` to write customized recovery text.",
+    "history": "F2 - Story 2.2: Inactive 30 days prompt recovery draft using Gemini",
+    "acceptance": [
+      "WHEN provided with item histories, the service SHALL return personalized copy limited to 180 characters.",
+      "Integration tests in `tests/integration/service_gemini_recovery_prompt.test.ts` SHALL mock LLM calls and verify limit enforcements."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 24,
+    "name": "controller_promotions_generate",
+    "title": "Campaign Generation Controller Action",
+    "description": "Coordinates AI copywriting executions and sets static backups in `src/backend/controllers/promotions.controller.ts`.",
+    "history": "F2 - Story 2.2: Inactive 30 days prompt recovery draft using Gemini",
+    "acceptance": [
+      "WHEN generating copies, the controller SHALL fetch target groups, invoke Gemini, and return compiled offers.",
+      "IF LLM limits are hit, THEN the controller SHALL inject a localized fallback discount message.",
+      "Integration tests in `tests/integration/controller_promotions_generate.test.ts` SHALL check error overrides and fallbacks."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 25,
+    "name": "api_promotions_generate_route",
+    "title": "Campaign Generation API Route Pasamanos",
+    "description": "Thin route wrapper `src/app/api/v1/promotions/generate/route.ts` mapping POST requests to the controller.",
+    "history": "F2 - Story 2.2: Inactive 30 days prompt recovery draft using Gemini",
+    "acceptance": [
+      "WHEN a POST request is parsed, the endpoint SHALL return a 200 JSON array of drafted messages.",
+      "Integration tests in `tests/integration/api_promotions_generate_route.test.ts` SHALL assert route integrations."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 26,
+    "name": "hook_manager_campaigns",
+    "title": "Manager Campaign State React Hook",
+    "description": "Custom state hook `src/hooks/use-campaigns.hook.ts` managing active generation states and segment list caches.",
+    "history": "F2 - Story 2.2: Inactive 30 days prompt recovery draft using Gemini",
+    "acceptance": [
+      "WHEN campaign generation is triggered, the hook SHALL toggle active loaders and execute promotions API queries.",
+      "Integration tests in `tests/integration/hook_manager_campaigns.test.ts` SHALL assert load toggle states."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 27,
+    "name": "component_campaign_segment_cards",
+    "title": "Campaign Segment Cards UI Component",
+    "description": "Renders segment block listings and trigger buttons optimized for touch screens in `src/components/promotions/segment-cards.component.tsx`.",
+    "history": "F2 - Story 2.2: Inactive 30 days prompt recovery draft using Gemini",
+    "acceptance": [
+      "WHEN rendered, the component SHALL present segment titles, counts, and click action boundaries fluidly across screen viewports.",
+      "Playwright E2E tests in `tests/e2e/component_campaign_segment_cards.spec.ts` SHALL verify component structure."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 28,
+    "name": "page_manager_promotions",
+    "title": "Manager Promotions Page Route",
+    "description": "App Router Page route `src/app/admin/promotions/page.tsx` integrating segment cards and generation triggers.",
+    "history": "F2 - Story 2.2: Inactive 30 days prompt recovery draft using Gemini",
+    "acceptance": [
+      "WHEN promotions route is accessed, the dashboard layout SHALL mount segment components dynamically.",
+      "Playwright E2E tests in `tests/e2e/page_manager_promotions.spec.ts` SHALL verify responsive mobile layout scaling."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 29,
+    "name": "test_e2e_manager_promotions_flow",
+    "title": "Manager Promotions Campaign E2E Tests",
+    "description": "E2E Playwright tests checking segment generation triggers, visual progress skeleton states, and campaign details.",
+    "history": "F2 - Story 2.2: Inactive 30 days prompt recovery draft using Gemini",
+    "acceptance": [
+      "Playwright tests in `tests/e2e/manager_promotions_flow.spec.ts` SHALL tap segment action triggers and assert draft cards render correctly."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 30,
+    "name": "util_whatsapp_link_encoder",
+    "title": "WhatsApp Prefilled URL Encoder Utility",
+    "description": "URI parameter formatting library helper inside `src/backend/utils/whatsapp.utils.ts` encoding campaign copy.",
+    "history": "F2 - Story 2.3: Button with prefilled wa.me link to WhatsApp",
+    "acceptance": [
+      "WHEN encoding a text parameters, the helper SHALL output correct prefilled `https://wa.me/<phone>?text=<encoded>` strings.",
+      "Integration tests in `tests/integration/util_whatsapp_link_encoder.test.ts` SHALL verify blank spaces translate to `%20`."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 31,
+    "name": "component_whatsapp_share_button",
+    "title": "WhatsApp Share UI Action Button",
+    "description": "UI action button `src/components/ui/whatsapp-share-button.component.tsx` firing direct share redirects.",
+    "history": "F2 - Story 2.3: Button with prefilled wa.me link to WhatsApp",
+    "acceptance": [
+      "WHEN the action button is clicked on mobile, the system SHALL call `window.open` triggering external WhatsApp protocols.",
+      "Playwright E2E tests in `tests/e2e/component_whatsapp_share_button.spec.ts` SHALL verify click handlers."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 32,
+    "name": "test_integration_whatsapp_redirect",
+    "title": "WhatsApp Redirect Flow Integration Tests",
+    "description": "Integration tests validating correct URL composition and redirection boundaries.",
+    "history": "F2 - Story 2.3: Button with prefilled wa.me link to WhatsApp",
+    "acceptance": [
+      "Integration tests in `tests/integration/whatsapp_redirect.test.ts` SHALL mock `window.open` and assert correct parameter parsing."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 33,
+    "name": "controller_social_ideas",
+    "title": "Social Suggestions Controller Action",
+    "description": "Parses context descriptions and enforces input validations inside `src/backend/controllers/social.controller.ts`.",
+    "history": "F3 - Story 3.1: Request idea with custom context input",
+    "acceptance": [
+      "WHEN validating context descriptors, the controller SHALL assert size constraints (minimum 3 chars).",
+      "IF constraint validation fails, THEN the controller SHALL abort and output a 400 Bad Request status code.",
+      "Integration tests in `tests/integration/controller_social_ideas.test.ts` SHALL check invalid bounds."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 34,
+    "name": "api_social_ideas_route",
+    "title": "Social Suggestions API Route Pasamanos",
+    "description": "Thin route wrapper `src/app/api/v1/social/ideas/route.ts` mapping POST requests to the controller.",
+    "history": "F3 - Story 3.1: Request idea with custom context input",
+    "acceptance": [
+      "WHEN a POST request is evaluated, the endpoint SHALL return a 200 JSON object containing AI-drafted media posts.",
+      "Integration tests in `tests/integration/api_social_ideas_route.test.ts` SHALL assert route maps."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 35,
+    "name": "hook_social_content",
+    "title": "Social Suggestions State React Hook",
+    "description": "Custom state hook `src/hooks/use-social.hook.ts` managing social ideas state variables and loader toggles.",
+    "history": "F3 - Story 3.1: Request idea with custom context input",
+    "acceptance": [
+      "WHEN custom context queries are executed, the hook SHALL manage active busy alerts and execute fetch operations.",
+      "Integration tests in `tests/integration/hook_social_content.test.ts` SHALL assert loading toggle states."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 36,
+    "name": "component_social_context_form",
+    "title": "Social Context Form Input UI Component",
+    "description": "Input textarea form optimized for tactile mobile entries inside `src/components/social/context-form.component.tsx`.",
+    "history": "F3 - Story 3.1: Request idea with custom context input",
+    "acceptance": [
+      "WHEN visiting the social tool screen, the component SHALL render responsive layouts for descriptors and click triggers.",
+      "Playwright E2E tests in `tests/e2e/component_social_context_form.spec.ts` SHALL assert viewport scale fits mobile views."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 37,
+    "name": "service_low_traffic_detector",
+    "title": "Historical Low Traffic Trends Analyzer Service",
+    "description": "Verifies historical patterns inside `src/backend/services/traffic.service.ts` to identify slow weekdays.",
+    "history": "F3 - Story 3.2: Suggest flash sale on low traffic days",
+    "acceptance": [
+      "WHEN queried with a specific date, the service SHALL flag if this weekday historically lies under traffic thresholds.",
+      "Integration tests in `tests/integration/service_low_traffic_detector.test.ts` SHALL assert Boolean flags using mock profiles."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 38,
+    "name": "logic_flash_sale_injection",
+    "title": "Flash Promotion Prompt Injection Decorator",
+    "description": "Appends special campaign tag instructions ('Oferta Relámpago') inside `src/backend/services/social-prompt.decorator.ts` on slow traffic days.",
+    "history": "F3 - Story 3.2: Suggest flash sale on low traffic days",
+    "acceptance": [
+      "WHEN traffic is flagged low, the injector SHALL compile flash sale prompts alongside regular inputs.",
+      "Integration tests in `tests/integration/logic_flash_sale_injection.test.ts` SHALL assert decorator outputs."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 39,
+    "name": "test_integration_low_traffic_decorator",
+    "title": "Low Traffic Decorator Flow Integration Tests",
+    "description": "Integration tests validating contextual prompt changes under mock high/low weekday metrics.",
+    "history": "F3 - Story 3.2: Suggest flash sale on low traffic days",
+    "acceptance": [
+      "Integration tests in `tests/integration/low_traffic_decorator_flow.test.ts` SHALL assert correct keywords are appended on slow days."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 40,
+    "name": "service_social_gemini_copywriter",
+    "title": "Gemini Social Post Suggestion Service",
+    "description": "LLM query model interface inside `src/backend/services/ai.service.ts` requesting formatted post outputs.",
+    "history": "F3 - Story 3.3: Show draft visual prompt, text, and hashtags",
+    "acceptance": [
+      "WHEN context and low traffic variables are parsed, the service SHALL ask Gemini for copies containing titles, body text, visual prompts, and tags.",
+      "Integration tests in `tests/integration/service_social_gemini_copywriter.test.ts` SHALL mock Gemini API response schemas."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 41,
+    "name": "component_social_suggestions_cards",
+    "title": "Social Suggestions Cards UI Component",
+    "description": "Renders clean output suggestions with visual prompt suggestions and clipboard handlers in `src/components/social/suggestions-cards.component.tsx`.",
+    "history": "F3 - Story 3.3: Show draft visual prompt, text, and hashtags",
+    "acceptance": [
+      "WHEN rendered, the component SHALL present separate draft copy blocks alongside touch-trigger clipboard copies.",
+      "Playwright E2E tests in `tests/e2e/component_social_suggestions_cards.spec.ts` SHALL verify component structure."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 42,
+    "name": "page_manager_social",
+    "title": "Manager Social Content Creation Page Route",
+    "description": "App Router Page route `src/app/admin/social/page.tsx` integrating forms and card lists.",
+    "history": "F3 - Story 3.3: Show draft visual prompt, text, and hashtags",
+    "acceptance": [
+      "WHEN visiting the social creations URL, the dashboard SHALL layout input and suggestions dynamically.",
+      "Playwright E2E tests in `tests/e2e/page_manager_social.spec.ts` SHALL verify viewport CSS adaptations."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 43,
+    "name": "test_e2e_social_clipboard_actions",
+    "title": "Social Creation Clipboard E2E Tests",
+    "description": "E2E Playwright tests verifying context forms, loading skeletal indicators, and touch copy-to-clipboard actions.",
+    "history": "F3 - Story 3.3: Show draft visual prompt, text, and hashtags",
+    "acceptance": [
+      "Playwright tests in `tests/e2e/social_clipboard_actions.spec.ts` SHALL tap context submission, check skeletons, and verify clipboard changes."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 44,
+    "name": "db_migration_captive_clients",
+    "title": "PostgreSQL Migration for Captive Portal Clients Schema",
+    "description": "Creates PostgreSQL tables `clients` and `wifi_logins` in Supabase with necessary data columns and relations.",
+    "history": "F4 - Story 4.1: Portal form and WiFi copy/QR page",
+    "acceptance": [
+      "WHEN querying the DB schema, the `clients` table and `wifi_logins` table SHALL exist.",
+      "WHEN metadata is inspected, `wifi_logins` SHALL contain a foreign key reference pointing to the `clients` primary key.",
+      "Integration tests in `tests/integration/db_migration_captive.test.ts` SHALL verify table schemas and constraints."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 45,
+    "name": "model_captive_portal_upsert",
+    "title": "Captive Portal DB Model Write Layer",
+    "description": "Implements client record insertions and session logs inside `src/backend/models/client.model.ts`.",
+    "history": "F4 - Story 4.1: Portal form and WiFi copy/QR page",
+    "acceptance": [
+      "WHEN a user registers, the model SHALL upsert the profile in the `clients` table and insert log records in the `wifi_logins` table.",
+      "Integration tests in `tests/integration/model_captive_portal_upsert.test.ts` SHALL assert write logic and timestamps."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 46,
+    "name": "controller_portal_register",
+    "title": "Portal Registration HTTP Controller Action",
+    "description": "Handles request parsing, validates client names and phone parameters in `src/backend/controllers/portal.controller.ts`.",
+    "history": "F4 - Story 4.1: Portal form and WiFi copy/QR page",
+    "acceptance": [
+      "WHEN validating client signup parameters, the controller SHALL verify phone formats and name length.",
+      "IF validation checks fail, THEN the controller SHALL output a 400 validation error packet.",
+      "Integration tests in `tests/integration/controller_portal_register.test.ts` SHALL cover validation limits."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 47,
+    "name": "api_portal_register_route",
+    "title": "Portal Registration API Route Pasamanos",
+    "description": "Thin route wrapper `src/app/api/v1/portal/register/route.ts` mapping POST requests to the controller.",
+    "history": "F4 - Story 4.1: Portal form and WiFi copy/QR page",
+    "acceptance": [
+      "WHEN a POST request is processed, the endpoint SHALL return a 201 status and JSON profiles.",
+      "Integration tests in `tests/integration/api_portal_register_route.test.ts` SHALL verify routing maps."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 48,
+    "name": "hook_captive_portal",
+    "title": "Captive Portal State React Hook",
+    "description": "Custom state hook `src/hooks/use-portal.hook.ts` managing client details form states and API registrations.",
+    "history": "F4 - Story 4.1: Portal form and WiFi copy/QR page",
+    "acceptance": [
+      "WHEN registration triggers, the hook SHALL toggle active busy alerts and execute fetch operations.",
+      "Integration tests in `tests/integration/hook_captive_portal.test.ts` SHALL assert loading states."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 49,
+    "name": "component_wifi_info_qr",
+    "title": "Captive Portal Password and QR UI Component",
+    "description": "Renders local WiFi names, 'Copy Password' triggers, and connection QRs in `src/components/wifi/qr.component.tsx`.",
+    "history": "F4 - Story 4.1: Portal form and WiFi copy/QR page",
+    "acceptance": [
+      "WHEN mounted, the component SHALL display active WiFi names alongside tactile clipboard password copy triggers.",
+      "Playwright E2E tests in `tests/e2e/component_wifi_info_qr.spec.ts` SHALL verify layout fits mobile views."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 50,
+    "name": "page_portal_landing",
+    "title": "Captive Portal Onboarding Page Route",
+    "description": "App Router Page route `src/app/portal/page.tsx` integrating client signups and WiFi details.",
+    "history": "F4 - Story 4.1: Portal form and WiFi copy/QR page",
+    "acceptance": [
+      "WHEN portal onboarding route is accessed, the dashboard layouts SHALL mount QR views dynamically.",
+      "Playwright E2E tests in `tests/e2e/page_portal_landing.spec.ts` SHALL verify layout renders successfully on mobile browsers."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 51,
+    "name": "test_e2e_portal_onboarding_flow",
+    "title": "Captive Portal Onboarding E2E Tests",
+    "description": "E2E Playwright tests checking portal registrations, touch copy interactions, and successful WiFi onboarding layouts.",
+    "history": "F4 - Story 4.1: Portal form and WiFi copy/QR page",
+    "acceptance": [
+      "Playwright tests in `tests/e2e/portal_onboarding_flow.spec.ts` SHALL register visitors, check passwords, and assert onboarding completions."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 52,
+    "name": "service_arrival_notification_builder",
+    "title": "Arrival Greeting Notification Service",
+    "description": "Builds welcoming greeting scripts and encodes direct-to-WhatsApp links inside `src/backend/services/arrival.service.ts`.",
+    "history": "F4 - Story 4.2: Scanned QR generates wa.me greeting alert",
+    "acceptance": [
+      "WHEN a client signs up, the service SHALL output greeting texts and direct wa.me greeting links tailored to the customer.",
+      "Integration tests in `tests/integration/service_arrival_notification_builder.test.ts` SHALL verify greeting formatting."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 53,
+    "name": "controller_arrival_notifications",
+    "title": "Arrival Notifications Controller Action",
+    "description": "Handles fetching and output formatting for active arrival alerts inside `src/backend/controllers/arrival.controller.ts`.",
+    "history": "F4 - Story 4.2: Scanned QR generates wa.me greeting alert",
+    "acceptance": [
+      "WHEN requested, the controller SHALL return parsed arrival alerts containing greeting text packets and customer detail arrays.",
+      "Integration tests in `tests/integration/controller_arrival_notifications.test.ts` SHALL verify aggregate metrics and outputs."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 54,
+    "name": "api_arrival_notifications_route",
+    "title": "Arrival Notifications API Route Pasamanos",
+    "description": "Thin route wrapper `src/app/api/v1/arrivals/notifications/route.ts` mapping GET requests to the controller.",
+    "history": "F4 - Story 4.2: Scanned QR generates wa.me greeting alert",
+    "acceptance": [
+      "WHEN a GET request is processed, the endpoint SHALL return a 200 JSON array of recent customer logins.",
+      "Integration tests in `tests/integration/api_arrival_notifications_route.test.ts` SHALL assert route maps."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 55,
+    "name": "hook_manager_arrivals",
+    "title": "Manager Arrivals Feed React Hook",
+    "description": "Custom state hook `src/hooks/use-arrivals.hook.ts` fetching active visitor logs and managing live states.",
+    "history": "F4 - Story 4.2: Scanned QR generates wa.me greeting alert",
+    "acceptance": [
+      "WHEN executed, the hook SHALL pull active arrival events and update state maps.",
+      "Integration tests in `tests/integration/hook_manager_arrivals.test.ts` SHALL assert state updates."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 56,
+    "name": "component_manager_arrivals_feed",
+    "title": "Manager Arrivals Feed UI Component",
+    "description": "UI listings rendering live arrival notices and trigger buttons for managers in `src/components/dashboard/arrivals-feed.component.tsx`.",
+    "history": "F4 - Story 4.2: Scanned QR generates wa.me greeting alert",
+    "acceptance": [
+      "WHEN rendered, the component SHALL present recent arrival lists with touch-trigger direct WhatsApp send targets.",
+      "Playwright E2E tests in `tests/e2e/component_manager_arrivals_feed.spec.ts` SHALL verify component structure."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 57,
+    "name": "test_e2e_manager_arrivals_feed_flow",
+    "title": "Manager Arrivals Feed E2E Tests",
+    "description": "E2E Playwright tests checking arrivals logs stream updates and correct wa.me link redirections.",
+    "history": "F4 - Story 4.2: Scanned QR generates wa.me greeting alert",
+    "acceptance": [
+      "Playwright tests in `tests/e2e/manager_arrivals_feed_flow.spec.ts` SHALL assert lists append new elements and verify WhatsApp redirect formats."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 58,
+    "name": "service_visit_milestone_counter",
+    "title": "Visit Milestone Evaluation Service",
+    "description": "Verifies historical aggregates inside `src/backend/services/milestone.service.ts` to trigger alerts on a client's 10th visit.",
+    "history": "F4 - Story 4.3: 10th visit reward visual alert",
+    "acceptance": [
+      "WHEN visit counts are evaluated, the service SHALL trigger active milestone flags exactly at the tenth accumulative log.",
+      "Integration tests in `tests/integration/service_visit_milestone_counter.test.ts` SHALL verify Boolean outputs."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 59,
+    "name": "controller_reward_claim",
+    "title": "Milestone Reward Claim Controller Action",
+    "description": "Handles reward validation and logs claim events in database schemas in `src/backend/controllers/milestone.controller.ts`.",
+    "history": "F4 - Story 4.3: 10th visit reward visual alert",
+    "acceptance": [
+      "WHEN claims are triggered, the controller SHALL write logs recording claims and resetting milestone counters.",
+      "Integration tests in `tests/integration/controller_reward_claim.test.ts` SHALL verify claim logs."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 60,
+    "name": "api_reward_claim_route",
+    "title": "Milestone Reward Claim API Route Pasamanos",
+    "description": "Thin route wrapper `src/app/api/v1/rewards/claim/route.ts` mapping POST requests to the controller.",
+    "history": "F4 - Story 4.3: 10th visit reward visual alert",
+    "acceptance": [
+      "WHEN a POST request is processed, the endpoint SHALL return a 200 status and write claim records.",
+      "Integration tests in `tests/integration/api_reward_claim_route.test.ts` SHALL assert routing maps."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 61,
+    "name": "hook_cashier_rewards",
+    "title": "Cashier Rewards State React Hook",
+    "description": "Custom state hook `src/hooks/use-rewards.hook.ts` fetching active milestone alert events and toggling modal screens.",
+    "history": "F4 - Story 4.3: 10th visit reward visual alert",
+    "acceptance": [
+      "WHEN executed, the hook SHALL check active client milestone triggers and keep modal visibility flags reactive.",
+      "Integration tests in `tests/integration/hook_cashier_rewards.test.ts` SHALL assert state toggles."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 62,
+    "name": "component_cashier_milestone_modal",
+    "title": "Cashier Milestone Reward Alert Modal UI Component",
+    "description": "Renders prominent high-visibility warning overlays for cashiers on screen viewports in `src/components/cashier/milestone-modal.component.tsx`.",
+    "history": "F4 - Story 4.3: 10th visit reward visual alert",
+    "acceptance": [
+      "WHEN triggered, the component SHALL render modal prompts displaying customer details, reward specifications, and action buttons.",
+      "Playwright E2E tests in `tests/e2e/component_cashier_milestone_modal.spec.ts` SHALL verify structure."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 63,
+    "name": "page_cashier_dashboard_milestones",
+    "title": "Cashier Dashboard Page Layout Extensions",
+    "description": "Extends cashier route page layout inside `src/app/admin/cash/page.tsx` to mount milestone overlays.",
+    "history": "F4 - Story 4.3: 10th visit reward visual alert",
+    "acceptance": [
+      "WHEN cashier pages mount, the layout SHALL monitor active milestone updates and render warning modals dynamically.",
+      "Playwright E2E tests in `tests/e2e/page_cashier_dashboard_milestones.spec.ts` SHALL verify modal inclusions."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 64,
+    "name": "test_e2e_cashier_rewards_modal_flow",
+    "title": "Cashier Milestone Alert Modals E2E Tests",
+    "description": "E2E Playwright tests checking milestone reward modal renders and confirmation click claim triggers.",
+    "history": "F4 - Story 4.3: 10th visit reward visual alert",
+    "acceptance": [
+      "Playwright tests in `tests/e2e/cashier_rewards_modal_flow.spec.ts` SHALL trigger 10th logins, assert modal visibility, and click claims."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 65,
+    "name": "util_logger_integration",
+    "title": "Unified Backend Console Logger Utility",
+    "description": "Simple clean wrapper utility inside `src/backend/utils/logger.utils.ts` to output formatted console tags.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "WHEN logging events, the utility SHALL write clean timestamp console entries.",
+      "Integration tests in `tests/integration/util_logger.test.ts` SHALL verify logger outputs."
+    ],
+    "sdd": true
+  },
+  {
+    "id": 66,
+    "name": "db_supabase_client_instantiation",
+    "title": "Secure Database Supabase Client Instantiation Model",
+    "description": "Securely initializes the database adapter client and offline mock states in `src/backend/models/supabase.model.ts`.",
+    "history": "F1 - Story 1.1: Cashier registers transaction",
+    "acceptance": [
+      "WHEN the database helper is executed, it SHALL return instantiated Supabase adapter models.",
+      "Integration tests in `tests/integration/db_supabase_instantiation.test.ts` SHALL verify client objects."
+    ],
+    "sdd": true
+  }
+]

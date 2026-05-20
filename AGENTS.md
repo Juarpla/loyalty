@@ -59,6 +59,10 @@ Useful local guides:
 - Write progress to `progress/current.md`; durable state lives in files, not only chat.
 - Every requirement `R<n>` must map to at least one concrete test or verification step.
 - Prefer existing project patterns and local Next.js docs over memory or assumptions.
+- `feature_list.json` is **status-mutable only**. You may change only the `status` field of an
+  existing feature. You must never add, delete, reorder features, or modify any field other
+  than `status` on any feature entry. The `init.sh` snapshot validator will detect and block
+  violations.
 
 ## SDD workflow
 
