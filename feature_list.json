@@ -273,17 +273,17 @@
       "status": "pending"
     },
     {
-      "id": 11,
-      "name": "controller_traffic_metrics",
-      "title": "Traffic Metrics Analytics Controller Action",
-      "description": "HTTP coordinator receiving metrics queries and return formatted payload outputs inside `src/backend/controllers/traffic.controller.ts`.",
-      "history": "F1 - Story 1.2: Manager views traffic and peak hours chart",
+      "id": 21,
+      "name": "controller_promotions_segments",
+      "title": "Customer Segments Controller Action",
+      "description": "HTTP coordinator aggregating customer profiles by tags in `src/backend/controllers/promotions.controller.ts`.",
+      "history": "F2 - Story 2.1: Grouping customers into segments based on frequency & ticket",
       "acceptance": [
-        "WHEN compiling metrics data, the controller SHALL invoke the distribution service and return top aggregates in clean JSON shapes.",
-        "Integration tests in `tests/integration/controller_traffic_metrics.test.ts` SHALL verify payload layouts and status codes."
+        "WHEN triggered, the controller SHALL coordinate client clustering and return parsed group profiles.",
+        "Integration tests in `tests/integration/controller_promotions_segments.test.ts` SHALL verify JSON shape structures."
       ],
       "sdd": true,
-      "status": "in_progress"
+      "status": "pending"
     },
     {
       "id": 22,
