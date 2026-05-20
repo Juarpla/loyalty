@@ -22,21 +22,58 @@ These conventions keep the repository predictable for humans and AI agents.
 
 ## File and naming conventions
 
-### Frontend Routes & Components
-- Route files follow Next.js conventions: `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`, and `route.ts`.
-- Private route-local folders start with `_` (e.g., `_components`).
-- UI Components use `PascalCase`.
-- Hooks use `useCamelCase`.
+All files, routes, and folders in the workspace MUST be named strictly in **lowercase** to avoid Linux routing resolution bugs.
 
-### Backend Layers (`src/backend/`)
-- Backend files MUST have a distinct architectural layer suffix in their filename:
-  - **Controllers**: `*.controller.ts` (e.g. `ai.controller.ts`)
-  - **Models**: `*.model.ts` (e.g. `client.model.ts`)
-  - **Services**: `*.service.ts` (e.g. `whatsapp.service.ts`)
-  - **Types**: `*.type.ts` (e.g. `database.type.ts`)
-  - **Utilities**: `*.utils.ts` (e.g. `logger.utils.ts`)
-- Utility functions and variables use `camelCase`.
-- Constants use `UPPER_SNAKE_CASE` only when they are true constant primitives.
+### Nomenclature & Postfixes Table
+
+To ensure developers and AI agents immediately recognize the architectural role and responsibility of any file, use the following suffix convention:
+
+| File Type / Role | Target Directory | Suffix / Naming Convention | Practical Example |
+| :--- | :--- | :--- | :--- |
+| **UI Component** | `src/components/*` | `[nombre].component.tsx` | `button.component.tsx` |
+| **Custom Hook** | `src/hooks/*` | `use-[nombre].hook.ts` | `use-sales.hook.ts` |
+| **Backend Controller** | `src/backend/controllers/*` | `[nombre].controller.ts` | `traffic.controller.ts` |
+| **Business Service** | `src/backend/services/*` | `[nombre].service.ts` | `ai.service.ts` |
+| **Data Model** | `src/backend/models/*` | `[nombre].model.ts` | `client.model.ts` |
+| **Utility Helper** | `src/backend/utils/*` or `src/utils/*` | `[nombre].utils.ts` | `date.utils.ts` |
+| **Types / Interfaces** | `src/types/*` or `src/backend/types/*` | `[nombre].type.ts` | `database.type.ts` |
+
+---
+
+## Development Rules: Components & Hooks
+
+To keep code maintainable, testable, and free of technical debt, the following strict bounds apply:
+
+*   **Max Component Length (150 Lines)**: No single component file (`.component.tsx` or `page.tsx`) may exceed **150 lines of code**. If a component exceeds this threshold, developers/agents MUST:
+    1.  Extract complex or repetitive parts into smaller, atomic sub-components within the same module folder.
+    2.  Extract mutable state, `useEffect` hooks, event handlers, and data fetching handlers into a dedicated hook (e.g. `use-[feature].hook.ts`).
+*   **Single Responsibility in Hooks**: Frontend React views MUST NOT directly write network fetches (`fetch`, `axios`), catch network try/catch blocks, or handle complex object mutations. The component MUST delegate this to a Hook, which exposes only simple, read-only UI variables (such as `data`, `isLoading`, `hasError`, and `executeSubmit`).
+
+---
+
+## Standard Import Order
+
+To prevent compilation collisions and keep import panels organized, imports must be structured in the following explicit order, separated by a single blank line:
+
+```typescript
+// 1. Third-party Libraries (React, Next.js, etc.)
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
+// 2. Infrastructure & Framework dependencies (Lucide icons, Axios, database configs)
+import { LucideIcon } from 'lucide-react';
+
+// 3. Frontend Abstraction Layer (Custom Hooks and Contexts)
+import { useTraffic } from '@/hooks/use-traffic.hook';
+
+// 4. UI Components (Atomic UI, global elements, or module-specific components)
+import { Card } from '@/components/ui/card.component';
+import { TrafficChart } from '@/components/traffic/chart.component';
+
+// 5. Utilities & Types
+import { formatDate } from '@/utils/date.utils';
+import type { TrafficData } from '@/types/traffic.type';
+```
 
 ---
 
@@ -76,7 +113,6 @@ To respect token windows and maximize context efficiency, agents should run loca
 ## Imports and Boundaries
 
 - Prefer the `@/*` path alias for shared project imports when it improves clarity (e.g., `@/backend/controllers/ai.controller`).
-- Keep imports ordered: external packages, then project alias modules, then local relative modules.
 - **Strict Layer Isolation**:
   - Decoupled backend directories under `src/backend/` MUST NOT import client components, styles (`*.css`), or React frontend context/hooks.
   - Frontend components and Next.js page layers MUST NOT import backend models (`*.model.ts`) directly. They should communicate exclusively through backend Controllers (`*.controller.ts`) or HTTP API routes (`route.ts`).

@@ -4,62 +4,88 @@ This project is a Next.js 16 App Router application. Architecture decisions shou
 favor the framework conventions documented in `node_modules/next/dist/docs/` over
 older Next.js memory.
 
-## Principles
+## Principles & Decoupled MVC Architecture
 
-1. Use `app/` as the routing surface. A route is public only when a segment contains
-   `page.tsx` or `route.ts`.
-2. Prefer Server Components. Add `"use client"` only for state, effects, browser
-   APIs, event handlers, or client-only hooks.
-3. Keep route-local implementation colocated with the route when it serves only that
-   route. Use private folders such as `_components`, `_lib`, or `_hooks` for files
-   that must not become routes.
-4. Put shared UI or domain utilities outside a route segment only when at least two
-   routes need them.
-5. Use `route.ts` for App Router API endpoints. Keep request parsing, validation,
-   and response shaping explicit.
-6. Use `public/` only for static assets that must be served directly.
-7. Avoid adding dependencies unless the feature spec explains why the platform or
-   existing dependencies are not enough.
+To achieve a highly scalable, clean, and maintainable codebase, we implement a strict **Decoupled MVC (Model-View-Controller)** pattern where the Backend is isolated (`src/backend`) and operates independently of the frontend UI:
 
-## Current shape
+*   **View (Vista - Frontend)**: Exposes exclusively visual components, layouts, custom hooks, and local UI state (`src/app` and `src/components`).
+    *   *Rules*: Views are strictly decoupled from database models and third-party API clients. They MUST NOT connect directly to Supabase, Gemini, or other external APIs. Instead, they interact exclusively with local API routes or custom Hooks (`src/hooks/*`) for data fetching.
+*   **Controller (Controlador - Pasamanos & Backend Controllers)**: Next.js local API endpoints (`src/app/api/*`) act as thin pass-through adapters ("pasamanos"). They accept HTTP requests, parse query/body inputs, delegate actual routing logic immediately to controllers in `src/backend/controllers/`, and return formatted HTTP responses.
+*   **Model & Service (Modelo/Servicio - Backend)**: Isolated under `src/backend/`. Models handle data schema constraints and raw database operations (Supabase). Services implement pure core business logic, calculations, metrics, and external integrations (such as the Gemini LLM API).
 
-- `src/app/`: The routing surface (layouts, pages, API routes).
-  - `layout.tsx` defines the root document and font setup.
-  - `page.tsx` exposes `/`.
-  - `globals.css` contains global styles and Tailwind.
-- `src/backend/`: Decoupled backend architecture (controllers, models, services, types, utils).
-- `public/`: Static SVG and image assets.
-- `tests/integration/`: Vitest integration tests (pure logic, data flow, controllers, services).
-- `tests/e2e/`: Playwright E2E tests (real browser user-flows; only with human approval).
+---
+
+## Project Structure (`src/`)
+
+All files and directory paths in the workspace MUST be written strictly in **lowercase**. This definitively prevents path resolution case-sensitivity failures during production builds or in Linux-based deployment environments (e.g. Vercel):
+
+```text
+src/
+├── app/                           # VIEW LAYER / ROUTING (Next.js App Router)
+│   ├── api/                       # Internal API Pass-throughs ("pasamanos")
+│   │   └── v1/
+│   │       ├── traffic/route.ts   # GET -> Invokes traffic.controller.ts
+│   │       └── ai/route.ts        # POST -> Invokes ai.controller.ts
+│   ├── admin/                     # Manager and Cashier private routes
+│   │   ├── dashboard/page.tsx     # Uses chart.component.tsx via hooks
+│   │   └── cash/page.tsx
+│   ├── portal/                    # Public client views (WiFi Captive / Forms)
+│   └── layout.tsx                 # App layout configuration
+│
+├── components/                    # REUSABLE UI INTERFACE COMPONENTS
+│   ├── ui/                        # Atomic components (button, input, card)
+│   ├── traffic/                   # Domain components for traffic metrics
+│   │   └── chart.component.tsx
+│   └── wifi/
+│       └── qr.component.tsx       # Qr code visualizer component
+│
+├── hooks/                         # FRONTEND STATE & FETCH ABSTRACTION LAYER
+│   ├── use-traffic.hook.ts        # Orchestrates network fetch & UI states
+│   └── use-wifi.hook.ts           # Handles WiFi portal state logic
+│
+└── backend/                       # ISOLATED BACKEND LAYER (Easily extractable)
+    ├── controllers/               # HTTP coordinators and input validators
+    │   ├── traffic.controller.ts
+    │   └── ai.controller.ts
+    ├── models/                    # DB querying / Supabase data modeling
+    │   ├── supabase.model.ts      # Instantiated secure Supabase client
+    │   └── client.model.ts        # Customer and traffic query operations
+    ├── services/                  # Business logic / Outbound API clients
+    │   ├── ai.service.ts          # Integrations with Gemini / LLM SDKs
+    │   └── whatsapp.service.ts    # Notification engine via WhatsApp URLs
+    ├── types/                     # Shared backend models and database types
+    │   └── database.type.ts       # Generated Supabase types interface
+    └── utils/                     # Logger and utility libraries
+        └── logger.utils.ts        # Portable stdout/stderr logger
+```
 
 ---
 
 ## Decoupled Backend Layers (`src/backend/`)
 
-To keep the application highly maintainable, business logic and data access are decoupled from the routing layer:
-
-1. **Controllers (`src/backend/controllers/`)**: Handle HTTP / routing requests, parse and validate input parameters, coordinate service calls, and shape success or failure responses.
-2. **Services (`src/backend/services/`)**: Implement pure business logic, calculations, and integrations with external systems (e.g., Gemini AI, WhatsApp gateways). They are fully decoupled from database models and HTTP contexts.
-3. **Models (`src/backend/models/`)**: Isolate database queries and mutations (using Supabase). Ensure proper fallback simulations exist for offline-first development.
-4. **Types (`src/backend/types/`)**: Centralize TypeScript interface definitions and auto-generated database schemas.
+1. **Controllers (`src/backend/controllers/`)**: Parse HTTP input parameters, invoke backend services and data models, wrap processing logic in robust try/catch blocks, and return uniform JSON payloads.
+2. **Services (`src/backend/services/`)**: Run calculations and orchestrate API connections (Gemini, WhatsApp) without being bound to database schemas or controller states.
+3. **Models (`src/backend/models/`)**: Handle Supabase transactions. They implement simulated offline fallback handlers to keep development fast.
+4. **Types (`src/backend/types/`)**: Centralize static TypeScript interface definitions and auto-generated database schemas.
 5. **Utils (`src/backend/utils/`)**: Provide shared pure helpers, formatting utilities, and logger instances.
 
 ### System Architecture Flow
 
-The following Mermaid diagram visualizes the flow of data and dependencies across the application layers:
+The following Mermaid diagram visualizes the flow of data, API request lifecycles, and structural dependencies across layers:
 
 ```mermaid
 graph TD
-    subgraph Client ["Client Layer (Browser)"]
-        UI["React Client Components (use client)"]
+    subgraph View ["View Layer (Frontend)"]
+        UI["UI Components (*.component.tsx)"]
+        Hooks["State & Fetch Hooks (*.hook.ts)"]
     end
 
-    subgraph NextJS ["Next.js App Layer (Routing Surface)"]
+    subgraph Routing ["Routing & Pass-through Layer"]
         Pages["Server Pages (page.tsx)"]
-        APIRoutes["API Routes (route.ts)"]
+        APIRoutes["API Routes (route.ts 'pasamanos')"]
     end
 
-    subgraph Backend ["Decoupled Backend Layer (src/backend/)"]
+    subgraph Backend ["Isolated Backend Layer (src/backend/)"]
         Controllers["Controllers (*.controller.ts)"]
         Services["Services (*.service.ts)"]
         Models["Data Models (*.model.ts)"]
@@ -68,17 +94,18 @@ graph TD
     end
 
     subgraph External ["External Services"]
-        Supabase["Supabase Database"]
+        Supabase["Supabase DB"]
         Gemini["Gemini LLM API"]
         WhatsApp["WhatsApp API"]
     end
 
-    %% Interactions
-    UI -->|HTTP requests / actions| APIRoutes
-    Pages -->|Invokes controllers| Controllers
-    APIRoutes -->|Invokes controllers| Controllers
-    Controllers -->|Coordinates| Services
-    Controllers -->|Uses| Models
+    %% Flow of interactions
+    UI -->|Uses custom hooks| Hooks
+    Hooks -->|Fetch requests| APIRoutes
+    Pages -->|Direct controller invocation| Controllers
+    APIRoutes -->|Adapts request & calls| Controllers
+    Controllers -->|Coordinates services| Services
+    Controllers -->|Queries models| Models
     Services -->|Pure Business Logic| Utils
     Services -->|External API Calls| Gemini
     Services -->|External API Calls| WhatsApp
@@ -92,6 +119,7 @@ graph TD
     Services -.->|Imports| Utils
     Models -.->|Imports| Utils
 ```
+
 
 ---
 
