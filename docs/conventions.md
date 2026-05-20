@@ -22,26 +22,71 @@ These conventions keep the repository predictable for humans and AI agents.
 
 ## File and naming conventions
 
-- Route files follow Next.js conventions: `page.tsx`, `layout.tsx`, `loading.tsx`,
-  `error.tsx`, `not-found.tsx`, and `route.ts`.
-- Private route-local folders start with `_`, for example `_components`.
-- Components use `PascalCase`.
+### Frontend Routes & Components
+- Route files follow Next.js conventions: `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`, and `route.ts`.
+- Private route-local folders start with `_` (e.g., `_components`).
+- UI Components use `PascalCase`.
 - Hooks use `useCamelCase`.
+
+### Backend Layers (`src/backend/`)
+- Backend files MUST have a distinct architectural layer suffix in their filename:
+  - **Controllers**: `*.controller.ts` (e.g. `ai.controller.ts`)
+  - **Models**: `*.model.ts` (e.g. `client.model.ts`)
+  - **Services**: `*.service.ts` (e.g. `whatsapp.service.ts`)
+  - **Types**: `*.type.ts` (e.g. `database.type.ts`)
+  - **Utilities**: `*.utils.ts` (e.g. `logger.utils.ts`)
 - Utility functions and variables use `camelCase`.
-- Constants use `UPPER_SNAKE_CASE` only when they are true constants.
+- Constants use `UPPER_SNAKE_CASE` only when they are true constant primitives.
 
-## Imports and boundaries
+---
 
-- Prefer the `@/*` path alias for shared project imports when it improves clarity.
-- Keep imports ordered by external packages, then project modules, then relative
-  modules.
+## Productivity Scaffolding & Code Generation
+
+To preserve layout consistency, component design tokens, and correct testing structures, agents MUST use **`hygen`** to generate boilerplate files:
+
+- **Generate a Component**:
+  ```bash
+  pnpm hygen component new --name MyNewComponent
+  ```
+  *Generates: `src/components/MyNewComponent/index.tsx` (Client component) and its test boilerplate.*
+
+- **Generate an Integration Test**:
+  ```bash
+  pnpm hygen test new --name my-feature
+  ```
+  *Generates: `tests/integration/my-feature.integration.test.ts` (ready for Vitest, with requirement mapping comments).*
+
+---
+
+## Token-Saving Search & Parse Patterns
+
+To respect token windows and maximize context efficiency, agents should run local optimized utilities:
+
+- **Search the Codebase**: Instead of reading whole files to locate methods, run ripgrep:
+  ```bash
+  pnpm rg "functionName" src/
+  ```
+- **Inspect Config Files**: Instead of parsing massive JSON files manually, use jq:
+  ```bash
+  pnpm jq ".dependencies" package.json
+  ```
+
+---
+
+## Imports and Boundaries
+
+- Prefer the `@/*` path alias for shared project imports when it improves clarity (e.g., `@/backend/controllers/ai.controller`).
+- Keep imports ordered: external packages, then project alias modules, then local relative modules.
+- **Strict Layer Isolation**:
+  - Decoupled backend directories under `src/backend/` MUST NOT import client components, styles (`*.css`), or React frontend context/hooks.
+  - Frontend components and Next.js page layers MUST NOT import backend models (`*.model.ts`) directly. They should communicate exclusively through backend Controllers (`*.controller.ts`) or HTTP API routes (`route.ts`).
 - Do not import client-only code into Server Components.
-- Do not read secrets or environment variables in client code.
+- Do not read secrets or environment variables in client-side code.
 
 ## Comments
 
-Default to expressive names over comments. Add comments only for non-obvious
-constraints, tradeoffs, or framework behavior that future agents may misread.
+Default to expressive names over comments. Add comments only for non-obvious constraints, tradeoffs, or framework behavior that future agents may misread.
+
 
 ## Testing
 

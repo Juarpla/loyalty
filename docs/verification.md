@@ -2,6 +2,8 @@
 
 Agents do not claim that work works; they demonstrate it.
 
+---
+
 ## Required checks
 
 Run the full harness check before marking any feature `done`:
@@ -10,7 +12,7 @@ Run the full harness check before marking any feature `done`:
 ./init.sh
 ```
 
-The script validates harness files, SDD state, integration tests, lint, and production build.
+The script validates harness files, SDD state, integration tests, lint, database migrations, and the production build.
 
 For edit-time feedback, hooks and agents may run:
 
@@ -18,9 +20,47 @@ For edit-time feedback, hooks and agents may run:
 ./init.sh --quick
 ```
 
-Quick mode validates harness files, hook configuration, SDD state, integration tests, and lint.
-It skips the production build so post-edit hooks stay fast.
-Integration tests run in both modes because they are fast (no server, no browser).
+Quick mode validates harness files, hook configuration, SDD state, integration tests, and lint. It skips the production build so post-edit hooks stay fast.
+
+---
+
+## Database & Type Verification
+
+If your implementation includes database schema migrations, SQL alterations, or changes to backend models, you MUST execute the following checks:
+
+1. **Lint Database Migrations**:
+   ```bash
+   pnpm db:lint
+   ```
+   Runs static analysis checks on migration files to detect logical database syntax errors.
+
+2. **Generate Database Types**:
+   ```bash
+   pnpm db:gen-types
+   ```
+   Regenerates type-safe TypeScript interfaces from the local schema definitions into `src/backend/types/database.type.ts` to ensure full compilation compatibility.
+
+---
+
+## Offline Simulation / Simulated DB Mode
+
+The database modeling layer under `src/backend/models/supabase.model.ts` features a secure simulated fallback (`supabaseModel.executeQuery`). 
+
+- **Offline / Sim Mode**: When database credentials (`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`) are omitted from the environment, the system automatically falls back to simulating queries.
+- **Verification advantage**: This allows integration tests and developers to run the entire backend pipeline, with simulated roundtrip network latency (approx. 80ms) and mock payloads, without requiring active Docker containers or local Supabase instances running.
+
+---
+
+## Deployment & Hosting Verification
+
+Before submitting any layout, public api, or frontend page changes, run local compilation tests:
+
+1. **Pull and Compile Production Bundle**:
+   ```bash
+   pnpm vercel:build
+   ```
+   Checks that page routes, layouts, and public interfaces compile cleanly within the local Vercel host environment.
+
 
 ## Integration tests (Vitest)
 
