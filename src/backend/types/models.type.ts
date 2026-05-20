@@ -30,3 +30,16 @@ export interface AIAnalysisReport {
   insights: string[];
   recommendations: string[];
 }
+
+export interface SalesTransaction {
+  id: string;
+  phone_number: string;
+  amount: number;
+  created_at: string;
+}
+
+export interface SalesAggregate {
+  phone_number: string;
+  visit_count: number;
+  average_ticket: number;
+}

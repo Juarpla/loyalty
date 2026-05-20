@@ -35,7 +35,7 @@
         "Integration tests in `tests/integration/model_sales_write.test.ts` SHALL cover successful insertions and exception states."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 3,
@@ -49,7 +49,7 @@
         "Integration tests in `tests/integration/model_sales_read.test.ts` SHALL assert aggregate calculation logic."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 4,
@@ -63,7 +63,7 @@
         "Integration tests in `tests/integration/controller_sales_record.test.ts` SHALL assert schema parameter checks."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 5,
@@ -76,7 +76,7 @@
         "Integration tests in `tests/integration/api_sales_record_route.test.ts` SHALL assert endpoint routing mapping and HTTP headers."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 6,
