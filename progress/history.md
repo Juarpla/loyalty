@@ -21,3 +21,11 @@ Append completed session summaries below.
 ## Feature: api_sales_record_route
 - **Status:** Done
 - **Summary:** Implemented the thin Next.js App Router API route handler `src/app/api/v1/sales/record/route.ts` mapping incoming POST request payloads directly to the controller layer. The route safely traps JSON parsing failures from malformed/empty request bodies (returning 400 Bad Request) and follows standard REST practices by returning 201 Created on success. Tested handler parameter delegation, parsing error exceptions, and controller status bubbles using Vitest integration tests. All linting and Next.js compilations pass cleanly.
+
+## Feature: hook_cashier_sales
+- **Status:** Done
+- **Summary:** Implemented `useCashierSales` client hook (`src/hooks/use-cashier-sales.hook.ts`) managing cashier form state, POST registration to `/api/v1/sales/record`, loading indicators, success banner on 201, and error preservation on failure. Added `@testing-library/react` and Vitest jsdom integration tests (`hook-cashier-sales.integration.test.ts`) covering R1–R6. Reviewer accepted; `./init.sh` green (23 tests).
+
+## Feature: component_cashier_form
+- **Status:** Done
+- **Summary:** Implemented `CashierForm` (`src/components/cashier/form.component.tsx`) with responsive numeric touchpad for mobile (&lt;768px), standard inputs on desktop, and loading-aware submit. Added `/admin/cash` mount route and `/admin/cash/preview` for R7 E2E. Playwright tests (`component_cashier_form.e2e.test.ts`) — 4 passed. Reviewer accepted; full harness green.

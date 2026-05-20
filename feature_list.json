@@ -90,7 +90,7 @@
         "Integration tests in `tests/integration/hook_cashier_sales.test.ts` SHALL assert loading toggle states and form variable resets."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 7,
@@ -103,7 +103,7 @@
         "Playwright E2E tests in `tests/e2e/component_cashier_form.spec.ts` SHALL verify touch input renders correctly across small and large screens."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 8,

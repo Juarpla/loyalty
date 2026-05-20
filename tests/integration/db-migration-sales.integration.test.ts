@@ -9,7 +9,7 @@ describe('DbMigrationSales Integration Tests', () => {
       FROM information_schema.columns 
       WHERE table_name = 'sales_transactions';
     `
-    const outputCols = execSync(`npx supabase db query "${columnsQuery.replace(/\n/g, ' ')}"`, { encoding: 'utf-8' })
+    const outputCols = execSync(`npx supabase db query -o json "${columnsQuery.replace(/\n/g, ' ')}"`, { encoding: 'utf-8' })
     
     expect(outputCols).toContain('"column_name": "id"')
     expect(outputCols).toContain('"data_type": "uuid"')
@@ -26,7 +26,7 @@ describe('DbMigrationSales Integration Tests', () => {
       FROM pg_indexes 
       WHERE tablename = 'sales_transactions' AND indexname = 'sales_transactions_phone_number_idx';
     `
-    const outputIdx = execSync(`npx supabase db query "${indexQuery.replace(/\n/g, ' ')}"`, { encoding: 'utf-8' })
+    const outputIdx = execSync(`npx supabase db query -o json "${indexQuery.replace(/\n/g, ' ')}"`, { encoding: 'utf-8' })
     
     expect(outputIdx).toContain('btree (phone_number)')
   })
