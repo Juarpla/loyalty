@@ -116,7 +116,7 @@
         "Playwright E2E tests in `tests/e2e/page_cashier_dashboard.spec.ts` SHALL verify layout renders successfully."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 9,
@@ -128,7 +128,7 @@
         "Playwright tests in `tests/e2e/cashier_sales_flow.spec.ts` SHALL fill out mobile inputs, submit, assert form clear states, and check temporary success alert indicators."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 10,
@@ -141,7 +141,7 @@
         "Integration tests in `tests/integration/service_traffic_distribution.test.ts` SHALL verify analytical correctness using mocked datasets."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 11,
@@ -273,17 +273,17 @@
       "status": "pending"
     },
     {
-      "id": 21,
-      "name": "controller_promotions_segments",
-      "title": "Customer Segments Controller Action",
-      "description": "HTTP coordinator aggregating customer profiles by tags in `src/backend/controllers/promotions.controller.ts`.",
-      "history": "F2 - Story 2.1: Grouping customers into segments based on frequency & ticket",
+      "id": 11,
+      "name": "controller_traffic_metrics",
+      "title": "Traffic Metrics Analytics Controller Action",
+      "description": "HTTP coordinator receiving metrics queries and return formatted payload outputs inside `src/backend/controllers/traffic.controller.ts`.",
+      "history": "F1 - Story 1.2: Manager views traffic and peak hours chart",
       "acceptance": [
-        "WHEN triggered, the controller SHALL coordinate client clustering and return parsed group profiles.",
-        "Integration tests in `tests/integration/controller_promotions_segments.test.ts` SHALL verify JSON shape structures."
+        "WHEN compiling metrics data, the controller SHALL invoke the distribution service and return top aggregates in clean JSON shapes.",
+        "Integration tests in `tests/integration/controller_traffic_metrics.test.ts` SHALL verify payload layouts and status codes."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": 22,

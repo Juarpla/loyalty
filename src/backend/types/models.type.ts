@@ -43,3 +43,18 @@ export interface SalesAggregate {
   visit_count: number;
   average_ticket: number;
 }
+
+export interface TransactionRecord {
+  id: string;
+  phone_number: string;
+  amount: number;
+  created_at: string;
+}
+
+export interface TrafficDistribution {
+  hours: number[];
+  weekdays: number[];
+  peakHour: number;
+  peakWeekday: number;
+  totalTransactions: number;
+}

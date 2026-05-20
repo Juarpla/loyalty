@@ -5,6 +5,11 @@ import { useState, useEffect, type FormEvent } from "react";
 export interface CashierFormProps {
   onSubmit: (phoneNumber: string, amount: string) => void;
   loading?: boolean;
+  // Controlled state props — when provided, form uses them as state source (R3)
+  phoneNumber?: string;
+  amount?: string;
+  setPhoneNumber?: (value: string) => void;
+  setAmount?: (value: string) => void;
 }
 
 type FocusedField = "phone" | "amount" | null;
@@ -20,9 +25,24 @@ function removeLastCharacter(current: string): string {
   return current.slice(0, -1);
 }
 
-export function CashierForm({ onSubmit, loading = false }: CashierFormProps) {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [amount, setAmount] = useState("");
+export function CashierForm({
+  onSubmit,
+  loading = false,
+  phoneNumber: controlledPhone,
+  amount: controlledAmount,
+  setPhoneNumber: controlledSetPhone,
+  setAmount: controlledSetAmount,
+}: CashierFormProps) {
+  // Internal fallback state when controlled props are not provided
+  const [internalPhone, setInternalPhone] = useState("");
+  const [internalAmount, setInternalAmount] = useState("");
+
+  // Use controlled external state when provided; fall back to internal
+  const phoneNumber = controlledPhone ?? internalPhone;
+  const setPhone = controlledSetPhone ?? setInternalPhone;
+  const amount = controlledAmount ?? internalAmount;
+  const setAmountFn = controlledSetAmount ?? setInternalAmount;
+
   const [focusedField, setFocusedField] = useState<FocusedField>(null);
   const [viewportWidth, setViewportWidth] = useState(1024);
 
@@ -38,12 +58,12 @@ export function CashierForm({ onSubmit, loading = false }: CashierFormProps) {
   const applyToFocusedField = (transform: (value: string) => string) => {
     const target = focusedField ?? "phone";
     if (target === "phone") {
-      setPhoneNumber((prev) => transform(prev));
+      setPhone(transform(phoneNumber));
       if (focusedField === null) {
         setFocusedField("phone");
       }
     } else {
-      setAmount((prev) => transform(prev));
+      setAmountFn(transform(amount));
       if (focusedField === null) {
         setFocusedField("amount");
       }
@@ -82,7 +102,7 @@ export function CashierForm({ onSubmit, loading = false }: CashierFormProps) {
           autoComplete="tel"
           aria-label="Customer phone number"
           value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          onChange={(e) => setPhone(e.target.value)}
           onFocus={() => setFocusedField("phone")}
           className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           data-testid="cashier-phone-input"
@@ -100,7 +120,7 @@ export function CashierForm({ onSubmit, loading = false }: CashierFormProps) {
           inputMode="decimal"
           aria-label="Sale amount"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => setAmountFn(e.target.value)}
           onFocus={() => setFocusedField("amount")}
           className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           data-testid="cashier-amount-input"

@@ -29,3 +29,11 @@ Append completed session summaries below.
 ## Feature: component_cashier_form
 - **Status:** Done
 - **Summary:** Implemented `CashierForm` (`src/components/cashier/form.component.tsx`) with responsive numeric touchpad for mobile (&lt;768px), standard inputs on desktop, and loading-aware submit. Added `/admin/cash` mount route and `/admin/cash/preview` for R7 E2E. Playwright tests (`component_cashier_form.e2e.test.ts`) — 4 passed. Reviewer accepted; full harness green.
+
+## Feature: page_cashier_dashboard
+- **Status:** Done
+- **Summary:** Wired `useCashierSales` hook to `CashierForm` in a split Server/Client component architecture (`page.tsx` + `cashier-dashboard.client.tsx`) required by Next.js metadata export restrictions. Added success/error banners with `role="status"` / `role="alert"`. Updated `CashierForm` to accept controlled props with internal fallback for backward compatibility. Playwright E2E (`page_cashier_dashboard.e2e.test.ts`) — 2 passed. E2E gate: human approved. Reviewer accepted; full harness green.
+
+## Feature: test_e2e_cashier_sales_flow
+- **Status:** Done
+- **Summary:** Created Playwright E2E tests (`tests/e2e/cashier_sales_flow.e2e.test.ts`) verifying the full cashier sales registration workflow: mobile success (375px — fill valid phone + amount, submit, assert success banner + form cleared), mobile error (375px — invalid phone → error banner), desktop success (1440px — fill, submit, success + cleared). 3 new E2E tests pass (9 total). Uses `data-testid` selectors and keyboard `fill()` for phone input (touchpad lacks `+` key). E2E gate: human approved. Reviewer accepted; full harness green.
