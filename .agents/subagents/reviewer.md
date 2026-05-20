@@ -48,6 +48,11 @@ running shell commands:
    ```
 4. **Max output cap:** If the expected output exceeds 50 lines, always pipe through
    `tail -50` or redirect to a temp file and read selectively.
+5. **Audit DB schemas and deployment sanity.** Verify database and build sanity using local portable commands:
+   ```bash
+   pnpm db:lint       # Ensure database migrations are valid and linted
+   pnpm vercel:build  # Compiles and validates deployment constraints locally
+   ```
 
 ## Engine Boot Sequence
 

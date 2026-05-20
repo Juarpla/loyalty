@@ -23,12 +23,13 @@ older Next.js memory.
 
 ## Current shape
 
-- `app/layout.tsx` defines the root document and shared font setup.
-- `app/page.tsx` exposes `/`.
-- `app/globals.css` contains global styles and Tailwind entrypoints.
+- `src/app/layout.tsx` defines the root document and shared font setup.
+- `src/app/page.tsx` exposes `/`.
+- `src/app/globals.css` contains global styles and Tailwind entrypoints.
 - `public/` contains static SVG assets.
 - `tests/integration/` contains Vitest integration tests (logic, data flow, utilities).
 - `tests/e2e/` contains Playwright E2E tests (user flows; written only on human approval).
+- **Portable DB & Deployment Tools**: Local `supabase` and `vercel` CLI tools are installed as `devDependencies`. Standard scripts are declared in `package.json` under `db:*` and `vercel:*`. Subagents MUST use these scripts to save tokens and maintain consistent environments.
 
 ## What not to do
 
@@ -38,3 +39,4 @@ older Next.js memory.
 - Do not use client components as the default for pages and layouts.
 - Do not rely on remote docs when the relevant local Next.js docs are available in
   `node_modules/next/dist/docs/`.
+- Do not install global CLI tools or write complex custom shell adapters for database/deployment operations; use the unified package scripts.

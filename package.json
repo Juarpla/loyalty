@@ -17,7 +17,16 @@
     "lint:fix": "eslint . --fix",
     "hygen": "hygen",
     "jq": "node_modules/node-jq/bin/jq",
-    "rg": "node tools/rg.mjs"
+    "rg": "node tools/rg.mjs",
+    "db:init": "supabase init",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:status": "supabase status",
+    "db:gen-types": "supabase gen types typescript --local > src/backend/types/database.type.ts",
+    "db:lint": "supabase db lint",
+    "vercel:pull": "vercel env pull .env.local",
+    "vercel:build": "vercel build",
+    "vercel:deploy": "vercel deploy"
   },
   "dependencies": {
     "next": "16.2.6",
@@ -37,8 +46,10 @@
     "hygen": "^6.2.11",
     "jsdom": "^26",
     "node-jq": "^6.3.1",
+    "supabase": "^2.100.1",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "vercel": "^54.2.0",
     "vitest": "^4"
   }
 }

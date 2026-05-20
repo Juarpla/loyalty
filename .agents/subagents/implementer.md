@@ -56,6 +56,17 @@ running shell commands:
    This generates the React component in `components/<Name>/index.tsx` and a pre-configured integration test skeleton.
 6. **Max output cap:** If the expected output exceeds 50 lines, always pipe through
    `tail -50` or redirect to a temp file and read selectively.
+7. **Use local DB tools.** When working on database schemas or backend models, use:
+   ```bash
+   pnpm db:gen-types  # Re-generates TypeScript definitions from schema (extremely token-saving!)
+   pnpm db:lint       # Checks schema and migration code quality
+   pnpm db:start      # Boots local development database container
+   ```
+   Do not write custom SQL parser scripts or manually compose raw database types; let the tools auto-generate them.
+8. **Use Vercel commands.** For environment variables and compiler audits:
+   ```bash
+   pnpm vercel:pull   # Pull and sync remote environmental variables to .env.local
+   ```
 
 ## Engine Boot Sequence
 

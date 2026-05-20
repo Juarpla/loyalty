@@ -160,6 +160,28 @@ console.log(`[OK] feature_list.json valid (${data.features.length} features)`);
 ' || EXIT_CODE=1
 
 echo ""
+echo "== 4.5. Auditing Supabase & Vercel Configuration ==="
+
+# Check if supabase config folder is initialized
+if [ -d "supabase" ]; then
+  ok "Supabase directory detected"
+  if pnpm exec supabase db lint >/dev/null 2>&1; then
+    ok "Supabase migrations lint passed"
+  else
+    warn "Supabase migrations lint skipped or offline (start local database first)"
+  fi
+else
+  warn "Supabase is not yet initialized. Run 'pnpm db:init' to configure."
+fi
+
+# Check if vercel project config exists
+if [ -d ".vercel" ]; then
+  ok "Vercel directory configuration detected"
+else
+  warn "Vercel project is not yet linked. Run 'pnpm exec vercel link' when ready."
+fi
+
+echo ""
 echo "== 5. Running Integration Tests (Vitest) ==="
 
 # Vitest runs in both --quick and full mode.
