@@ -21,7 +21,7 @@
         "Integration tests in `tests/integration/db_migration_sales.test.ts` SHALL assert schema existence and table column constraints."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 2,

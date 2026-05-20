@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { TrafficRecord } from "@/backend/types/database.type";
+import { TrafficRecord } from "@/backend/types/models.type";
 
 interface TrafficSummary {
   totalVisits: number;

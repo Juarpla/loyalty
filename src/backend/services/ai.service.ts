@@ -1,5 +1,5 @@
 import { logger } from "../utils/logger.utils";
-import { AIAnalysisReport } from "../types/database.type";
+import { AIAnalysisReport } from "../types/models.type";
 
 /**
  * Isolated AI Integration Service (Gemini API / LLMs)

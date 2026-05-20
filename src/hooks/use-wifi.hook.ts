@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DatabaseClient } from "@/backend/types/database.type";
+import { DatabaseClient } from "@/backend/types/models.type";
 
 interface RegisterWifiCredentials {
   name: string;

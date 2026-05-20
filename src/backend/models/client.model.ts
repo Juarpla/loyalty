@@ -1,5 +1,5 @@
 import { supabaseModel } from "./supabase.model";
-import { DatabaseClient, TrafficRecord } from "../types/database.type";
+import { DatabaseClient, TrafficRecord } from "../types/models.type";
 import { logger } from "../utils/logger.utils";
 
 /**

@@ -1,6 +1,8 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+# Copilot may persist pending .env diffs with secret values
+/copilotDiffState.xml
 # Editor-based HTTP Client requests
 /httpRequests/
 # Ignored default folder with query files
