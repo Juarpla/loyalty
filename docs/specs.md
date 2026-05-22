@@ -65,7 +65,8 @@ The leader is responsible for flow control:
 - Select exactly one feature for the current session and claim it before delegation.
 - Allow parallel work only when each active agent owns a different feature.
 - When the human asks for the next feature, choose the first `blocked` feature; if
-  none exists, choose the first `pending` feature; skip every other status.
+  none exists, choose the first `pending` feature; skip every other status
+  immediately without further analysis.
 - Claim selected `blocked` or `pending` SDD features as `spec_author`, then delegate
   them to the spec author.
 - Move spec-author-complete handoffs to `spec_ready`.

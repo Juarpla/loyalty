@@ -38,3 +38,8 @@ notes are historical context unless directly relevant.
 - Only the leader edits `feature_list.json` and performs feature status transitions.
 - Spec author, implementer, and reviewer report recommended transitions through handoffs instead of changing status directly.
 - Human-requested spec changes return through the leader to `spec_author`; reviewer rejection returns through the leader to `in_progress` and then `implementer`.
+
+## Strict Next-Feature Skipping (22-MAY-2026 09:10:00) [URGENT] - IMPLEMENTED
+- The leader is the role responsible for next-feature selection.
+- During next-feature selection, only `blocked` and `pending` are selectable.
+- Features in any other status are skipped immediately without extra reasoning, because provider/session drift can otherwise cause agents to re-enter work owned by another session.

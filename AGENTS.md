@@ -86,7 +86,8 @@ pending/blocked -> leader marks spec_author -> spec_author handoff -> leader mar
    immediately reserves it in `feature_list.json`.
 2. When the human asks for the next feature, the leader scans `feature_list.json` in
    order and selects the first `blocked` feature. If none exists, it selects the first
-   `pending` feature. It skips every other status.
+   `pending` feature. It skips every other status immediately, without reasoning
+   about that feature's specs, implementation, blockers, or progress.
 3. For a selected `blocked` or `pending` SDD feature, the leader changes only that
    feature's `status` to `spec_author`, then delegates to the spec author.
 4. The spec author creates

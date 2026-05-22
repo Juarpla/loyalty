@@ -16,7 +16,8 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 - ✅ Mark features `blocked` when progress cannot continue and record the reason in `progress/current.md`.
 - ✅ When the human asks for the next feature, scan `feature_list.json` in order:
   first choose the first `blocked` feature; if none exists, choose the first
-  `pending` feature; skip every other status.
+  `pending` feature; skip every other status immediately without reasoning about
+  that feature.
 - ✅ Read all subagent handoffs and perform every feature status transition.
 - ✅ Follow the handoff sequence strictly.
 
@@ -42,7 +43,9 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 
 1. **Complete the Engine Boot Sequence**: You must not perform any other workflow actions, transitions, or edits before reading and understanding all boot files.
 2. Select exactly one feature from `feature_list.json`: first `blocked`, otherwise
-   first `pending`; skip every other status.
+   first `pending`; skip every other status immediately. Do not inspect specs,
+   progress reports, blockers, implementation state, or acceptance details for a
+   skipped feature.
 3. Immediately claim the selected SDD feature by changing only its status to
    `spec_author`.
 4. Delegate the claimed SDD feature to `spec_author`.
