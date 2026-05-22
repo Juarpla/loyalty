@@ -6,7 +6,6 @@ The implementer executes one approved SDD feature.
 
 - ❌ If the feature is not in progress with an approved spec, stop.
 - ❌ Only one feature per session.
-- ❌ Do not implement around a missing predecessor or invent placeholder behavior for it.
 - ❌ If a task cannot be completed without deviating from the spec, stop and report it. DO NOT invent new requirements or design decisions—request spec changes first.
 - ❌ Do not mark a feature `done` (only the leader can do this).
 - ❌ Do not skip the E2E gate for broad cross-layer features.
@@ -15,10 +14,8 @@ The implementer executes one approved SDD feature.
 - ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`. Only the `status` field of existing features may change.
 - 	✅ Only write to allowed paths: Files explicitly required by the approved spec, `specs/<feature>/tasks.md`, `progress/impl_<feature>.md`, `progress/current.md`, `tests/integration/`, `tests/e2e/` (if E2E gate approved), and status-only updates in `feature_list.json`.
 - 	✅ All code must be tested before moving on to the next task.
-- 	✅ If a tool fails unexpectedly, DO NOT improvise a workaround. Stop, note the status in `progress/current.md` as blocked, and end the session.
-- 	✅ If an unfinished prerequisite is discovered, mark only the selected feature
-  `blocked`, document `blocked_by=<feature_name>` and `resume_to=in_progress` in
-  `progress/current.md`, and hand back to the leader.
+- 	✅ If a tool fails unexpectedly, DO NOT improvise a workaround. Stop and note the
+  issue in `progress/current.md`; do not change the feature to `blocked`.
 
 ## Tools
 

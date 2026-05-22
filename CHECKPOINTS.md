@@ -21,8 +21,7 @@ if the review report does not explain the result.
 - [ ] Parallel active features are distinct and each session owns only one feature.
 - [ ] Every SDD feature in `spec_ready`, `in_progress`, `in_review`, or `done` has all three spec
   files.
-- [ ] Every `blocked` feature has documented `blocked_by` and `resume_to` values in
-  `progress/current.md`.
+- [ ] Every `blocked` feature is documented in `progress/current.md`.
 - [ ] `progress/current.md` reflects the active session or the idle template.
 
 ## C3 - Next.js rules were respected

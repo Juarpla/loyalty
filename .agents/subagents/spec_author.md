@@ -7,14 +7,13 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 - ❌ Do not edit or create any product code, tests, hooks, or build configurations.
 - ❌ Do not recommend `spec_ready` if any requirement lacks a stable `R<n>` ID or is untestable.
 - ❌ Do not begin any implementation tasks.
-- ❌ Do not write a speculative spec if the feature depends on an unfinished predecessor.
+- ❌ Do not write a speculative spec if the feature depends on another unfinished feature.
 - ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`.
 - 	✅ Only write to allowed paths: `specs/<feature>/requirements.md`, `specs/<feature>/design.md`, `specs/<feature>/tasks.md`, `progress/current.md`, and status-only updates in `feature_list.json`.
 - 	✅ Write EARS-style requirements and link every task directly back to a requirement.
 - 	✅ Stop and wait for human approval once specs are marked `spec_ready`.
-- 	✅ If a prerequisite is missing, set the selected feature back to `blocked` and
-  document the blocked feature plus `blocked_by=<feature_name>` and
-  `resume_to=spec_author` in `progress/current.md`.
+- 	✅ If another feature must be completed first, set the selected feature to
+  `blocked`, document the reason in `progress/current.md`, and stop.
 
 ## Tools
 

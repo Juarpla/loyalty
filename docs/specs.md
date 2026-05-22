@@ -16,15 +16,8 @@ This repository uses SDD for feature work that has `"sdd": true` in
 | `blocked` | Work is stopped; reason must be documented in `progress/current.md`. |
 
 Blocked dependency rule: if a feature cannot safely be specified, implemented, or
-reviewed until another feature is complete, set only that feature to `blocked` and
-record the blocking feature/reason in `progress/current.md` using
-`blocked_by=<feature_name>` and `resume_to=<status>`. The leader then skips it and
-claims the next unblocked feature.
-
-Unblock rule: before claiming fresh `pending` work, and after any feature moves to
-`done`, the leader checks blocked features first. If the recorded `blocked_by`
-feature is `done`, restore the blocked feature to its recorded `resume_to` status
-and route that feature before unrelated pending work.
+implemented because another feature must be completed first, the spec author sets
+only that feature to `blocked` and records the reason in `progress/current.md`.
 
 ## Subagent flow
 
@@ -70,9 +63,10 @@ The leader is responsible for flow control:
 - Read `feature_list.json`, `progress/current.md`, and relevant specs.
 - Select exactly one feature for the current session and claim it before delegation.
 - Allow parallel work only when each active agent owns a different feature.
-- Skip or mark `blocked` any feature whose prerequisite work is not `done`.
-- Prefer unblocked features whose blockers just became `done` before fresh pending work.
-- Claim `pending` SDD features as `spec_author`, then delegate them to the spec author.
+- When the human asks for the next feature, choose the first `blocked` feature; if
+  none exists, choose the first `pending` feature; skip every other status.
+- Claim selected `blocked` or `pending` SDD features as `spec_author`, then delegate
+  them to the spec author.
 - Wait for human approval before moving `spec_ready` to `in_progress`.
 - Delegate approved `in_progress` features to `implementer`.
 - Delegate completed implementation handoffs to `reviewer`.

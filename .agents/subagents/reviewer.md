@@ -11,7 +11,6 @@ The reviewer validates work independently and decides whether closure is allowed
 - ❌ Do not accept a feature if any test uses `.skip` or `.todo` without documented justification in `progress/impl_<feature>.md`.
 - ❌ Do not accept a feature if any required task in `tasks.md` is unchecked without justification.
 - ❌ Do not accept a feature if implementation exceeds the approved spec.
-- ❌ Do not accept a feature whose required predecessor is not `done`.
 - ❌ Do not accept a feature if human approval is missing.
 - ❌ Do not write to files outside allowed paths.
 - ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`.

@@ -138,7 +138,6 @@ const seenIds = new Set();
 const seenNames = new Set();
 const requiringSpecs = new Set(["spec_ready", "in_progress", "in_review", "done"]);
 const missing = [];
-const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 for (const feature of data.features) {
   if (seenIds.has(feature.id)) {
@@ -166,9 +165,8 @@ for (const feature of data.features) {
     }
   }
   if (blockedRequiresReason && feature.status === "blocked") {
-    const blockedPattern = new RegExp(`${escapeRegExp(feature.name)}[\\s\\S]*(blocked_by=|blocked by|resume_to=)`, "i");
-    if (!blockedPattern.test(progressCurrent)) {
-      throw new Error(`blocked feature ${feature.name} must document blocked_by/resume_to in progress/current.md`);
+    if (!progressCurrent.includes(feature.name)) {
+      throw new Error(`blocked feature ${feature.name} must be documented in progress/current.md`);
     }
   }
 }

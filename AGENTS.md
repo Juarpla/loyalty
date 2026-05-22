@@ -56,8 +56,8 @@ Useful local guides:
 - Do not work on a `pending` feature until the leader claims it by setting its status
   to `spec_author`.
 - If a feature depends on unfinished work, mark only that feature `blocked`, record
-  the blocking feature/reason in `progress/current.md`, and select a different
-  unblocked feature.
+  the reason in `progress/current.md`, and select the next `blocked` or `pending`
+  feature.
 - Do not implement a feature with `"sdd": true` while it is `pending`, `spec_author`,
   or `spec_ready`.
 - Do not skip the human approval gate between `spec_ready` and `in_progress`.
@@ -78,32 +78,30 @@ pending -> leader claims spec_author -> spec_ready -> HUMAN APPROVAL -> leader m
 ```
 
 1. The leader selects exactly one unclaimed feature for the current session and
-   immediately reserves it in `feature_list.json`. The leader skips features whose
-   prerequisite work is not `done`.
-2. For a `pending` feature with `"sdd": true`, the leader first changes only that
+   immediately reserves it in `feature_list.json`.
+2. When the human asks for the next feature, the leader scans `feature_list.json` in
+   order and selects the first `blocked` feature. If none exists, it selects the first
+   `pending` feature. It skips every other status.
+3. For a selected `blocked` or `pending` SDD feature, the leader changes only that
    feature's `status` to `spec_author`, then delegates to the spec author.
-3. The spec author creates
+4. The spec author creates
    `specs/<feature>/{requirements.md,design.md,tasks.md}` and mark it `spec_ready`.
-4. Stop. The human reviews the spec and approves or requests changes.
-5. After approval, the leader marks the feature `in_progress`.
-6. The implementer changes only what the approved spec requires, updates `tasks.md`,
+5. Stop. The human reviews the spec and approves or requests changes.
+6. After approval, the leader marks the feature `in_progress`.
+7. The implementer changes only what the approved spec requires, updates `tasks.md`,
    and writes `progress/impl_<feature>.md`.
-7. When implementation is ready for review, the implementer changes only that
+8. When implementation is ready for review, the implementer changes only that
    feature's `status` to `in_review`.
-8. The reviewer runs verification, checks `CHECKPOINTS.md` C1-C6, writes
+9. The reviewer runs verification, checks `CHECKPOINTS.md` C1-C6, writes
    `progress/review_<feature>.md`, and rejects if any required box remains `[ ]`.
-9. Only after reviewer acceptance may the leader mark the feature `done` and append
+10. Only after reviewer acceptance may the leader mark the feature `done` and append
    the final summary to `progress/history.md`.
 
-Dependency rule: a blocked feature is not a failure. It is a routing signal. The
-agent must write the blocker in `progress/current.md` using the blocked feature name
-and the required predecessor, then move on to the next unblocked feature. Use the
-format `blocked_by=<feature_name>` and `resume_to=<status>`.
-
-Unblock rule: before claiming fresh `pending` work, and after any feature is marked
-`done`, the leader checks `blocked` features first. If the `blocked_by` feature is
-now `done`, the leader restores the blocked feature to its documented `resume_to`
-status and routes it before selecting unrelated new work.
+Blocked rule: only the spec author decides that a selected feature cannot proceed
+because another feature must be completed first. In that case, the spec author sets
+the selected feature to `blocked`, records the reason in `progress/current.md`, and
+stops. The next leader scan will try the first `blocked` feature again before any
+`pending` feature.
 
 ## Subagent roles
 
