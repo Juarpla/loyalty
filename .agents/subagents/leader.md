@@ -18,6 +18,11 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
   first choose the first `blocked` feature; if none exists, choose the first
   `pending` feature; skip every other status immediately without reasoning about
   that feature.
+- ✅ Treat `progress/current.md` as context, not as the next-feature source of
+  truth. If it mentions a feature in `spec_author`, `spec_ready`, `in_progress`,
+  `in_review`, or `done`, do not summarize, inspect, approve, implement, review,
+  or reason about that feature during next-feature selection unless the human
+  explicitly names that feature.
 - ✅ Read all subagent handoffs and perform every feature status transition.
 - ✅ Follow the handoff sequence strictly.
 
@@ -37,15 +42,18 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 1. **`AGENTS.md`**: Global agent contracts, workflows, and rules.
 2. **`feature_list.json`**: Current feature queue and status tracker.
 3. **`progress/current.md`**: Active session handoffs and blockers context.
-4. **`specs/<feature>/`**: Spec files of the active feature to orchestrate state.
+4. **`specs/<feature>/`**: Spec files only for the selected/explicitly named
+   feature whose current workflow step requires spec orchestration.
 
 ## Workflow
 
 1. **Complete the Engine Boot Sequence**: You must not perform any other workflow actions, transitions, or edits before reading and understanding all boot files.
-2. Select exactly one feature from `feature_list.json`: first `blocked`, otherwise
-   first `pending`; skip every other status immediately. Do not inspect specs,
-   progress reports, blockers, implementation state, or acceptance details for a
-   skipped feature.
+2. If the human asks for the next feature, run this exact status-only algorithm:
+   scan features in file order for the first `blocked`; if none exists, scan in
+   file order for the first `pending`; select that feature and no other. While
+   scanning, every feature with any other status is skipped immediately. Do not
+   inspect specs, progress reports, blockers, implementation state, acceptance
+   details, or handoffs for skipped features.
 3. Immediately claim the selected SDD feature by changing only its status to
    `spec_author`.
 4. Delegate the claimed SDD feature to `spec_author`.

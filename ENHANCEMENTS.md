@@ -43,3 +43,4 @@ notes are historical context unless directly relevant.
 - The leader is the role responsible for next-feature selection.
 - During next-feature selection, only `blocked` and `pending` are selectable.
 - Features in any other status are skipped immediately without extra reasoning, because provider/session drift can otherwise cause agents to re-enter work owned by another session.
+- `progress/current.md` is context only and must not pull the leader into summarizing, approving, implementing, reviewing, or inspecting a skipped feature during next-feature selection.

@@ -56,6 +56,12 @@ Useful local guides:
   changes; the reviewer verifies and rejects or accepts.
 - Only the leader may edit `feature_list.json`. Other roles recommend status
   transitions in handoffs; they do not change feature status directly.
+- Next-feature selection is the leader's responsibility. Selection is a
+  status-only scan: choose the first `blocked` feature, otherwise the first
+  `pending` feature. Any feature in `spec_author`, `spec_ready`, `in_progress`,
+  `in_review`, or `done` is already owned by another workflow step/session and
+  must be skipped immediately without reading its specs, handoffs, blockers,
+  acceptance criteria, or implementation details.
 - Do not work on a `pending` feature until the leader claims it by setting its status
   to `spec_author`.
 - If a feature depends on unfinished work, mark only that feature `blocked`, record
@@ -88,6 +94,9 @@ pending/blocked -> leader marks spec_author -> spec_author handoff -> leader mar
    order and selects the first `blocked` feature. If none exists, it selects the first
    `pending` feature. It skips every other status immediately, without reasoning
    about that feature's specs, implementation, blockers, or progress.
+   `progress/current.md` is context only; it does not override this scan and must
+   not cause the leader to resume, summarize, approve, implement, or inspect a
+   skipped feature unless the human explicitly names that feature.
 3. For a selected `blocked` or `pending` SDD feature, the leader changes only that
    feature's `status` to `spec_author`, then delegates to the spec author.
 4. The spec author creates
