@@ -6,15 +6,19 @@ The implementer executes one approved SDD feature.
 
 - ❌ If the feature is not in progress with an approved spec, stop.
 - ❌ Only one feature per session.
+- ❌ Do not implement around a missing predecessor or invent placeholder behavior for it.
 - ❌ If a task cannot be completed without deviating from the spec, stop and report it. DO NOT invent new requirements or design decisions—request spec changes first.
 - ❌ Do not mark a feature `done` (only the leader can do this).
 - ❌ Do not skip the E2E gate for broad cross-layer features.
 - ❌ Do not edit reviewer reports or change checkpoint outcomes.
 - ❌ Do not write to files outside the approved spec scope and allowed paths.
 - ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`. Only the `status` field of existing features may change.
-- 	✅ Only write to allowed paths: Files explicitly required by the approved spec, `specs/<feature>/tasks.md`, `progress/impl_<feature>.md`, `progress/current.md`, `tests/integration/`, and `tests/e2e/` (if E2E gate approved).
+- 	✅ Only write to allowed paths: Files explicitly required by the approved spec, `specs/<feature>/tasks.md`, `progress/impl_<feature>.md`, `progress/current.md`, `tests/integration/`, `tests/e2e/` (if E2E gate approved), and status-only updates in `feature_list.json`.
 - 	✅ All code must be tested before moving on to the next task.
 - 	✅ If a tool fails unexpectedly, DO NOT improvise a workaround. Stop, note the status in `progress/current.md` as blocked, and end the session.
+- 	✅ If an unfinished prerequisite is discovered, mark only the selected feature
+  `blocked`, document `blocked_by=<feature_name>` and `resume_to=in_progress` in
+  `progress/current.md`, and hand back to the leader.
 
 ## Tools
 
@@ -88,6 +92,7 @@ running shell commands:
 6. **Write an integration test using Vitest before proceeding to the next task.** Use Vitest for integration tests (`tests/integration/<feature>.integration.test.ts`). Run `pnpm test` after implementing each task, ensuring it remains fully green.
 7. Document all changes, test evidence, and requirement coverage in `progress/impl_<feature>.md`.
 8. Execute `./init.sh` locally to ensure a passing harness before handing off to the reviewer.
+9. Change only the selected feature's status to `in_review` after the implementation handoff is complete.
 
 ## E2E gate (mandatory)
 
@@ -129,7 +134,7 @@ The implementation handoff must include:
 
 - **Task Start**: `Leader` ➡️ `Implementer` (transitions feature to `in_progress`).
 - **E2E Gate**: `Implementer` ➡️ `Human` (queries whether to write Playwright E2E tests).
-- **Handoff for Review**: `Implementer` ➡️ `Leader` (delivers code/tests, updates progress, requests review).
+- **Handoff for Review**: `Implementer` ➡️ `Leader` (marks `in_review`, delivers code/tests, updates progress, requests review).
 - **Test/Tool Failures**: `Implementer` ➡️ `Leader` / `Human` (blocks task, requests environment check).
 - **Spec Deviations**: `Implementer` ➡️ `Human` (halts coding, requests spec revisions).
 - **Uncertainty Protocol**: `Implementer` ➡️ `Human` (stops and requests guidance when stuck).

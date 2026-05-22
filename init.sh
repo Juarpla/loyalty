@@ -120,25 +120,40 @@ node -e '
 const fs = require("fs");
 const path = require("path");
 
-const valid = new Set(["pending", "spec_ready", "in_progress", "done", "blocked"]);
 const data = JSON.parse(fs.readFileSync("feature_list.json", "utf8"));
+const progressCurrent = fs.existsSync("progress/current.md")
+  ? fs.readFileSync("progress/current.md", "utf8")
+  : "";
+const configuredStatuses = data.rules && Array.isArray(data.rules.valid_status)
+  ? data.rules.valid_status
+  : ["pending", "spec_author", "spec_ready", "in_progress", "in_review", "done", "blocked"];
+const valid = new Set(configuredStatuses);
+const blockedRequiresReason = data.rules?.blocked_features_require_reason !== false;
 
 if (!Array.isArray(data.features)) {
   throw new Error("feature_list.json must contain a features array");
 }
 
-const inProgress = data.features.filter((feature) => feature.status === "in_progress");
-if (inProgress.length > 1) {
-  throw new Error(`only one feature may be in_progress, found ${inProgress.length}`);
-}
-
-const requiringSpecs = new Set(["spec_ready", "in_progress", "done"]);
+const seenIds = new Set();
+const seenNames = new Set();
+const requiringSpecs = new Set(["spec_ready", "in_progress", "in_review", "done"]);
 const missing = [];
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 for (const feature of data.features) {
+  if (seenIds.has(feature.id)) {
+    throw new Error(`duplicate feature id: ${feature.id}`);
+  }
+  seenIds.add(feature.id);
+
   if (typeof feature.name !== "string" || feature.name.length === 0) {
     throw new Error("each feature must have a non-empty name");
   }
+  if (seenNames.has(feature.name)) {
+    throw new Error(`duplicate feature name: ${feature.name}`);
+  }
+  seenNames.add(feature.name);
+
   if (!valid.has(feature.status)) {
     throw new Error(`invalid status for ${feature.name}: ${feature.status}`);
   }
@@ -148,6 +163,12 @@ for (const feature of data.features) {
       if (!fs.existsSync(specPath)) {
         missing.push(specPath);
       }
+    }
+  }
+  if (blockedRequiresReason && feature.status === "blocked") {
+    const blockedPattern = new RegExp(`${escapeRegExp(feature.name)}[\\s\\S]*(blocked_by=|blocked by|resume_to=)`, "i");
+    if (!blockedPattern.test(progressCurrent)) {
+      throw new Error(`blocked feature ${feature.name} must document blocked_by/resume_to in progress/current.md`);
     }
   }
 }

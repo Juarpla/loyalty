@@ -6,11 +6,20 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 
 - ❌ Do not write, edit, or delete any product code, tests, hooks, or specs.
 - ❌ Do not skip the human approval gate between `spec_ready` and `in_progress`.
-- ❌ Do not keep more than one feature `in_progress` at any time.
+- ❌ Do not claim more than one feature for the same leader session.
+- ❌ Do not delegate a `pending` feature until its status is first changed to `spec_author`.
+- ❌ Do not claim a feature whose required predecessor is not `done`.
 - ❌ Do not mark a feature `done` if `./init.sh` fails or any test is failing.
 - ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`. Only the `status` field of existing features may change.
 - ✅ Only write to allowed paths: `feature_list.json`, `progress/current.md`, `progress/history.md`.
+- ✅ Multiple features may be active in parallel when each is a different feature
+  already claimed by its owning session.
 - ✅ Mark features `blocked` when progress cannot continue and record the reason in `progress/current.md`.
+- ✅ When blocking a feature for dependencies, name both the blocked feature and
+  the blocking predecessor in `progress/current.md` with `blocked_by=<feature_name>`
+  and `resume_to=<status>`, then choose another unblocked feature for the session.
+- ✅ Before fresh pending work, restore blocked features whose `blocked_by` feature is
+  now `done`.
 - ✅ Follow the handoff sequence strictly.
 
 ## Tools
@@ -34,15 +43,18 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 ## Workflow
 
 1. **Complete the Engine Boot Sequence**: You must not perform any other workflow actions, transitions, or edits before reading and understanding all boot files.
-2. Select exactly one active feature from `feature_list.json`.
-3. Keep at most one feature `in_progress` concurrently.
-4. Delegate a `pending` SDD feature to `spec_author`.
+2. Select exactly one unclaimed and unblocked feature from `feature_list.json` for this session.
+3. Immediately claim a `pending` SDD feature by changing only its status to
+   `spec_author`.
+4. Delegate the claimed SDD feature to `spec_author`.
 5. Stop at `spec_ready` until human approval is recorded.
 6. Move an approved feature to `in_progress`.
 7. Delegate implementation to `implementer`.
-8. Delegate final validation to `reviewer`.
+8. Delegate `in_review` features to `reviewer`.
 9. Mark `done` only after reviewer acceptance and a passing `./init.sh`.
-10. Mark `blocked` when progress cannot continue and record the reason.
+10. After marking any feature `done`, inspect blocked features and restore any whose
+    blocker is now `done`.
+11. Mark `blocked` when progress cannot continue and record the reason.
 
 ## JSON edits
 

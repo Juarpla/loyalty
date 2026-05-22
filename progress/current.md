@@ -21,3 +21,18 @@
 - `./init.sh`: `[OK] harness ready (full)`
 - Implementation notes: `progress/impl_service_traffic_distribution.md`
 - **Next**: Reviewer to verify and write `progress/review_service_traffic_distribution.md`
+
+## Harness maintenance note
+
+- Parallel feature coordination updated so agents claim distinct work through
+  feature status transitions (`spec_author`, `in_progress`, `in_review`) instead
+  of relying on one global `in_progress` slot.
+- Dependency handling added: a feature that needs an unfinished predecessor should
+  be marked `blocked`, documented here with the blocking feature, and skipped until
+  the predecessor is `done`.
+- Blocked features are retried by the leader before fresh pending work once their
+  `blocked_by=<feature_name>` is `done`; use `resume_to=<status>` to restore the
+  correct workflow state.
+- Validation note: full `./init.sh` fails inside the default sandbox because local
+  Supabase access/telemetry writes and Google Fonts network fetches are denied, but
+  passes when run with the required local/network permissions.

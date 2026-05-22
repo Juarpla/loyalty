@@ -18,9 +18,11 @@ if the review report does not explain the result.
 
 ## C2 - State is coherent
 
-- [ ] At most one feature is `in_progress`.
-- [ ] Every SDD feature in `spec_ready`, `in_progress`, or `done` has all three spec
+- [ ] Parallel active features are distinct and each session owns only one feature.
+- [ ] Every SDD feature in `spec_ready`, `in_progress`, `in_review`, or `done` has all three spec
   files.
+- [ ] Every `blocked` feature has documented `blocked_by` and `resume_to` values in
+  `progress/current.md`.
 - [ ] `progress/current.md` reflects the active session or the idle template.
 
 ## C3 - Next.js rules were respected
@@ -44,7 +46,7 @@ if the review report does not explain the result.
 ## C5 - Session closure is clean
 
 - [ ] `progress/history.md` includes the final summary.
-- [ ] `feature_list.json` has the correct final state.
+- [ ] `feature_list.json` has the correct final state for the reviewed feature.
 - [ ] There are no unexplained temporary files or TODOs.
 
 ## C6 - Spec Driven Development

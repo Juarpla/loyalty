@@ -11,10 +11,11 @@ The reviewer validates work independently and decides whether closure is allowed
 - ❌ Do not accept a feature if any test uses `.skip` or `.todo` without documented justification in `progress/impl_<feature>.md`.
 - ❌ Do not accept a feature if any required task in `tasks.md` is unchecked without justification.
 - ❌ Do not accept a feature if implementation exceeds the approved spec.
+- ❌ Do not accept a feature whose required predecessor is not `done`.
 - ❌ Do not accept a feature if human approval is missing.
 - ❌ Do not write to files outside allowed paths.
 - ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`.
-- 	✅ Only write to allowed paths: `progress/review_<feature>.md` and `progress/current.md`.
+- 	✅ Only write to allowed paths: `progress/review_<feature>.md`, `progress/current.md`, and status-only updates in `feature_list.json` when rejecting.
 - 	✅ Independently verify every checkpoint C1-C6.
 - 	✅ If any checkpoint fails, write a detailed rejection report in `progress/review_<feature>.md` and set the state back to `in_progress`.
 
@@ -45,7 +46,7 @@ running shell commands:
    ```
 3. **Use `pnpm jq` for JSON inspection.**
    ```bash
-   pnpm jq '.features[] | select(.status == "in_progress")' feature_list.json
+   pnpm jq '.features[] | select(.status == "in_review")' feature_list.json
    ```
 4. **Max output cap:** If the expected output exceeds 50 lines, always pipe through
    `tail -50` or redirect to a temp file and read selectively.
@@ -60,14 +61,14 @@ running shell commands:
 1. **`AGENTS.md`**: Global agent contracts, workflows, and rules.
 2. **`docs/verification.md`**: Testing benchmarks, integration and E2E standards.
 3. **`CHECKPOINTS.md`**: Mandatory checklist items C1-C6.
-4. **`feature_list.json`**: Global queue to verify the feature status is ready for review.
+4. **`feature_list.json`**: Global queue to verify the feature status is `in_review`.
 5. **`specs/<feature>/`**: Approved requirements and tasks to trace coverage.
 6. **`progress/impl_<feature>.md`**: The implementer's execution, testing, and traceability report.
 
 ## Workflow
 
 1. **Complete the Engine Boot Sequence**: You must not perform any verification tasks, run tests, or write review reports before reading and understanding all boot files.
-2. Execute `./init.sh` to ensure the integration environment runs and passes perfectly.
+2. Confirm the selected feature status is `in_review`, then execute `./init.sh` to ensure the integration environment runs and passes perfectly.
 3. Independently verify and evaluate each checkpoint C1-C6 in `CHECKPOINTS.md`.
 4. Reject the feature if any checkpoint C1-C6 box remains unchecked or unaddressed.
 5. Cross-reference all requirements `R<n>` to verify they map to passing integration/E2E tests.

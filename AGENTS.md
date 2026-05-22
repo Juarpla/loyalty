@@ -48,11 +48,18 @@ Useful local guides:
 
 ## Hard rules
 
-- One feature at a time. Do not mix unrelated product changes in one session.
+- One feature per agent session. Multiple agents may work in parallel only when each
+  session has claimed a different feature in `feature_list.json`.
 - Use the role contract in `.agents/subagents/` that matches the work you are doing.
 - The leader orchestrates; the spec author writes specs; the implementer writes product
   changes; the reviewer verifies and rejects or accepts.
-- Do not implement a feature with `"sdd": true` while it is `pending`.
+- Do not work on a `pending` feature until the leader claims it by setting its status
+  to `spec_author`.
+- If a feature depends on unfinished work, mark only that feature `blocked`, record
+  the blocking feature/reason in `progress/current.md`, and select a different
+  unblocked feature.
+- Do not implement a feature with `"sdd": true` while it is `pending`, `spec_author`,
+  or `spec_ready`.
 - Do not skip the human approval gate between `spec_ready` and `in_progress`.
 - Do not mark work `done` without passing `./init.sh`.
 - Do not mark work `done` with any failing test (`pnpm test` must be fully green).
@@ -67,20 +74,36 @@ Useful local guides:
 ## SDD workflow
 
 ```text
-pending -> spec_author -> spec_ready -> HUMAN APPROVAL -> leader marks in_progress -> implementer -> reviewer -> done
+pending -> leader claims spec_author -> spec_ready -> HUMAN APPROVAL -> leader marks in_progress -> implementer marks in_review -> reviewer -> done
 ```
 
-1. The leader selects exactly one feature and delegates based on `feature_list.json`.
-2. For a `pending` feature with `"sdd": true`, the spec author creates
+1. The leader selects exactly one unclaimed feature for the current session and
+   immediately reserves it in `feature_list.json`. The leader skips features whose
+   prerequisite work is not `done`.
+2. For a `pending` feature with `"sdd": true`, the leader first changes only that
+   feature's `status` to `spec_author`, then delegates to the spec author.
+3. The spec author creates
    `specs/<feature>/{requirements.md,design.md,tasks.md}` and mark it `spec_ready`.
-3. Stop. The human reviews the spec and approves or requests changes.
-4. After approval, the leader marks the feature `in_progress`.
-5. The implementer changes only what the approved spec requires, updates `tasks.md`,
+4. Stop. The human reviews the spec and approves or requests changes.
+5. After approval, the leader marks the feature `in_progress`.
+6. The implementer changes only what the approved spec requires, updates `tasks.md`,
    and writes `progress/impl_<feature>.md`.
-6. The reviewer runs verification, checks `CHECKPOINTS.md` C1-C6, writes
+7. When implementation is ready for review, the implementer changes only that
+   feature's `status` to `in_review`.
+8. The reviewer runs verification, checks `CHECKPOINTS.md` C1-C6, writes
    `progress/review_<feature>.md`, and rejects if any required box remains `[ ]`.
-7. Only after reviewer acceptance may the leader mark the feature `done` and append
+9. Only after reviewer acceptance may the leader mark the feature `done` and append
    the final summary to `progress/history.md`.
+
+Dependency rule: a blocked feature is not a failure. It is a routing signal. The
+agent must write the blocker in `progress/current.md` using the blocked feature name
+and the required predecessor, then move on to the next unblocked feature. Use the
+format `blocked_by=<feature_name>` and `resume_to=<status>`.
+
+Unblock rule: before claiming fresh `pending` work, and after any feature is marked
+`done`, the leader checks `blocked` features first. If the `blocked_by` feature is
+now `done`, the leader restores the blocked feature to its documented `resume_to`
+status and routes it before selecting unrelated new work.
 
 ## Subagent roles
 

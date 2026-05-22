@@ -7,10 +7,14 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 - ❌ Do not edit or create any product code, tests, hooks, or build configurations.
 - ❌ Do not recommend `spec_ready` if any requirement lacks a stable `R<n>` ID or is untestable.
 - ❌ Do not begin any implementation tasks.
+- ❌ Do not write a speculative spec if the feature depends on an unfinished predecessor.
 - ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`.
-- 	✅ Only write to allowed paths: `specs/<feature>/requirements.md`, `specs/<feature>/design.md`, `specs/<feature>/tasks.md`, `progress/current.md`.
+- 	✅ Only write to allowed paths: `specs/<feature>/requirements.md`, `specs/<feature>/design.md`, `specs/<feature>/tasks.md`, `progress/current.md`, and status-only updates in `feature_list.json`.
 - 	✅ Write EARS-style requirements and link every task directly back to a requirement.
 - 	✅ Stop and wait for human approval once specs are marked `spec_ready`.
+- 	✅ If a prerequisite is missing, set the selected feature back to `blocked` and
+  document the blocked feature plus `blocked_by=<feature_name>` and
+  `resume_to=spec_author` in `progress/current.md`.
 
 ## Tools
 
@@ -28,16 +32,16 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 1. **`AGENTS.md`**: Global agent contracts, workflows, and rules.
 2. **`docs/specs.md`**: SDD process standards, EARS requirements, and spec templates.
 3. **`docs/architecture.md`**: Technical design principles and application architecture.
-4. **`feature_list.json`**: Global queue to confirm the feature status is `pending`.
+4. **`feature_list.json`**: Global queue to confirm the feature status is `spec_author`.
 
 ## Workflow
 
 1. **Complete the Engine Boot Sequence**: You must not perform any other workflow actions, write specifications, or edit any files before reading and understanding all boot files.
-2. Confirm the selected feature status is set to `pending` and `"sdd": true` in `feature_list.json`.
+2. Confirm the selected feature status is set to `spec_author` and `"sdd": true` in `feature_list.json`.
 3. Write EARS-style requirements with unique, stable `R<n>` identifiers.
 4. Document design decisions, affected file scopes, public interfaces, data flow, and Next.js guides referenced.
 5. Draft executable, atomic tasks in `specs/<feature>/tasks.md` mapped back to requirements.
-6. Recommend the spec as `spec_ready`, then immediately halt and wait for human approval.
+6. Change only the selected feature's status to `spec_ready`, then immediately halt and wait for human approval.
 
 ## Done criteria
 

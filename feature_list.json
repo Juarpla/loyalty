@@ -2,10 +2,13 @@
   "project": "loyalty",
   "description": "Mobile-first local business customer loyalty platform. Feature list subdivided surgically into 66 atomic, single-layer steps to guarantee error-free execution by small local LLMs.",
   "rules": {
-    "one_feature_at_a_time": true,
+    "one_feature_at_a_time": false,
+    "one_feature_per_agent_session": true,
+    "parallel_feature_claiming": true,
+    "blocked_features_require_reason": true,
     "require_tests_to_close": true,
     "require_approved_spec_to_implement": true,
-    "valid_status": ["pending", "spec_ready", "in_progress", "done", "blocked"],
+    "valid_status": ["pending", "spec_author", "spec_ready", "in_progress", "in_review", "done", "blocked"],
     "sdd_required_when": "feature has \"sdd\": true"
   },
   "features": [
