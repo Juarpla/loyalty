@@ -1,68 +1,81 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { TrafficRecord } from "@/backend/types/models.type";
+import type { TrafficDistribution } from "@/backend/types/models.type";
 
-interface TrafficSummary {
-  totalVisits: number;
-  wifiConnections: number;
-  conversionRate: number;
+const METRICS_ENDPOINT = "/api/v1/sales/metrics";
+
+interface MetricsSuccessPayload {
+  success: true;
+  data: TrafficDistribution;
 }
 
-interface UseTrafficResult {
+interface MetricsErrorPayload {
+  success: false;
+  status?: number;
+  error: string;
+}
+
+export interface UseTrafficResult {
+  data: TrafficDistribution | null;
   loading: boolean;
   error: string | null;
-  summary: TrafficSummary | null;
-  records: TrafficRecord[];
   refresh: () => Promise<void>;
 }
 
 /**
- * State Abstraction Hook for Traffic API Data Management
- * Perfectly decouples network orchestration from React component rendering.
+ * State abstraction hook for traffic analytics.
+ * Orchestrates GET fetch to /api/v1/sales/metrics, caching, and error states.
  */
 export function useTraffic(): UseTrafficResult {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [data, setData] = useState<TrafficDistribution | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [summary, setSummary] = useState<TrafficSummary | null>(null);
-  const [records, setRecords] = useState<TrafficRecord[]>([]);
 
-  const fetchTraffic = useCallback(async () => {
+  const fetchMetrics = useCallback(async () => {
     setLoading(true);
     setError(null);
+
     try {
-      // Calls local next.js internal route which delegates to the isolated controllers.
-      // E.g., if you move the backend, this fetch target is the ONLY string that changes!
-      const response = await fetch("/api/traffic");
-      
+      const response = await fetch(METRICS_ENDPOINT);
+
       if (!response.ok) {
-        throw new Error(`Failed to fetch traffic stats: ${response.statusText}`);
+        const payload = (await response.json()) as MetricsErrorPayload;
+        throw new Error(
+          payload.error || `Failed to fetch metrics: ${response.statusText}`
+        );
       }
 
-      const payload = await response.json();
-      
+      const payload = (await response.json()) as
+        | MetricsSuccessPayload
+        | MetricsErrorPayload;
+
       if (payload.success) {
-        setSummary(payload.summary);
-        setRecords(payload.records);
+        setData(payload.data);
       } else {
-        throw new Error(payload.error || "Unknown backend error");
+        throw new Error(
+          (payload as MetricsErrorPayload).error || "Unknown backend error"
+        );
       }
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred while loading traffic";
-      setError(errorMessage);
+      const message =
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred while loading traffic metrics";
+      setError(message);
+      setData(null);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // Auto load on mounting
+  // Auto-fetch on mount
   useEffect(() => {
     let active = true;
-    
-    // Execute asynchronously in the next event loop tick to avoid synchronous setState calls in mounting effect
+
     const timeoutId = setTimeout(() => {
       if (active) {
-        void fetchTraffic();
+        void fetchMetrics();
       }
     }, 0);
 
@@ -70,13 +83,12 @@ export function useTraffic(): UseTrafficResult {
       active = false;
       clearTimeout(timeoutId);
     };
-  }, [fetchTraffic]);
+  }, [fetchMetrics]);
 
   return {
+    data,
     loading,
     error,
-    summary,
-    records,
-    refresh: fetchTraffic,
+    refresh: fetchMetrics,
   };
 }

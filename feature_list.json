@@ -170,7 +170,7 @@
         "Integration tests in `tests/integration/api_traffic_metrics_route.test.ts` SHALL assert endpoint routing response headers."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 13,
@@ -183,7 +183,7 @@
         "Integration tests in `tests/integration/hook_manager_traffic.test.ts` SHALL mock responses and assert cache and status flags."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 14,
@@ -196,7 +196,7 @@
         "Playwright E2E tests in `tests/e2e/component_traffic_charts.spec.ts` SHALL verify component renders with mock parameters."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 15,
@@ -209,7 +209,7 @@
         "Playwright E2E tests in `tests/e2e/page_manager_reports.spec.ts` SHALL verify layout CSS and component inclusions."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 16,
