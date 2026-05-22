@@ -15,9 +15,9 @@ This repository uses SDD for feature work that has `"sdd": true` in
 | `done` | Implementation, verification, and review are complete. |
 | `blocked` | Work is stopped; reason must be documented in `progress/current.md`. |
 
-Blocked dependency rule: if a feature cannot safely be specified, implemented, or
-implemented because another feature must be completed first, the spec author sets
-only that feature to `blocked` and records the reason in `progress/current.md`.
+Blocked dependency rule: if a feature cannot safely be specified because another
+feature must be completed first, the spec author reports the blocker and reason to
+the leader. Only the leader marks the feature `blocked`.
 
 ## Subagent flow
 
@@ -31,13 +31,14 @@ leader claims -> spec_author -> human approval -> leader -> implementer -> revie
 | Role | Allowed write scope | Required handoff |
 | --- | --- | --- |
 | `leader` | `feature_list.json`, `progress/current.md`, `progress/history.md` | Current state, chosen feature, delegation reason |
-| `spec_author` | `specs/<feature>/requirements.md`, `design.md`, `tasks.md`, status-only update in `feature_list.json`, plus progress notes | Complete spec and `spec_ready` transition |
-| `implementer` | Files named by the approved spec, `tasks.md`, `progress/impl_<feature>.md`, status-only update in `feature_list.json` | Implementation summary, task status, verification evidence |
-| `reviewer` | `progress/review_<feature>.md`, status-only update in `feature_list.json` on rejection, checkpoint marks or review notes | Accept/reject decision with concrete reasons |
+| `spec_author` | `specs/<feature>/requirements.md`, `design.md`, `tasks.md`, plus progress notes | Complete spec and recommended transition |
+| `implementer` | Files named by the approved spec, `tasks.md`, `progress/impl_<feature>.md` | Implementation summary, task status, verification evidence |
+| `reviewer` | `progress/review_<feature>.md`, checkpoint marks or review notes | Accept/reject decision with concrete reasons |
 
 Role rules:
 
 - The leader does not write product code.
+- Only the leader edits `feature_list.json`.
 - The spec author does not implement product code.
 - The implementer does not mark a feature `done`.
 - The reviewer does not edit implementation code.
@@ -67,9 +68,12 @@ The leader is responsible for flow control:
   none exists, choose the first `pending` feature; skip every other status.
 - Claim selected `blocked` or `pending` SDD features as `spec_author`, then delegate
   them to the spec author.
+- Move spec-author-complete handoffs to `spec_ready`.
+- Move human-requested spec changes back to `spec_author`.
 - Wait for human approval before moving `spec_ready` to `in_progress`.
 - Delegate approved `in_progress` features to `implementer`.
-- Delegate completed implementation handoffs to `reviewer`.
+- Move completed implementation handoffs to `in_review`, then delegate to `reviewer`.
+- Move rejected review handoffs back to `in_progress`, then delegate to `implementer`.
 - Mark `done` only after reviewer acceptance and `./init.sh` success.
 
 ## spec_author
@@ -80,7 +84,7 @@ The spec author creates decision-complete SDD artifacts:
 - Write implementation design, public interfaces, data flow, error handling, and
   Next.js local docs consulted in `design.md`.
 - Write executable tasks in `tasks.md`, with every task mapped to requirements.
-- Move the claimed feature from `spec_author` to `spec_ready`, then stop for human approval.
+- Recommend `spec_ready`, then stop for leader transition and human approval.
 
 The spec author must not edit application code, tests, configuration, or hooks.
 
@@ -94,10 +98,10 @@ The implementer executes only an approved spec:
 - Mark completed tasks `[x]` in `tasks.md`.
 - Write `progress/impl_<feature>.md` with summary, changed areas, verification, and
   requirement traceability.
-- Move the feature to `in_review` when the implementation handoff is ready.
+- Recommend `in_review` when the implementation handoff is ready.
 - Run relevant checks, but leave final acceptance to the reviewer.
 
-The implementer must not mark `feature_list.json` entries as `done`.
+The implementer must not edit `feature_list.json`.
 
 ## reviewer
 

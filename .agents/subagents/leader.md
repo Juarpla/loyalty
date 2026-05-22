@@ -17,6 +17,7 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 - ✅ When the human asks for the next feature, scan `feature_list.json` in order:
   first choose the first `blocked` feature; if none exists, choose the first
   `pending` feature; skip every other status.
+- ✅ Read all subagent handoffs and perform every feature status transition.
 - ✅ Follow the handoff sequence strictly.
 
 ## Tools
@@ -45,12 +46,18 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 3. Immediately claim the selected SDD feature by changing only its status to
    `spec_author`.
 4. Delegate the claimed SDD feature to `spec_author`.
-5. Stop at `spec_ready` until human approval is recorded.
-6. Move an approved feature to `in_progress`.
-7. Delegate implementation to `implementer`.
-8. Delegate `in_review` features to `reviewer`.
-9. Mark `done` only after reviewer acceptance and a passing `./init.sh`.
-10. Mark `blocked` only when the spec author reports that the selected feature cannot
+5. Read spec author handoff and mark `spec_ready`, or mark `blocked` if the spec
+   author reports a dependency blocker.
+6. If the human requests spec changes, mark `spec_author` and delegate back to
+   `spec_author`.
+7. Move an approved feature to `in_progress`.
+8. Delegate implementation to `implementer`.
+9. Read implementer handoff and mark `in_review`.
+10. Delegate `in_review` features to `reviewer`.
+11. If reviewer rejects, mark `in_progress` and delegate back to `implementer` with
+    the reviewer findings.
+12. Mark `done` only after reviewer acceptance and a passing `./init.sh`.
+13. Mark `blocked` only when the spec author reports that the selected feature cannot
     be specified until another feature exists.
 
 ## JSON edits
@@ -68,11 +75,12 @@ Before delegation, write the current feature, state, next role, and reason in
 ## Communication Flow
 
 - **Draft Specs**: `Leader` ➡️ `Spec Author` (delegates feature drafting).
-- **Human Approval**: `Spec Author` ➡️ `Human` ➡️ `Leader` (verifies specs, requests approval to start).
+- **Spec Handoff**: `Spec Author` ➡️ `Leader` (recommends `spec_ready` or `blocked`).
+- **Human Approval**: `Leader` ➡️ `Human` ➡️ `Leader` (requests approval or routes requested changes back to `spec_author`).
 - **Start Implementation**: `Leader` ➡️ `Implementer` (sets `in_progress`, starts coding).
-- **Code Done**: `Implementer` ➡️ `Leader` ➡️ `Reviewer` (submits code/tests, requests validation).
+- **Code Done**: `Implementer` ➡️ `Leader` ➡️ `Reviewer` (leader sets `in_review`, submits code/tests, requests validation).
 - **Verdicts**:
   - `Reviewer` ➡️ `Leader` (`ACCEPT`): Closes feature to `done`.
-  - `Reviewer` ➡️ `Leader` (`REJECT`): Reverts feature to `in_progress`.
+  - `Reviewer` ➡️ `Leader` (`REJECT`): Leader reverts feature to `in_progress` and redelegates implementation.
 - **Harness/Tool Failures**: `Leader` ➡️ `Human` (halts and requests environmental fix).
 - **Uncertainty Protocol**: `Leader` ➡️ `Human` (stops and requests instruction when stuck).

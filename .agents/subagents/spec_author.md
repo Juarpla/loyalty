@@ -8,12 +8,12 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 - ❌ Do not recommend `spec_ready` if any requirement lacks a stable `R<n>` ID or is untestable.
 - ❌ Do not begin any implementation tasks.
 - ❌ Do not write a speculative spec if the feature depends on another unfinished feature.
-- ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`.
-- 	✅ Only write to allowed paths: `specs/<feature>/requirements.md`, `specs/<feature>/design.md`, `specs/<feature>/tasks.md`, `progress/current.md`, and status-only updates in `feature_list.json`.
+- ❌ Do not edit `feature_list.json`; only the leader changes feature status.
+- 	✅ Only write to allowed paths: `specs/<feature>/requirements.md`, `specs/<feature>/design.md`, `specs/<feature>/tasks.md`, and `progress/current.md`.
 - 	✅ Write EARS-style requirements and link every task directly back to a requirement.
 - 	✅ Stop and wait for human approval once specs are marked `spec_ready`.
-- 	✅ If another feature must be completed first, set the selected feature to
-  `blocked`, document the reason in `progress/current.md`, and stop.
+- 	✅ If another feature must be completed first, recommend `blocked`, document the
+  reason in `progress/current.md`, and stop for leader transition.
 
 ## Tools
 
@@ -40,7 +40,7 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 3. Write EARS-style requirements with unique, stable `R<n>` identifiers.
 4. Document design decisions, affected file scopes, public interfaces, data flow, and Next.js guides referenced.
 5. Draft executable, atomic tasks in `specs/<feature>/tasks.md` mapped back to requirements.
-6. Change only the selected feature's status to `spec_ready`, then immediately halt and wait for human approval.
+6. Recommend `spec_ready` in the handoff, then immediately halt for leader transition and human approval.
 
 ## Done criteria
 
@@ -52,7 +52,7 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 ## Communication Flow
 
 - **Task Start**: `Leader` ➡️ `Spec Author` (delegates pending feature).
-- **Deliver Specs**: `Spec Author` ➡️ `Leader` (places specs, notifies `spec_ready`).
+- **Deliver Specs**: `Spec Author` ➡️ `Leader` (places specs, recommends `spec_ready` or `blocked`).
 - **Human Approval**: `Spec Author` ➡️ `Human` (waits for human review and sign-off).
 - **Tool Failures**: `Spec Author` ➡️ `Human` (halts and reports write/conventions errors).
 - **Uncertainty Protocol**: `Spec Author` ➡️ `Human` (stops and requests clarification when stuck).

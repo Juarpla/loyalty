@@ -54,6 +54,8 @@ Useful local guides:
 - Use the role contract in `.agents/subagents/` that matches the work you are doing.
 - The leader orchestrates; the spec author writes specs; the implementer writes product
   changes; the reviewer verifies and rejects or accepts.
+- Only the leader may edit `feature_list.json`. Other roles recommend status
+  transitions in handoffs; they do not change feature status directly.
 - Do not work on a `pending` feature until the leader claims it by setting its status
   to `spec_author`.
 - If a feature depends on unfinished work, mark only that feature `blocked`, record
@@ -77,7 +79,7 @@ Useful local guides:
 ## SDD workflow
 
 ```text
-pending -> leader claims spec_author -> spec_ready -> HUMAN APPROVAL -> leader marks in_progress -> implementer marks in_review -> reviewer -> done
+pending/blocked -> leader marks spec_author -> spec_author handoff -> leader marks spec_ready -> HUMAN APPROVAL -> leader marks in_progress -> implementer handoff -> leader marks in_review -> reviewer handoff -> leader marks done
 ```
 
 1. The leader selects exactly one unclaimed feature for the current session and
@@ -88,23 +90,29 @@ pending -> leader claims spec_author -> spec_ready -> HUMAN APPROVAL -> leader m
 3. For a selected `blocked` or `pending` SDD feature, the leader changes only that
    feature's `status` to `spec_author`, then delegates to the spec author.
 4. The spec author creates
-   `specs/<feature>/{requirements.md,design.md,tasks.md}` and mark it `spec_ready`.
-5. Stop. The human reviews the spec and approves or requests changes.
-6. After approval, the leader marks the feature `in_progress`.
-7. The implementer changes only what the approved spec requires, updates `tasks.md`,
+   `specs/<feature>/{requirements.md,design.md,tasks.md}` and recommends
+   `spec_ready`.
+5. The leader reads the spec author handoff and marks the feature `spec_ready`.
+6. Stop. The human reviews the spec and approves or requests changes.
+7. If the human requests changes, the leader marks the feature `spec_author` again
+   and delegates back to the spec author.
+8. After approval, the leader marks the feature `in_progress`.
+9. The implementer changes only what the approved spec requires, updates `tasks.md`,
    and writes `progress/impl_<feature>.md`.
-8. When implementation is ready for review, the implementer changes only that
-   feature's `status` to `in_review`.
-9. The reviewer runs verification, checks `CHECKPOINTS.md` C1-C6, writes
-   `progress/review_<feature>.md`, and rejects if any required box remains `[ ]`.
-10. Only after reviewer acceptance may the leader mark the feature `done` and append
+10. When implementation is ready for review, the implementer recommends `in_review`.
+11. The leader reads the implementation handoff and marks the feature `in_review`.
+12. The reviewer runs verification, checks `CHECKPOINTS.md` C1-C6, writes
+   `progress/review_<feature>.md`, and reports ACCEPT or REJECT.
+13. If reviewer reports REJECT, the leader marks the feature `in_progress` again and
+   delegates back to the implementer with the reviewer findings.
+14. Only after reviewer acceptance may the leader mark the feature `done` and append
    the final summary to `progress/history.md`.
 
 Blocked rule: only the spec author decides that a selected feature cannot proceed
 because another feature must be completed first. In that case, the spec author sets
-the selected feature to `blocked`, records the reason in `progress/current.md`, and
-stops. The next leader scan will try the first `blocked` feature again before any
-`pending` feature.
+no status directly; it reports the blocker and reason to the leader. The leader marks
+the selected feature `blocked`. The next leader scan will try the first `blocked`
+feature again before any `pending` feature.
 
 ## Subagent roles
 

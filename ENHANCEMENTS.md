@@ -33,3 +33,8 @@ notes are historical context unless directly relevant.
 ## Enhancement Notes Location (22-MAY-2026 20:35:00) [MEDIO] - IMPLEMENTED
 - Harness improvement notes should not live in `progress/current.md` because that file represents active operational state.
 - Long-lived lessons, performance ideas, repeated failures, role duplication concerns, and unresolved blocker patterns belong in root-level `ENHANCEMENTS.md`.
+
+## Leader-Owned Status Transitions (22-MAY-2026 08:45:00) [URGENT] - IMPLEMENTED
+- Only the leader edits `feature_list.json` and performs feature status transitions.
+- Spec author, implementer, and reviewer report recommended transitions through handoffs instead of changing status directly.
+- Human-requested spec changes return through the leader to `spec_author`; reviewer rejection returns through the leader to `in_progress` and then `implementer`.

@@ -11,8 +11,8 @@ The implementer executes one approved SDD feature.
 - ❌ Do not skip the E2E gate for broad cross-layer features.
 - ❌ Do not edit reviewer reports or change checkpoint outcomes.
 - ❌ Do not write to files outside the approved spec scope and allowed paths.
-- ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`. Only the `status` field of existing features may change.
-- 	✅ Only write to allowed paths: Files explicitly required by the approved spec, `specs/<feature>/tasks.md`, `progress/impl_<feature>.md`, `progress/current.md`, `tests/integration/`, `tests/e2e/` (if E2E gate approved), and status-only updates in `feature_list.json`.
+- ❌ Do not edit `feature_list.json`; only the leader changes feature status.
+- 	✅ Only write to allowed paths: Files explicitly required by the approved spec, `specs/<feature>/tasks.md`, `progress/impl_<feature>.md`, `progress/current.md`, `tests/integration/`, and `tests/e2e/` (if E2E gate approved).
 - 	✅ All code must be tested before moving on to the next task.
 - 	✅ If a tool fails unexpectedly, DO NOT improvise a workaround. Stop and note the
   issue in `progress/current.md`; do not change the feature to `blocked`.
@@ -89,7 +89,7 @@ running shell commands:
 6. **Write an integration test using Vitest before proceeding to the next task.** Use Vitest for integration tests (`tests/integration/<feature>.integration.test.ts`). Run `pnpm test` after implementing each task, ensuring it remains fully green.
 7. Document all changes, test evidence, and requirement coverage in `progress/impl_<feature>.md`.
 8. Execute `./init.sh` locally to ensure a passing harness before handing off to the reviewer.
-9. Change only the selected feature's status to `in_review` after the implementation handoff is complete.
+9. Recommend `in_review` after the implementation handoff is complete; wait for the leader to change status.
 
 ## E2E gate (mandatory)
 
@@ -131,7 +131,7 @@ The implementation handoff must include:
 
 - **Task Start**: `Leader` ➡️ `Implementer` (transitions feature to `in_progress`).
 - **E2E Gate**: `Implementer` ➡️ `Human` (queries whether to write Playwright E2E tests).
-- **Handoff for Review**: `Implementer` ➡️ `Leader` (marks `in_review`, delivers code/tests, updates progress, requests review).
+- **Handoff for Review**: `Implementer` ➡️ `Leader` (recommends `in_review`, delivers code/tests, updates progress, requests review).
 - **Test/Tool Failures**: `Implementer` ➡️ `Leader` / `Human` (blocks task, requests environment check).
 - **Spec Deviations**: `Implementer` ➡️ `Human` (halts coding, requests spec revisions).
 - **Uncertainty Protocol**: `Implementer` ➡️ `Human` (stops and requests guidance when stuck).

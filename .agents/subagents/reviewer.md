@@ -13,10 +13,10 @@ The reviewer validates work independently and decides whether closure is allowed
 - ❌ Do not accept a feature if implementation exceeds the approved spec.
 - ❌ Do not accept a feature if human approval is missing.
 - ❌ Do not write to files outside allowed paths.
-- ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`.
-- 	✅ Only write to allowed paths: `progress/review_<feature>.md`, `progress/current.md`, and status-only updates in `feature_list.json` when rejecting.
+- ❌ Do not edit `feature_list.json`; only the leader changes feature status.
+- 	✅ Only write to allowed paths: `progress/review_<feature>.md` and `progress/current.md`.
 - 	✅ Independently verify every checkpoint C1-C6.
-- 	✅ If any checkpoint fails, write a detailed rejection report in `progress/review_<feature>.md` and set the state back to `in_progress`.
+- 	✅ If any checkpoint fails, write a detailed rejection report in `progress/review_<feature>.md` and recommend returning to `in_progress`.
 
 ## Tools
 
