@@ -65,15 +65,44 @@ Useful local guides:
 - Do not skip the human approval gate between `spec_ready` and `in_progress`.
 - Do not mark work `done` without passing `./init.sh`.
 - Do not mark work `done` with any failing test (`pnpm test` must be fully green).
-- Write progress to `progress/current.md`; durable state lives in files, not only chat.
-- Save recurring harness learnings in `ENHANCEMENTS.md`, not
-  in `progress/current.md`.
+- Write progress to `progress/current.md` following the standardized structure; durable state lives in files, not only chat.
+- Save recurring harness learnings in `ENHANCEMENTS.md`, not in `progress/current.md`.
 - Every requirement `R<n>` must map to at least one concrete test or verification step.
 - Prefer existing project patterns and local Next.js docs over memory or assumptions.
 - `feature_list.json` is **status-mutable only**. You may change only the `status` field of an
   existing feature. You must never add, delete, reorder features, or modify any field other
   than `status` on any feature entry. The `init.sh` snapshot validator will detect and block
   violations.
+
+## Progress Tracking (progress/current.md)
+
+All active progress and session state must live in `progress/current.md`. The file has a strictly standardized format. All agents must preserve this format and populate the fields during their turn:
+
+```markdown
+# Current Session
+- **Feature in progress:** —
+- **Start:** —
+- **Agent:** —
+
+# Plan
+—
+
+# Log
+—
+
+# Next step
+—
+```
+
+Rules:
+1. **Feature in progress:** Must be `<number> <name>` (e.g. `15 page_manager_reports`) when a feature is active, or `—` when idle.
+2. **Start:** Must be a timestamp in ISO or human-readable format representing the start of the current subagent session (e.g. `2026-05-22T12:28:09-05:00`), or `—` when idle.
+3. **Agent:** Must be the subagent role that made the last edit of this file, along with the model and provider (e.g. `leader (Gemini 3.5 Flash via Google)`), or `—` when idle.
+4. **Plan:** The `# Plan` section MUST contain the current active subagent's plan/steps for the current turn, or `—` when idle.
+5. **Log:** The `# Log` section contains live progress, checklists, tool execution logs, or notes, or `—` when idle.
+6. **Next step:** The `# Next step` section contains what needs to happen next in the workflow, or `—` when idle.
+7. **Session Reset:** Upon final feature completion (status `done`) and appending the summary to `progress/history.md`, the Leader MUST reset `progress/current.md` back to the idle template (with `—` placeholders in all fields and sections).
+
 
 ## SDD workflow
 

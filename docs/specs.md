@@ -63,6 +63,7 @@ The leader is responsible for flow control:
 
 - Read `feature_list.json`, `progress/current.md`, and relevant specs.
 - Select exactly one feature for the current session and claim it before delegation.
+- Update `progress/current.md` (Feature, Start, Agent, Plan, Log, Next step) upon delegation, and reset it back to the idle template upon feature completion.
 - Enforce a single active feature globally; do not allow more than one active feature at any given time.
 - When the human asks for the next feature, choose the first `blocked` feature; if
   none exists, choose the first `pending` feature; skip every other status
@@ -84,6 +85,7 @@ The spec author creates decision-complete SDD artifacts:
 - Write EARS requirements in `requirements.md`.
 - Write implementation design, public interfaces, data flow, error handling, and
   Next.js local docs consulted in `design.md`.
+- Document plan, progress, and any blocker in `progress/current.md` following the standardized format.
 - Write executable tasks in `tasks.md`, with every task mapped to requirements.
 - Recommend `spec_ready`, then stop for leader transition and human approval.
 
@@ -95,6 +97,7 @@ The implementer executes only an approved spec:
 
 - Confirm the feature is `in_progress`.
 - Read all three spec files before editing.
+- Document active plan, progress logs, task checklist, and next steps in `progress/current.md` following the standardized format.
 - Implement only the files and behavior required by the spec.
 - Mark completed tasks `[x]` in `tasks.md`.
 - Write `progress/impl_<feature>.md` with summary, changed areas, verification, and
@@ -110,6 +113,7 @@ The reviewer validates the work independently:
 
 - Read the approved spec, implementation handoff, changed files, and `CHECKPOINTS.md`.
 - Confirm the feature is `in_review`, then run `./init.sh`.
+- Document active plan, review logs, checklists, and next steps in `progress/current.md` following the standardized format.
 - Inspect C1-C6 in `CHECKPOINTS.md`; every checkbox must be explicitly `[x]` or `[ ]`.
 - Reject if any required C1-C6 checkbox is `[ ]`.
 - Reject if any `R<n>` lacks concrete verification.

@@ -83,13 +83,20 @@ running shell commands:
 
 1. **Complete the Engine Boot Sequence**: You must not perform any implementation tasks or edit any codebase files before reading and understanding all boot files.
 2. Confirm the target feature's state is set to `in_progress` in `feature_list.json`.
-3. Implement only the design decisions and requirements approved in the spec files.
-4. Keep all edits strictly scoped within the approved spec files and permitted paths.
-5. Mark tasks as completed `[x]` in `specs/<feature>/tasks.md` sequentially.
-6. **Write an integration test using Vitest before proceeding to the next task.** Use Vitest for integration tests (`tests/integration/<feature>.integration.test.ts`). Run `pnpm test` after implementing each task, ensuring it remains fully green.
-7. Document all changes, test evidence, and requirement coverage in `progress/impl_<feature>.md`.
-8. Execute `./init.sh` locally to ensure a passing harness before handing off to the reviewer.
-9. Recommend `in_review` after the implementation handoff is complete; wait for the leader to change status.
+3. Update `progress/current.md` using the standardized structure defined in `AGENTS.md`:
+   - Set `Start` to the time your session began.
+   - Set `Agent` to `implementer (<model> and <provider>)`.
+   - Update `# Plan` with your specific turn plan.
+   - Update `# Log` with active tasks list, test progress, lint/compilation outputs, and any unexpected tool issues.
+   - Update `# Next step` to reflect the expected next action (e.g. `implementer to continue coding` or `reviewer to verify and write progress/review_<feature>.md`).
+4. Implement only the design decisions and requirements approved in the spec files.
+5. Keep all edits strictly scoped within the approved spec files and permitted paths.
+6. Mark tasks as completed `[x]` in `specs/<feature>/tasks.md` sequentially.
+7. **Write an integration test using Vitest before proceeding to the next task.** Use Vitest for integration tests (`tests/integration/<feature>.integration.test.ts`). Run `pnpm test` after implementing each task, ensuring it remains fully green.
+8. Document all changes, test evidence, and requirement coverage in `progress/impl_<feature>.md`.
+9. Execute `./init.sh` locally to ensure a passing harness before handing off to the reviewer.
+10. Recommend `in_review` after the implementation handoff is complete; wait for the leader to change status.
+
 
 ## E2E gate (mandatory)
 

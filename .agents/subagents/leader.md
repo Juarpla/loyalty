@@ -67,9 +67,31 @@ entire file to change one field.
 
 ## Handoff requirements
 
-Before delegation, write the current feature, state, next role, and reason in
-`progress/current.md`. After reviewer acceptance, append the final summary to
-`progress/history.md`.
+Before delegating work, the leader MUST update `progress/current.md` using the standardized structure defined in `AGENTS.md`:
+- **Feature in progress:** Number and name of the feature (e.g. `15 page_manager_reports`).
+- **Start:** Timestamp of when the leader session started.
+- **Agent:** Specify `leader (<model> and <provider>)`.
+- **Plan:** The leader's plan for this workflow transition.
+- **Log:** Reason for delegation, state updates, or blocker details.
+- **Next step:** Target subagent role (e.g. `spec_author`, `implementer`, `reviewer`).
+
+Upon final feature closure (marking status `done`) and appending the final summary to `progress/history.md`, the leader MUST reset `progress/current.md` back to the idle template format:
+```markdown
+# Current Session
+- **Feature in progress:** —
+- **Start:** —
+- **Agent:** —
+
+# Plan
+—
+
+# Log
+—
+
+# Next step
+—
+```
+
 
 ## Communication Flow
 

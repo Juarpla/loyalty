@@ -38,10 +38,17 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 
 1. **Complete the Engine Boot Sequence**: You must not perform any other workflow actions, write specifications, or edit any files before reading and understanding all boot files.
 2. Confirm the selected feature status is set to `spec_author` and `"sdd": true` in `feature_list.json`.
-3. Write EARS-style requirements with unique, stable `R<n>` identifiers.
-4. Document design decisions, affected file scopes, public interfaces, data flow, and Next.js guides referenced.
-5. Draft executable, atomic tasks in `specs/<feature>/tasks.md` mapped back to requirements.
-6. Recommend `spec_ready` in the handoff, then immediately halt for leader transition and human approval.
+3. Update `progress/current.md` using the standardized structure defined in `AGENTS.md`:
+   - Set `Start` to the time your session began.
+   - Set `Agent` to `spec_author (<model> and <provider>)`.
+   - Update `# Plan` with your specific turn plan.
+   - Update `# Log` with draft details, spec progression notes, or any dependency blocker details (if blocked).
+   - Update `# Next step` to reflect the expected next action (e.g. `leader to mark spec_ready` or `leader to mark blocked`).
+4. Write EARS-style requirements with unique, stable `R<n>` identifiers.
+5. Document design decisions, affected file scopes, public interfaces, data flow, and Next.js guides referenced.
+6. Draft executable, atomic tasks in `specs/<feature>/tasks.md` mapped back to requirements.
+7. Recommend `spec_ready` in the handoff, then immediately halt for leader transition and human approval.
+
 
 ## Done criteria
 

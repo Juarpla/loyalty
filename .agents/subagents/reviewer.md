@@ -69,13 +69,20 @@ running shell commands:
 
 1. **Complete the Engine Boot Sequence**: You must not perform any verification tasks, run tests, or write review reports before reading and understanding all boot files.
 2. Confirm the selected feature status is `in_review`, then execute `./init.sh` to ensure the integration environment runs and passes perfectly.
-3. Independently verify and evaluate each checkpoint C1-C6 in `CHECKPOINTS.md`.
-4. Reject the feature if any checkpoint C1-C6 box remains unchecked or unaddressed.
-5. Cross-reference all requirements `R<n>` to verify they map to passing integration/E2E tests.
-6. Check `specs/<feature>/tasks.md` to ensure all tasks are fully completed or justified.
-7. Confirm implementation changes remained strictly within spec boundaries and did not predate human approval.
-8. Verify that the "E2E gate" section is documented and details human approval/decline of Playwright E2E tests.
-9. Generate the review report in `progress/review_<feature>.md` marking it `ACCEPT` or `REJECT`.
+3. Update `progress/current.md` using the standardized structure defined in `AGENTS.md`:
+   - Set `Start` to the time your session began.
+   - Set `Agent` to `reviewer (<model> and <provider>)`.
+   - Update `# Plan` with your specific turn plan.
+   - Update `# Log` with review checklist checks, verification outputs, and acceptance/rejection notes.
+   - Update `# Next step` to reflect the expected next action (e.g. `leader to close feature` or `leader to revert to in_progress`).
+4. Independently verify and evaluate each checkpoint C1-C6 in `CHECKPOINTS.md`.
+5. Reject the feature if any checkpoint C1-C6 box remains unchecked or unaddressed.
+6. Cross-reference all requirements `R<n>` to verify they map to passing integration/E2E tests.
+7. Check `specs/<feature>/tasks.md` to ensure all tasks are fully completed or justified.
+8. Confirm implementation changes remained strictly within spec boundaries and did not predate human approval.
+9. Verify that the "E2E gate" section is documented and details human approval/decline of Playwright E2E tests.
+10. Generate the review report in `progress/review_<feature>.md` marking it `ACCEPT` or `REJECT`.
+
 
 ## Review report format
 
