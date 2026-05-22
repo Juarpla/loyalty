@@ -41,6 +41,7 @@ echo "== 2. Auditing Agent Harness & Spec Files ==="
 
 BASE_FILES=(
   "AGENTS.md"
+  "ENHANCEMENTS.md"
   "CLAUDE.md"
   "opencode.json"
   ".cursor/rules/harness.mdc"

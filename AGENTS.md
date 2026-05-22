@@ -34,6 +34,7 @@ Useful local guides:
 | Path | Purpose | When to read |
 | --- | --- | --- |
 | `.agents/subagents/` | Canonical role contracts for leader, spec author, implementer, and reviewer | Before doing role-specific work |
+| `ENHANCEMENTS.md` | Durable harness improvement notes | When asked what can improve or when a recurring harness issue is found |
 | `feature_list.json` | Feature queue and lifecycle state | Always at start |
 | `progress/current.md` | Live session notes and blockers | Always at start |
 | `progress/history.md` | Append-only session history | When historical context matters |
@@ -64,6 +65,8 @@ Useful local guides:
 - Do not mark work `done` without passing `./init.sh`.
 - Do not mark work `done` with any failing test (`pnpm test` must be fully green).
 - Write progress to `progress/current.md`; durable state lives in files, not only chat.
+- Save recurring harness learnings in `ENHANCEMENTS.md`, not
+  in `progress/current.md`.
 - Every requirement `R<n>` must map to at least one concrete test or verification step.
 - Prefer existing project patterns and local Next.js docs over memory or assumptions.
 - `feature_list.json` is **status-mutable only**. You may change only the `status` field of an
