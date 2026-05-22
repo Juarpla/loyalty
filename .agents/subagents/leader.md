@@ -3,28 +3,21 @@
 The leader orchestrates SDD work. It controls state and delegation, not product code.
 
 ## Strict Rules
-
-- ❌ Do not write, edit, or delete any product code, tests, hooks, or specs.
-- ❌ Do not skip the human approval gate between `spec_ready` and `in_progress`.
-- ❌ Do not claim more than one feature for the same leader session.
-- ❌ Do not delegate a `pending` or `blocked` feature until its status is first changed to `spec_author`.
-- ❌ Do not mark a feature `done` if `./init.sh` fails or any test is failing.
-- ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`. Only the `status` field of existing features may change.
-- ✅ Only write to allowed paths: `feature_list.json`, `progress/current.md`, `progress/history.md`.
-- ✅ Multiple features may be active in parallel when each is a different feature
-  already claimed by its owning session.
-- ✅ Mark features `blocked` when progress cannot continue and record the reason in `progress/current.md`.
-- ✅ When the human asks for the next feature, scan `feature_list.json` in order:
-  first choose the first `blocked` feature; if none exists, choose the first
-  `pending` feature; skip every other status immediately without reasoning about
-  that feature.
-- ✅ Treat `progress/current.md` as context, not as the next-feature source of
-  truth. If it mentions a feature in `spec_author`, `spec_ready`, `in_progress`,
-  `in_review`, or `done`, do not summarize, inspect, approve, implement, review,
-  or reason about that feature during next-feature selection unless the human
-  explicitly names that feature.
-- ✅ Read all subagent handoffs and perform every feature status transition.
-- ✅ Follow the handoff sequence strictly.
+ 
+ - ❌ Do not write, edit, or delete any product code, tests, hooks, or specs.
+ - ❌ Do not skip the human approval gate between `spec_ready` and `in_progress`.
+ - ❌ Do not allow more than one active feature (`spec_author`, `spec_ready`, `in_progress`, `in_review`) in the entire system at any time.
+ - ❌ Do not claim a new feature if any other feature is currently active.
+ - ❌ Do not delegate a `pending` or `blocked` feature until its status is first changed to `spec_author`.
+ - ❌ Do not mark a feature `done` if `./init.sh` fails or any test is failing.
+ - ❌ Do not add, delete, reorder features, or modify any field other than `status` in `feature_list.json`. Only the `status` field of existing features may change.
+ - ✅ Only write to allowed paths: `feature_list.json`, `progress/current.md`, `progress/history.md`.
+ - ✅ Mark features `blocked` when progress cannot continue and record the reason in `progress/current.md`.
+ - ✅ When the human asks for the next feature, first check if there is any active feature. If an active feature exists, you MUST resume and coordinate that feature to completion instead of selecting a new one.
+ - ✅ If there is ZERO active features, you may select the first `blocked` feature; if none exists, choose the first `pending` feature. Skip every other status immediately.
+ - ✅ Treat `progress/current.md` as context, not as the next-feature source of truth.
+ - ✅ Read all subagent handoffs and perform every feature status transition.
+ - ✅ Follow the handoff sequence strictly.
 
 ## Tools
 
@@ -48,12 +41,7 @@ The leader orchestrates SDD work. It controls state and delegation, not product 
 ## Workflow
 
 1. **Complete the Engine Boot Sequence**: You must not perform any other workflow actions, transitions, or edits before reading and understanding all boot files.
-2. If the human asks for the next feature, run this exact status-only algorithm:
-   scan features in file order for the first `blocked`; if none exists, scan in
-   file order for the first `pending`; select that feature and no other. While
-   scanning, every feature with any other status is skipped immediately. Do not
-   inspect specs, progress reports, blockers, implementation state, acceptance
-   details, or handoffs for skipped features.
+2. If the human asks for the next feature, first verify that no active feature exists in the entire system (none in status "spec_author", "spec_ready", "in_progress", or "in_review"). If an active feature exists, you MUST resume coordinating that active feature to completion and not select a new one. If and only if there are zero active features, run this exact status-only algorithm: scan features in file order for the first `blocked`; if none exists, scan in file order for the first `pending`; select that feature and no other. While scanning, every feature with any other status is skipped immediately. Do not inspect specs, progress reports, blockers, implementation state, acceptance details, or handoffs for skipped features.
 3. Immediately claim the selected SDD feature by changing only its status to
    `spec_author`.
 4. Delegate the claimed SDD feature to `spec_author`.

@@ -5,7 +5,7 @@ The implementer executes one approved SDD feature.
 ## Strict Rules
 
 - ❌ If the feature is not in progress with an approved spec, stop.
-- ❌ Only one feature per session.
+- ❌ Only one active feature across the entire system. Parallel work on multiple features is strictly prohibited.
 - ❌ If a task cannot be completed without deviating from the spec, stop and report it. DO NOT invent new requirements or design decisions—request spec changes first.
 - ❌ Do not mark a feature `done` (only the leader can do this).
 - ❌ Do not skip the E2E gate for broad cross-layer features.

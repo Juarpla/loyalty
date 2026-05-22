@@ -49,24 +49,17 @@ Useful local guides:
 
 ## Hard rules
 
-- One feature per agent session. Multiple agents may work in parallel only when each
-  session has claimed a different feature in `feature_list.json`.
+- Only one active feature at a time across the entire system. Parallel work on multiple features is strictly prohibited.
 - Use the role contract in `.agents/subagents/` that matches the work you are doing.
 - The leader orchestrates; the spec author writes specs; the implementer writes product
   changes; the reviewer verifies and rejects or accepts.
 - Only the leader may edit `feature_list.json`. Other roles recommend status
   transitions in handoffs; they do not change feature status directly.
-- Next-feature selection is the leader's responsibility. Selection is a
-  status-only scan: choose the first `blocked` feature, otherwise the first
-  `pending` feature. Any feature in `spec_author`, `spec_ready`, `in_progress`,
-  `in_review`, or `done` is already owned by another workflow step/session and
-  must be skipped immediately without reading its specs, handoffs, blockers,
-  acceptance criteria, or implementation details.
+- Next-feature selection is only allowed when there are ZERO active features (no features in `spec_author`, `spec_ready`, `in_progress`, or `in_review` status). When all features are either `done`, `pending`, or `blocked`, the leader may select the first `blocked` feature, otherwise the first `pending` feature. Any feature in `spec_author`, `spec_ready`, `in_progress`, or `in_review` represents the active feature which must be completed or marked blocked before any new selection is allowed.
 - Do not work on a `pending` feature until the leader claims it by setting its status
   to `spec_author`.
 - If a feature depends on unfinished work, mark only that feature `blocked`, record
-  the reason in `progress/current.md`, and select the next `blocked` or `pending`
-  feature.
+  the reason in `progress/current.md`, and only then may the leader select the next feature.
 - Do not implement a feature with `"sdd": true` while it is `pending`, `spec_author`,
   or `spec_ready`.
 - Do not skip the human approval gate between `spec_ready` and `in_progress`.
@@ -88,15 +81,8 @@ Useful local guides:
 pending/blocked -> leader marks spec_author -> spec_author handoff -> leader marks spec_ready -> HUMAN APPROVAL -> leader marks in_progress -> implementer handoff -> leader marks in_review -> reviewer handoff -> leader marks done
 ```
 
-1. The leader selects exactly one unclaimed feature for the current session and
-   immediately reserves it in `feature_list.json`.
-2. When the human asks for the next feature, the leader scans `feature_list.json` in
-   order and selects the first `blocked` feature. If none exists, it selects the first
-   `pending` feature. It skips every other status immediately, without reasoning
-   about that feature's specs, implementation, blockers, or progress.
-   `progress/current.md` is context only; it does not override this scan and must
-   not cause the leader to resume, summarize, approve, implement, or inspect a
-   skipped feature unless the human explicitly names that feature.
+1. Next-feature selection is only allowed if there are zero active features (`spec_author`, `spec_ready`, `in_progress`, or `in_review`) in the entire system.
+2. When the human asks for the next feature, the leader must verify that no active feature exists. If an active feature is found, the leader MUST resume and coordinate that feature until it is done or blocked. If no active feature exists, the leader scans `feature_list.json` in order and selects the first `blocked` feature; if none exists, it selects the first `pending` feature. It skips every other status immediately. `progress/current.md` is context only and does not override this scan.
 3. For a selected `blocked` or `pending` SDD feature, the leader changes only that
    feature's `status` to `spec_author`, then delegates to the spec author.
 4. The spec author creates

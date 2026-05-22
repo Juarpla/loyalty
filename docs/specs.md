@@ -63,7 +63,7 @@ The leader is responsible for flow control:
 
 - Read `feature_list.json`, `progress/current.md`, and relevant specs.
 - Select exactly one feature for the current session and claim it before delegation.
-- Allow parallel work only when each active agent owns a different feature.
+- Enforce a single active feature globally; do not allow more than one active feature at any given time.
 - When the human asks for the next feature, choose the first `blocked` feature; if
   none exists, choose the first `pending` feature; skip every other status
   immediately without further analysis.

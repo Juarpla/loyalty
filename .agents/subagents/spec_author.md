@@ -9,6 +9,7 @@ The spec author turns a pending feature into a decision-complete SDD spec.
 - ❌ Do not begin any implementation tasks.
 - ❌ Do not write a speculative spec if the feature depends on another unfinished feature.
 - ❌ Do not edit `feature_list.json`; only the leader changes feature status.
+- ❌ Do not specify a feature if another feature is currently active in the system.
 - 	✅ Only write to allowed paths: `specs/<feature>/requirements.md`, `specs/<feature>/design.md`, `specs/<feature>/tasks.md`, and `progress/current.md`.
 - 	✅ Write EARS-style requirements and link every task directly back to a requirement.
 - 	✅ Stop and wait for human approval once specs are marked `spec_ready`.

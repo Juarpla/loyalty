@@ -135,6 +135,23 @@ if (!Array.isArray(data.features)) {
   throw new Error("feature_list.json must contain a features array");
 }
 
+if (data.rules?.one_feature_at_a_time === true) {
+  const activeStatuses = new Set(["spec_author", "spec_ready", "in_progress", "in_review"]);
+  const active = data.features.filter(f => activeStatuses.has(f.status));
+  if (active.length > 1) {
+    throw new Error(
+      `\n\n[FAIL] MULTIPLE ACTIVE FEATURES DETECTED:\n` +
+      active.map(f => `  - Feature #${f.id} "${f.name}" is in status "${f.status}"`).join("\n") +
+      `\n\nUnder repository rules (one_feature_at_a_time = true), only ONE feature may be active at any given time.\n` +
+      `HOW TO FIX THIS:\n` +
+      `  1. Open feature_list.json.\n` +
+      `  2. Locate the active features listed above.\n` +
+      `  3. Keep only one feature active (e.g. status = "in_progress", "spec_author", "spec_ready", or "in_review").\n` +
+      `  4. Revert the status of all other active features to "pending" or "blocked" (e.g., status = "pending").\n`
+    );
+  }
+}
+
 const seenIds = new Set();
 const seenNames = new Set();
 const requiringSpecs = new Set(["spec_ready", "in_progress", "in_review", "done"]);

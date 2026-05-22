@@ -18,7 +18,7 @@ if the review report does not explain the result.
 
 ## C2 - State is coherent
 
-- [ ] Parallel active features are distinct and each session owns only one feature.
+- [ ] At most one active feature exists in the entire system.
 - [ ] Every SDD feature in `spec_ready`, `in_progress`, `in_review`, or `done` has all three spec
   files.
 - [ ] Every `blocked` feature is documented in `progress/current.md`.
