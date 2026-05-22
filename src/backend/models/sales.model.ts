@@ -1,5 +1,5 @@
 import { supabaseModel } from "./supabase.model";
-import { SalesTransaction, SalesAggregate } from "../types/models.type";
+import { SalesTransaction, SalesAggregate, TransactionRecord } from "../types/models.type";
 import { logger } from "../utils/logger.utils";
 
 /**
@@ -77,6 +77,89 @@ export class SalesModel {
       logger.error("Exception in SalesModel.insertTransaction", error);
 
       // Detect network connection errors or fetch failures
+      const isConnectionRefused = error.message && (
+        error.message.includes("fetch failed") ||
+        error.message.includes("ECONNREFUSED") ||
+        error.message.includes("Failed to fetch") ||
+        error.message.includes("NetworkError")
+      );
+
+      if (isConnectionRefused) {
+        throw new Error("DB_CONNECTION_FAILURE");
+      }
+
+      throw error;
+    }
+  }
+
+  /**
+   * Fetch all transaction records for metrics aggregation
+   */
+  static async getAllTransactions(): Promise<TransactionRecord[]> {
+    logger.info("SalesModel.getAllTransactions invoked");
+
+    const status = supabaseModel.getStatus();
+
+    // Offline / Simulation fallback mode
+    if (status.mode === "offline_simulation") {
+      const mockRecords: TransactionRecord[] = [
+        {
+          id: "txn-001",
+          phone_number: "+51900111000",
+          amount: 45.5,
+          created_at: new Date(Date.UTC(2026, 4, 15, 10, 30, 0)).toISOString()
+        },
+        {
+          id: "txn-002",
+          phone_number: "+51900222000",
+          amount: 32.0,
+          created_at: new Date(Date.UTC(2026, 4, 15, 14, 15, 0)).toISOString()
+        },
+        {
+          id: "txn-003",
+          phone_number: "+51900333000",
+          amount: 78.25,
+          created_at: new Date(Date.UTC(2026, 4, 16, 9, 0, 0)).toISOString()
+        }
+      ];
+      return supabaseModel.executeQuery<TransactionRecord[]>("getAllTransactions", mockRecords);
+    }
+
+    // Production / Database connected mode
+    try {
+      const client = supabaseModel.getClient();
+      const { data, error } = await client
+        .from("sales_transactions")
+        .select("*")
+        .order("created_at", { ascending: true });
+
+      if (error) {
+        logger.error("Database error in SalesModel.getAllTransactions", error);
+
+        const isConnectionRefused = error.message && (
+          error.message.includes("fetch failed") ||
+          error.message.includes("ECONNREFUSED") ||
+          error.message.includes("Failed to fetch") ||
+          error.message.includes("NetworkError")
+        );
+
+        if (isConnectionRefused) {
+          throw new Error("DB_CONNECTION_FAILURE");
+        }
+
+        throw new Error(error.code || "DB_QUERY_ERROR");
+      }
+
+      return (data || []).map((row) => ({
+        id: row.id,
+        phone_number: row.phone_number,
+        amount: Number(row.amount),
+        created_at: row.created_at
+      })) as TransactionRecord[];
+    } catch (err: unknown) {
+      const error = err as Error;
+      logger.error("Exception in SalesModel.getAllTransactions", error);
+
       const isConnectionRefused = error.message && (
         error.message.includes("fetch failed") ||
         error.message.includes("ECONNREFUSED") ||

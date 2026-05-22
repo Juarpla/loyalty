@@ -157,7 +157,7 @@
         "Integration tests in `tests/integration/controller_traffic_metrics.test.ts` SHALL verify payload layouts and status codes."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 12,

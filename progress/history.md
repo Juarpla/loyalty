@@ -37,3 +37,7 @@ Append completed session summaries below.
 ## Feature: test_e2e_cashier_sales_flow
 - **Status:** Done
 - **Summary:** Created Playwright E2E tests (`tests/e2e/cashier_sales_flow.e2e.test.ts`) verifying the full cashier sales registration workflow: mobile success (375px — fill valid phone + amount, submit, assert success banner + form cleared), mobile error (375px — invalid phone → error banner), desktop success (1440px — fill, submit, success + cleared). 3 new E2E tests pass (9 total). Uses `data-testid` selectors and keyboard `fill()` for phone input (touchpad lacks `+` key). E2E gate: human approved. Reviewer accepted; full harness green.
+
+## Feature: controller_traffic_metrics
+- **Status:** Done
+- **Summary:** Implemented `TrafficController.getMetrics` (and `getTrafficOverview` alias) in `src/backend/controllers/traffic.controller.ts` to fetch all transactions via `SalesModel.getAllTransactions`, invoke `TrafficService.computeDistribution`, and return the distribution object (`hours`, `weekdays`, `peakHour`, `peakWeekday`, `totalTransactions`). Added `SalesModel.getAllTransactions` method to `sales.model.ts` with offline simulation fallback. Created 5-integration test cases covering R1–R6 (success payload structure, distribution computation, DB connection failure, generic exceptions). E2E gate: not required (backend-only). Reviewer accepted; full harness green (34 tests, lint, build all pass).
