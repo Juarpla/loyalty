@@ -273,7 +273,7 @@
         "Integration tests in `tests/integration/model_customer_segmentation.test.ts` SHALL verify mathematical grouping thresholds."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 21,

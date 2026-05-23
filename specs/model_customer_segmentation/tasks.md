@@ -1,0 +1,5 @@
+# Tasks - model_customer_segmentation (Feature ID: 20)
+
+- [x] **T1**: Add `CustomerSegment` type, `SegmentedCustomer` interface, `CustomerSegmentationResult` interface, and `SEGMENTATION_THRESHOLDS` constants to `src/backend/types/models.type.ts`. Covers: R7.
+- [x] **T2**: Implement `ClientModel.getCustomerSegments()` in `src/backend/models/client.model.ts` with the aggregation query, segment assignment algorithm, error handling, and result construction. Covers: R1, R2, R3, R4, R5, R6, R8, R9, R10.
+- [x] **T3**: Create integration tests in `tests/integration/model_customer_segmentation.integration.test.ts` that verify empty database returns empty result (R9), inactive_30d tagging based on transaction recency (R3, R4), frequent tagging when visit_count >= threshold (R5), high_spender tagging when average_ticket >= threshold (R6), segment priority ordering (R2), connection failure error propagation (R10), and threshold constant values (R7). Covers: R1, R2, R3, R4, R5, R6, R7, R8, R9, R10.

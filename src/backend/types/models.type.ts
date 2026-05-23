@@ -81,3 +81,25 @@ export interface PredictionResult {
   weekendRatios: WeekendRatio[];
   projectedWeekendShift: "increasing" | "decreasing" | "stable";
 }
+
+export type CustomerSegment = 'inactive_30d' | 'high_spender' | 'frequent';
+
+export interface SegmentedCustomer {
+  phone_number: string;
+  name: string;
+  visit_count: number;
+  average_ticket: number;
+  last_transaction_date: string | null;
+  segment: CustomerSegment | null;
+}
+
+export interface CustomerSegmentationResult {
+  segments: SegmentedCustomer[];
+  summary: Record<CustomerSegment | 'unassigned', number>;
+}
+
+export const SEGMENTATION_THRESHOLDS = {
+  INACTIVE_DAYS: 30,
+  FREQUENT_VISIT_COUNT: 5,
+  HIGH_SPENDER_MIN_TICKET: 50,
+} as const;
