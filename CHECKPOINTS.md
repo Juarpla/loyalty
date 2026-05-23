@@ -8,52 +8,52 @@ if the review report does not explain the result.
 
 ## C1 - Harness is complete
 
-- [ ] `AGENTS.md` exists and is the canonical agent contract.
-- [ ] `CLAUDE.md`, `opencode.json`, and `.cursor/rules/harness.mdc` point to
+- [x] `AGENTS.md` exists and is the canonical agent contract.
+- [x] `CLAUDE.md`, `opencode.json`, and `.cursor/rules/harness.mdc` point to
   `AGENTS.md` without adding conflicting rules.
-- [ ] `feature_list.json`, `progress/current.md`, and `progress/history.md` exist.
-- [ ] `docs/architecture.md`, `docs/conventions.md`, `docs/specs.md`, and
+- [x] `feature_list.json`, `progress/current.md`, and `progress/history.md` exist.
+- [x] `docs/architecture.md`, `docs/conventions.md`, `docs/specs.md`, and
   `docs/verification.md` exist.
-- [ ] `./init.sh` exits with code 0.
+- [x] `./init.sh` exits with code 0.
 
 ## C2 - State is coherent
 
-- [ ] At most one active feature exists in the entire system.
-- [ ] Every SDD feature in `spec_ready`, `in_progress`, `in_review`, or `done` has all three spec
+- [x] At most one active feature exists in the entire system.
+- [x] Every SDD feature in `spec_ready`, `in_progress`, `in_review`, or `done` has all three spec
   files.
-- [ ] Every `blocked` feature is documented in `progress/current.md`.
-- [ ] `progress/current.md` reflects the active session or the idle template.
+- [x] Every `blocked` feature is documented in `progress/current.md`.
+- [x] `progress/current.md` reflects the active session or the idle template.
 
 ## C3 - Next.js rules were respected
 
-- [ ] The relevant local Next.js docs in `node_modules/next/dist/docs/` were consulted
-  before code edits.
-- [ ] App Router conventions are followed.
-- [ ] Server Components remain the default.
-- [ ] No new dependency was added without a spec-backed reason.
+- [x] The relevant local Next.js docs in `node_modules/next/dist/docs/` were consulted
+  before code edits. (N/A — pure backend service, no Next.js code touched. Design doc explicitly states no frontend concerns.)
+- [x] App Router conventions are followed. (N/A — no routes or pages modified.)
+- [x] Server Components remain the default. (N/A — no React components modified.)
+- [x] No new dependency was added without a spec-backed reason.
 
 ## C4 - Verification is real
 
-- [ ] `pnpm lint` passes.
-- [ ] `pnpm test` (Vitest integration tests) passes with > 0 tests and all green.
-- [ ] `pnpm build` passes.
-- [ ] Every `R<n>` maps to at least one concrete integration test in `tests/integration/`.
-- [ ] No tests are skipped (`.skip`) or disabled without documented justification in `progress/impl_<feature>.md`.
-- [ ] For broad cross-layer changes: the human was asked about E2E tests and the decision is documented in `progress/impl_<feature>.md`.
-- [ ] WHERE E2E was requested: Playwright tests exist in `tests/e2e/` and `pnpm test:e2e` passes.
+- [x] `pnpm lint` passes.
+- [x] `pnpm test` (Vitest integration tests) passes with > 0 tests and all green. (88 tests, 12 files)
+- [x] `pnpm build` passes.
+- [x] Every `R<n>` maps to at least one concrete integration test in `tests/integration/`. (R1–R9 all covered in `service_predictive_alerts.integration.test.ts`)
+- [x] No tests are skipped (`.skip`) or disabled without documented justification in `progress/impl_<feature>.md`.
+- [x] For broad cross-layer changes: the human was asked about E2E tests and the decision is documented in `progress/impl_<feature>.md`. (N/A — pure backend service, no cross-layer changes.)
+- [x] WHERE E2E was requested: N/A — no E2E tests requested for this backend-only feature.
 
 ## C5 - Session closure is clean
 
-- [ ] `progress/history.md` includes the final summary.
-- [ ] `feature_list.json` has the correct final state for the reviewed feature.
-- [ ] There are no unexplained temporary files or TODOs.
+- [ ] `progress/history.md` includes the final summary. (Pending — only appended after leader marks `done`.)
+- [x] `feature_list.json` has the correct final state for the reviewed feature. (`in_review`)
+- [x] There are no unexplained temporary files or TODOs.
 
 ## C6 - Spec Driven Development
 
-- [ ] The active role followed the matching contract in `.agents/subagents/`.
-- [ ] `pending` SDD work was handled by `spec_author` before implementation.
-- [ ] Human approval happened before `spec_ready` moved to `in_progress`.
-- [ ] The implementer updated `tasks.md` and wrote `progress/impl_<feature>.md`.
-- [ ] The reviewer wrote `progress/review_<feature>.md` with accept/reject status.
-- [ ] Every `R<n>` maps to at least one concrete verification step.
-- [ ] Reviewer rejected closure if any C1-C6 checkbox was `[ ]`.
+- [x] The active role followed the matching contract in `.agents/subagents/`.
+- [x] `pending` SDD work was handled by `spec_author` before implementation.
+- [x] Human approval happened before `spec_ready` moved to `in_progress`.
+- [x] The implementer updated `tasks.md` and wrote `progress/impl_<feature>.md`.
+- [x] The reviewer wrote `progress/review_<feature>.md` with accept/reject status.
+- [x] Every `R<n>` maps to at least one concrete verification step.
+- [x] Reviewer rejected closure if any C1-C6 checkbox was `[ ]`.

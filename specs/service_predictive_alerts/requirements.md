@@ -1,0 +1,11 @@
+# Requirements - service_predictive_alerts (Feature ID: 17)
+
+- **R1**: WHILE the data span (difference between earliest and latest transaction timestamps) exceeds 30 days, the PredictionService MUST compute week-over-week visit ratios and return an active prediction result containing weekend traffic shift projections.
+- **R2**: IF the data span is less than 30 days, the PredictionService MUST return an inactive prediction result with status set to `"inactive"` and `dataSpanDays` reflecting the actual span.
+- **R3**: WHEN computing week-over-week visit counts, the service MUST group transactions by ISO calendar week (year-week), count total visits per week, and separately count weekend visits (Saturday and Sunday) per week.
+- **R4**: WHEN computing the ratio between consecutive week pairs, the service MUST calculate the percentage change in weekend visits as `((weekendVisitsCurrent - weekendVisitsPrevious) / weekendVisitsPrevious) * 100`, rounded to two decimal places. WHERE the previous week had zero weekend visits, the percentage change MUST be recorded as `0`.
+- **R5**: WHEN determining the data span, the service MUST calculate the difference in days between the earliest and latest `created_at` timestamps from the provided transaction records.
+- **R6**: WHERE a transaction timestamp cannot be parsed into a valid date, the service MUST skip that record and continue processing remaining transactions without throwing.
+- **R7**: WHEN the input dataset is empty, the service MUST return an inactive result with `dataSpanDays` set to `0` and empty `weekVisits` and `weekendRatios` arrays.
+- **R8**: WHEN determining the projected weekend shift direction, the service MUST compare the most recent two weekend ratios. If the latest ratio shows an increase greater than `5%`, the projection MUST be `"increasing"`. If it shows a decrease greater than `5%`, the projection MUST be `"decreasing"`. Otherwise, the projection MUST be `"stable"`. WHERE fewer than two weekend ratios exist, the projection MUST be `"stable"`.
+- **R9**: Integration tests in `tests/integration/service_predictive_alerts.test.ts` MUST assert active vs inactive boundaries at exactly the 30-day threshold, correct ratio calculations, invalid timestamp handling, empty dataset handling, and projection direction logic.

@@ -1,0 +1,7 @@
+# Tasks - service_predictive_alerts (Feature ID: 17)
+
+- [x] **T1**: Define `WeekVisitCount`, `WeekendRatio`, and `PredictionResult` interfaces in `src/backend/types/models.type.ts`. Covers: R1, R2, R3, R4, R8.
+- [x] **T2**: Implement `PredictionService` class with `predict` static method in `src/backend/services/prediction.service.ts` that calculates data span (R5), groups transactions by ISO calendar week counting total and weekend visits (R3), computes consecutive weekend visit ratios with percentage change (R4), determines projected shift direction (R8), and returns active/inactive status based on 30-day threshold (R1, R2). Covers: R1, R2, R3, R4, R5, R8.
+- [x] **T3**: Handle edge cases: invalid timestamps are skipped (R6), empty arrays return inactive with 0-day span (R7), and division-by-zero in ratio calculations is handled as 0 (R4). Covers: R4, R6, R7.
+- [x] **T4**: Create integration test suite in `tests/integration/service_predictive_alerts.integration.test.ts` with test cases verifying: (a) active prediction when data spans >= 30 days, (b) inactive prediction when data spans < 30 days, (c) exact 30-day boundary, (d) correct ISO week grouping and visit counting, (e) weekend ratio and percentage change calculations, (f) projection direction for increasing/decreasing/stable trends, (g) invalid timestamp skipping, (h) empty dataset handling. Covers: R1, R2, R3, R4, R5, R6, R7, R8, R9.
+- [x] **T5**: Verify using `./init.sh --quick` and `./init.sh` that everything compiles, all integration tests pass successfully, and linters are green.

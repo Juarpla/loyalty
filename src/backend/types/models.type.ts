@@ -58,3 +58,26 @@ export interface TrafficDistribution {
   peakWeekday: number;
   totalTransactions: number;
 }
+
+export interface WeekVisitCount {
+  weekLabel: string;
+  weekStart: string;
+  weekEnd: string;
+  totalVisits: number;
+  weekendVisits: number;
+}
+
+export interface WeekendRatio {
+  currentWeek: string;
+  previousWeek: string;
+  visitRatio: number;
+  percentageChange: number;
+}
+
+export interface PredictionResult {
+  status: "active" | "inactive";
+  dataSpanDays: number;
+  weekVisits: WeekVisitCount[];
+  weekendRatios: WeekendRatio[];
+  projectedWeekendShift: "increasing" | "decreasing" | "stable";
+}

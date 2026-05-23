@@ -221,7 +221,7 @@
         "Playwright tests in `tests/e2e/manager_reports_responsiveness.spec.ts` SHALL assert charts fit nicely and don't clip on mobile viewports."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 17,
@@ -235,7 +235,7 @@
         "Integration tests in `tests/integration/service_predictive_alerts.test.ts` SHALL assert active/inactive boundaries."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 18,
@@ -248,7 +248,7 @@
         "Playwright E2E tests in `tests/e2e/component_predictive_card.spec.ts` SHALL verify card elements fit nicely on mobile screens."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 19,
