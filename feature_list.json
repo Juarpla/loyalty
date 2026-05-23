@@ -260,7 +260,7 @@
         "Integration tests in `tests/integration/predictive_alerts_flow.test.ts` SHALL verify no alerts are rendered when dataset lies under 30 days."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 20,
