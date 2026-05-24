@@ -378,7 +378,7 @@
         "Playwright E2E tests in `tests/e2e/page_manager_promotions.spec.ts` SHALL verify responsive mobile layout scaling."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 29,
