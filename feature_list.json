@@ -326,7 +326,7 @@
         "Integration tests in `tests/integration/controller_promotions_generate.test.ts` SHALL check error overrides and fallbacks."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 25,
