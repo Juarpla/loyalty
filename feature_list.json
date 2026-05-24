@@ -352,7 +352,7 @@
         "Integration tests in `tests/integration/hook_manager_campaigns.test.ts` SHALL assert load toggle states."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 27,
@@ -365,7 +365,7 @@
         "Playwright E2E tests in `tests/e2e/component_campaign_segment_cards.spec.ts` SHALL verify component structure."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 28,
