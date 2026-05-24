@@ -339,7 +339,7 @@
         "Integration tests in `tests/integration/api_promotions_generate_route.test.ts` SHALL assert route integrations."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 26,
