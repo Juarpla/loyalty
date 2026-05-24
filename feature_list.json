@@ -286,7 +286,7 @@
         "Integration tests in `tests/integration/controller_promotions_segments.test.ts` SHALL verify JSON shape structures."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 22,
@@ -299,7 +299,7 @@
         "Integration tests in `tests/integration/api_promotions_segments_route.test.ts` SHALL assert routing configurations."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 23,
@@ -312,7 +312,7 @@
         "Integration tests in `tests/integration/service_gemini_recovery_prompt.test.ts` SHALL mock LLM calls and verify limit enforcements."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 24,

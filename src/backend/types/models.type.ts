@@ -98,6 +98,17 @@ export interface CustomerSegmentationResult {
   summary: Record<CustomerSegment | 'unassigned', number>;
 }
 
+export interface GeminiRecoveryPromptInput {
+  customer: SegmentedCustomer;
+  businessName?: string;
+}
+
+export interface GeminiRecoveryPromptResult {
+  phone_number: string;
+  recoveryCopy: string;
+  generatedAt: string;
+}
+
 export const SEGMENTATION_THRESHOLDS = {
   INACTIVE_DAYS: 30,
   FREQUENT_VISIT_COUNT: 5,
