@@ -390,7 +390,7 @@
         "Playwright tests in `tests/e2e/manager_promotions_flow.spec.ts` SHALL tap segment action triggers and assert draft cards render correctly."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 30,
