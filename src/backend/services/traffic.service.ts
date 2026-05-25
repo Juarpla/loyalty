@@ -9,6 +9,46 @@ const DAYS_IN_WEEK = 7;
  */
 export class TrafficService {
   /**
+   * Determines if a given date falls on a historically low-traffic weekday.
+   * Groups transactions by weekday, computes average daily count, and compares
+   * the target weekday's count against (averageDailyCount * threshold).
+   * Invalid timestamps are silently skipped. Empty input returns false.
+   */
+  static isLowTrafficDay(
+    date: Date,
+    transactions: TransactionRecord[],
+    threshold: number = 0.5,
+  ): boolean {
+    if (transactions.length === 0) {
+      return false;
+    }
+
+    const weekdayCounts = new Array(DAYS_IN_WEEK).fill(0) as number[];
+    let validCount = 0;
+
+    for (const tx of transactions) {
+      const txDate = new Date(tx.created_at);
+      if (isNaN(txDate.getTime())) {
+        continue;
+      }
+
+      const weekday = txDate.getUTCDay();
+      weekdayCounts[weekday]++;
+      validCount++;
+    }
+
+    if (validCount === 0) {
+      return false;
+    }
+
+    const averageDailyCount = validCount / DAYS_IN_WEEK;
+    const targetWeekday = date.getUTCDay();
+    const targetCount = weekdayCounts[targetWeekday];
+
+    return targetCount < averageDailyCount * threshold;
+  }
+
+  /**
    * Computes traffic distribution from an array of transaction records.
    * Groups transactions by hour (0-23) and weekday (0=Sunday through 6=Saturday).
    * Invalid timestamps are silently skipped. Empty input returns zeroed buckets.

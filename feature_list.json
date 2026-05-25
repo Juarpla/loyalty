@@ -494,7 +494,7 @@
         "Integration tests in `tests/integration/service_low_traffic_detector.test.ts` SHALL assert Boolean flags using mock profiles."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 38,
@@ -507,7 +507,7 @@
         "Integration tests in `tests/integration/logic_flash_sale_injection.test.ts` SHALL assert decorator outputs."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 39,
@@ -519,7 +519,7 @@
         "Integration tests in `tests/integration/low_traffic_decorator_flow.test.ts` SHALL assert correct keywords are appended on slow days."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 40,
