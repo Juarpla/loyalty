@@ -113,3 +113,11 @@ Append completed session summaries below.
 ## Feature: test_e2e_manager_promotions_flow
 - **Status:** Done
 - **Summary:** Created E2E Playwright tests (`tests/e2e/manager_promotions_flow.e2e.test.ts`) verifying the complete promotions campaign flow: segment card rendering (R4), skeleton loading state during generation (R5,R7), campaign draft cards with recoveryCopy and timestamp (R6,R9), error banner on API 500 failure (R8), empty segments state (R10), mobile viewport no overflow at 375px (R11), and desktop correct rendering at 1440px (R12). 7 new E2E tests pass (63 total). Follows existing route interception pattern from `page_manager_promotions.e2e.test.ts`. E2E gate: feature IS the E2E tests — inherently satisfied. Full harness green (18 test files, 151 tests, lint, build all pass). Reviewer ACCEPTED.
+
+## Feature: util_whatsapp_link_encoder
+- **Status:** Done
+- **Summary:** Implemented `encodeWhatsAppUrl(phone, text)` in `src/backend/utils/whatsapp.utils.ts` — a pure utility that strips non-digits from phone, percent-encodes text via native `encodeURIComponent`, and returns `https://wa.me/<phone>?text=<encoded>`. Handles edge cases: empty/zero-digit phone → empty phone segment, empty text → empty `text=`. Created 7 integration tests in `tests/integration/util_whatsapp_link_encoder.test.ts` covering all 7 requirements (R1–R7). Full SDD workflow: pending → spec_author → spec_ready → in_progress → in_review → done. Full harness green (151 tests, lint, build all pass). Reviewer ACCEPTED.
+
+## Feature: component_whatsapp_share_button
+- **Status:** Done
+- **Summary:** Implemented `WhatsAppShareButton` client component (`src/components/ui/whatsapp-share-button.component.tsx`) — a touch-friendly reusable button that opens prefilled WhatsApp chat URLs via `encodeWhatsAppUrl` with `window.open` and popup blocker fallback. Accepts `phone`, `message`, and optional `className` props. Includes 44px+ touch target (R5), `"use client"` directive (R6), `aria-label="Share on WhatsApp"` (R7), WhatsApp-green branding, and focus-visible keyboard ring. Created 4 Playwright E2E tests covering R1–R7. Full SDD workflow: pending → spec_author → spec_ready → in_progress → in_review → done. Full harness green (151 tests, lint, build all pass). Reviewer ACCEPTED.

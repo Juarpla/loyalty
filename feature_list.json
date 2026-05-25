@@ -403,7 +403,7 @@
         "Integration tests in `tests/integration/util_whatsapp_link_encoder.test.ts` SHALL verify blank spaces translate to `%20`."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 31,
@@ -416,7 +416,7 @@
         "Playwright E2E tests in `tests/e2e/component_whatsapp_share_button.spec.ts` SHALL verify click handlers."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 32,
