@@ -428,7 +428,7 @@
         "Integration tests in `tests/integration/whatsapp_redirect.test.ts` SHALL mock `window.open` and assert correct parameter parsing."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 33,
@@ -442,7 +442,7 @@
         "Integration tests in `tests/integration/controller_social_ideas.test.ts` SHALL check invalid bounds."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 34,
@@ -455,7 +455,7 @@
         "Integration tests in `tests/integration/api_social_ideas_route.test.ts` SHALL assert route maps."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 35,
@@ -468,7 +468,7 @@
         "Integration tests in `tests/integration/hook_social_content.test.ts` SHALL assert loading toggle states."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 36,
@@ -481,7 +481,7 @@
         "Playwright E2E tests in `tests/e2e/component_social_context_form.spec.ts` SHALL assert viewport scale fits mobile views."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 37,

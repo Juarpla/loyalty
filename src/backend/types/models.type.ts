@@ -109,6 +109,13 @@ export interface GeminiRecoveryPromptResult {
   generatedAt: string;
 }
 
+export interface SocialIdea {
+  title: string;
+  body: string;
+  visualPrompt: string;
+  hashtags: string[];
+}
+
 export const SEGMENTATION_THRESHOLDS = {
   INACTIVE_DAYS: 30,
   FREQUENT_VISIT_COUNT: 5,

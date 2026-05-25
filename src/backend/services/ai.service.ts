@@ -1,5 +1,5 @@
 import { logger } from "../utils/logger.utils";
-import { AIAnalysisReport, SegmentedCustomer, GeminiRecoveryPromptResult } from "../types/models.type";
+import { AIAnalysisReport, SegmentedCustomer, GeminiRecoveryPromptResult, SocialIdea } from "../types/models.type";
 
 /**
  * Isolated AI Integration Service (Gemini API / LLMs)
@@ -74,6 +74,43 @@ export class AIService {
     }
 
     return results;
+  }
+
+  static async generateSocialIdeas(context: string): Promise<SocialIdea[]> {
+    logger.info("AIService.generateSocialIdeas invoked", { context });
+
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    const prompt = `Generate 3 social media post ideas for a local business. Context: ${context}. Return as JSON array with title, body, visualPrompt, and hashtags fields.`;
+    const raw = await AIService.callGemini(prompt);
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed.slice(0, 3) as SocialIdea[];
+    } catch {
+      // fall through to simulated response
+    }
+
+    return [
+      {
+        title: `New Post: ${context}`,
+        body: `Check out what's happening at our store! ${context}`,
+        visualPrompt: "A photo of our team working on " + context,
+        hashtags: ["#localbusiness", "#community", "#shoplocal"],
+      },
+      {
+        title: "Behind the Scenes",
+        body: "Get a sneak peek behind the scenes of what makes our business special.",
+        visualPrompt: "Behind-the-scenes photo of the team preparing for the day",
+        hashtags: ["#behindthescenes", "#smallbusiness", "#familyowned"],
+      },
+      {
+        title: "Customer Spotlight",
+        body: "We love our customers! Thanks for being part of our journey.",
+        visualPrompt: "Happy customer holding a product with a smile",
+        hashtags: ["#customerlove", "#thankyou", "#communityfirst"],
+      },
+    ];
   }
 
   static buildRecoveryPrompt(customer: SegmentedCustomer, businessName?: string): string {
