@@ -624,7 +624,7 @@
         "Integration tests in `tests/integration/api_portal_register_route.test.ts` SHALL verify routing maps."
       ],
       "sdd": true,
-      "status": "in_progress"
+      "status": "done"
     },
     {
       "id": 48,
@@ -637,7 +637,7 @@
         "Integration tests in `tests/integration/hook_captive_portal.test.ts` SHALL assert loading states."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 49,
@@ -650,7 +650,7 @@
         "Playwright E2E tests in `tests/e2e/component_wifi_info_qr.spec.ts` SHALL verify layout fits mobile views."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "spec_ready"
     },
     {
       "id": 50,

@@ -182,3 +182,12 @@ Append completed session summaries below.
 ## Feature: controller_portal_register
 - **Status:** Done
 - **Summary:** Implemented `src/backend/controllers/portal.controller.ts` with validation logic for client signups without external dependencies. Wrote and passed integration tests `tests/integration/controller_portal_register.integration.test.ts` to assert validation limits and logic flows. `./init.sh` confirmed fully functional without issues. Reviewer confirmed checkpoints C1-C6 and ACCEPTED the work.
+
+## Feature: api_portal_register_route
+- **Status:** Done
+- **Summary:** Implemented `src/app/api/v1/portal/register/route.ts` routing POST requests to the `portal.controller.ts`. Wrote and verified integration tests in `tests/integration/api_portal_register_route.test.ts`. Ensured proper request formatting and response behavior. Reviewer ACCEPTED.
+
+## Feature: hook_captive_portal
+- **Status:** Done
+- **Summary:** Implemented `usePortal` custom React hook (`src/hooks/use-portal.hook.ts`) that manages state variables (`isLoading`, `isSuccess`, `error`) and provides `registerClient` to perform a POST fetch to `/api/v1/portal/register`. Also provides a `reset` function to restore initial state variables. Implemented 6 comprehensive Vitest integration tests in `tests/integration/hook_captive_portal.integration.test.ts` covering initial state, loading states, successful requests, API failure handling, network error catches, and reset helpers. E2E gate was successfully documented as skipped since it is a pure client hook. Linter and full production Next.js compilation pass cleanly. Reviewer ACCEPTED.
+
