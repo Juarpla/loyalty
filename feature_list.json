@@ -663,7 +663,7 @@
         "Playwright E2E tests in `tests/e2e/page_portal_landing.spec.ts` SHALL verify layout renders successfully on mobile browsers."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 51,
