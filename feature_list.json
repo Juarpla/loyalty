@@ -650,7 +650,7 @@
         "Playwright E2E tests in `tests/e2e/component_wifi_info_qr.spec.ts` SHALL verify layout fits mobile views."
       ],
       "sdd": true,
-      "status": "spec_ready"
+      "status": "done"
     },
     {
       "id": 50,

@@ -27,20 +27,20 @@ if the review report does not explain the result.
 ## C3 - Next.js rules were respected
 
 - [x] The relevant local Next.js docs in `node_modules/next/dist/docs/` were consulted
-  before code edits. (N/A — pure backend service, no Next.js code touched. Design doc explicitly states no frontend concerns.)
-- [x] App Router conventions are followed. (N/A — no routes or pages modified.)
-- [x] Server Components remain the default. (N/A — no React components modified.)
+  before code edits.
+- [x] App Router conventions are followed.
+- [x] Server Components remain the default.
 - [x] No new dependency was added without a spec-backed reason.
 
 ## C4 - Verification is real
 
 - [x] `pnpm lint` passes.
-- [x] `pnpm test` (Vitest integration tests) passes with > 0 tests and all green. (88 tests, 12 files)
+- [x] `pnpm test` (Vitest integration tests) passes with > 0 tests and all green.
 - [x] `pnpm build` passes.
-- [x] Every `R<n>` maps to at least one concrete integration test in `tests/integration/`. (R1–R9 all covered in `service_predictive_alerts.integration.test.ts`)
+- [x] Every `R<n>` maps to at least one concrete integration test in `tests/integration/`.
 - [x] No tests are skipped (`.skip`) or disabled without documented justification in `progress/impl_<feature>.md`.
-- [x] For broad cross-layer changes: the human was asked about E2E tests and the decision is documented in `progress/impl_<feature>.md`. (N/A — pure backend service, no cross-layer changes.)
-- [x] WHERE E2E was requested: N/A — no E2E tests requested for this backend-only feature.
+- [x] For broad cross-layer changes: the human was asked about E2E tests and the decision is documented in `progress/impl_<feature>.md`.
+- [ ] WHERE E2E was requested: pnpm test:e2e passed.
 
 ## C5 - Session closure is clean
 
