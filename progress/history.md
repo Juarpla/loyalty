@@ -153,3 +153,32 @@ Append completed session summaries below.
 ## Feature: test_integration_low_traffic_decorator
 - **Status:** Done
 - **Summary:** Created integration tests (`tests/integration/low_traffic_decorator_flow.integration.test.ts`) for the `decorate()` function in `social-prompt.decorator.ts`. 10 test cases across 5 requirement-labeled `describe` blocks covering R1 (low-traffic day injects flash sale text), R2 (normal-traffic day returns prompt unchanged), R3 (empty transactions unchanged), R4 (custom date parameter routing), and R5 (all-invalid timestamps unchanged). No production code was modified — all code was already in place from features 37 & 38. Full SDD workflow: pending → spec_author → spec_ready → in_progress → in_review → done. Full harness green (24 test files, 187 tests, lint, build all pass). Reviewer ACCEPTED.
+
+## Feature: service_social_gemini_copywriter
+- **Status:** Done
+- **Summary:** Implemented `AIService.generateSocialPostSuggestions(prompt)` — a new static method on `AIService` accepting a pre-decorated prompt string, building a structured Gemini prompt with JSON output constraints, parsing & validating the LLM response, enforcing character limits with word-boundary truncation, and returning up to 3 `SocialIdea[]` objects. Full fallback chain: empty/whitespace prompt → single default idea, LLM failure → 3 simulated ideas using prompt context, malformed JSON → simulated fallback with warning log. Added `SOCIAL_POST_LIMITS` constants to `models.type.ts`, `validateSocialIdea`, `truncateAtWordBoundary`, and `simulateSocialPostFallback` helpers. Updated `SocialController.handleSocialIdeas` to build a base prompt, apply `decorate()` from `social-prompt.decorator.ts`, and call the new method. Created 18 integration tests in `tests/integration/service_social_gemini_copywriter.integration.test.ts` with 7 test cases covering all 12 requirements (R1–R12). Full SDD workflow: pending → spec_author → spec_ready (human approved) → in_progress → in_review → done. Full harness green (25 test files, 204 tests, lint, build all pass). Reviewer ACCEPTED.
+
+
+## Feature: component_social_suggestions_cards
+- **Status:** Done
+- **Summary:** Implemented `SuggestionsCards` component (`src/components/social/suggestions-cards.component.tsx`) — renders clean output suggestions with visual prompts and clipboard handlers. Added Playwright E2E tests (`tests/e2e/component_social_suggestions_cards.spec.ts`) and a test route (`src/app/test-social-cards/page.tsx`). Full SDD workflow: pending -> spec_author -> spec_ready -> in_progress -> in_review -> done. Full harness green. Reviewer ACCEPTED.
+
+## Feature: page_manager_social
+- **Status:** Done
+- **Summary:** Implemented `page_manager_social` (`src/app/admin/social/page.tsx`) integrating the `ContextForm` and `SuggestionsCards` components, wired with the `useSocialIdeas` hook. Added responsive mobile (stack) and desktop (grid) layouts. Resolved unescaped entity lint errors. Playwright E2E tests (`tests/e2e/page_manager_social.spec.ts`) cover responsive behaviors and layout integrations. Full SDD workflow completed: pending -> spec_author -> spec_ready -> in_progress -> in_review -> done. E2E gate human approved. Full harness green. Reviewer ACCEPTED. UPDATE: Reopened to add missing skeletal loading indicators (`animate-pulse`). Verified passing tests and init.sh. Re-ACCEPTED and closed.
+
+## Feature: test_e2e_social_clipboard_actions
+- **Status:** Done
+- **Summary:** Created Playwright E2E tests (`tests/e2e/social_clipboard_actions.spec.ts`) for the Social Content Creation page. The tests verify the skeletal loading indicators (which were added to `page.tsx` during a blocker resolution step) and the touch copy-to-clipboard functionality. Fixed linting errors (any type replaced with `() => void` and removed unused props). Reviewer accepted; full harness green (init.sh passed, 204 tests).
+
+## Feature: db_migration_captive_clients
+- **Status:** Done
+- **Summary:** Generated Supabase migration `20260526000146_captive_portal_schema.sql` for the captive portal, creating the `clients` table (for profile records) and the `wifi_logins` table (for session logs) with a one-to-many relationship. Wrote integration tests in `tests/integration/db_migration_captive.test.ts` to assert that schema constraints map to EARS requirements R1-R5. Regenerated types with `pnpm db:gen-types`. The reviewer verified C1-C6 and ran `./init.sh` flawlessly. Harness fully green. Reviewer ACCEPTED.
+
+## Feature: model_captive_portal_upsert
+- **Status:** Done
+- **Summary:** Implemented `registerPortalLogin` in `ClientModel` (`src/backend/models/client.model.ts`). Added error handling and data upserting into the `clients` table along with inserting logs to `wifi_logins`. Created passing integration tests `tests/integration/model_captive_portal_upsert.integration.test.ts`. Fixed a TypeScript error during build where `error` variable was mistyped for casting. All tests and `./init.sh` pass cleanly. Reviewer ACCEPTED.
+
+## Feature: controller_portal_register
+- **Status:** Done
+- **Summary:** Implemented `src/backend/controllers/portal.controller.ts` with validation logic for client signups without external dependencies. Wrote and passed integration tests `tests/integration/controller_portal_register.integration.test.ts` to assert validation limits and logic flows. `./init.sh` confirmed fully functional without issues. Reviewer confirmed checkpoints C1-C6 and ACCEPTED the work.

@@ -532,7 +532,7 @@
         "Integration tests in `tests/integration/service_social_gemini_copywriter.test.ts` SHALL mock Gemini API response schemas."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 41,
@@ -545,7 +545,7 @@
         "Playwright E2E tests in `tests/e2e/component_social_suggestions_cards.spec.ts` SHALL verify component structure."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 42,
@@ -558,7 +558,7 @@
         "Playwright E2E tests in `tests/e2e/page_manager_social.spec.ts` SHALL verify viewport CSS adaptations."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 43,
@@ -570,7 +570,7 @@
         "Playwright tests in `tests/e2e/social_clipboard_actions.spec.ts` SHALL tap context submission, check skeletons, and verify clipboard changes."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 44,
@@ -584,7 +584,7 @@
         "Integration tests in `tests/integration/db_migration_captive.test.ts` SHALL verify table schemas and constraints."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 45,
@@ -597,7 +597,7 @@
         "Integration tests in `tests/integration/model_captive_portal_upsert.test.ts` SHALL assert write logic and timestamps."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 46,
@@ -611,7 +611,7 @@
         "Integration tests in `tests/integration/controller_portal_register.test.ts` SHALL cover validation limits."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 47,
@@ -624,7 +624,7 @@
         "Integration tests in `tests/integration/api_portal_register_route.test.ts` SHALL verify routing maps."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": 48,

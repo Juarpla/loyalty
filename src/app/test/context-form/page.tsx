@@ -1,10 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import {
-  ContextForm,
-  type ContextFormProps,
-} from "@/components/social/context-form.component";
+import { ContextForm } from "@/components/social/context-form.component";
 
 interface ScenarioData {
   loading: boolean;

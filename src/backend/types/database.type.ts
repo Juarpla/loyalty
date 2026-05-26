@@ -34,6 +34,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      clients: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string | null
+          phone_number: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          phone_number: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          phone_number?: string
+        }
+        Relationships: []
+      }
       sales_transactions: {
         Row: {
           amount: number
@@ -54,6 +75,32 @@ export type Database = {
           phone_number?: string
         }
         Relationships: []
+      }
+      wifi_logins: {
+        Row: {
+          client_id: string
+          created_at: string | null
+          id: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string | null
+          id?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wifi_logins_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

@@ -1,0 +1,242 @@
+[eval]:68
+      throw new Error(`blocked feature ${feature.name} must be documented in progress/current.md`);
+      ^
+
+Error: blocked feature test_e2e_social_clipboard_actions must be documented in progress/current.md
+    at [eval]:68:13
+    at runScriptInThisContext (node:internal/vm:209:10)
+    at node:internal/process/execution:118:14
+    at [eval]-wrapper:6:24
+    at runScript (node:internal/process/execution:101:62)
+    at evalScript (node:internal/process/execution:133:3)
+    at node:internal/main/eval_string:51:3
+
+Node.js v20.17.0
+[90mstderr[2m | tests/integration/model-sales-write.integration.test.ts
+[22m[39m[WARN] [2026-05-25T21:33:23.282Z] Supabase credentials missing. Running database in simulation/offline mode. 
+
+[90mstderr[2m | tests/integration/model-sales-read.integration.test.ts
+[22m[39m[WARN] [2026-05-25T21:33:23.283Z] Supabase credentials missing. Running database in simulation/offline mode. 
+
+[90mstderr[2m | tests/integration/model_customer_segmentation.integration.test.ts
+[22m[39m[WARN] [2026-05-25T21:33:23.282Z] Supabase credentials missing. Running database in simulation/offline mode. 
+
+[90mstderr[2m | tests/integration/controller_promotions_segments.integration.test.ts
+[22m[39m[WARN] [2026-05-25T21:33:23.283Z] Supabase credentials missing. Running database in simulation/offline mode. 
+
+[90mstderr[2m | tests/integration/controller-sales-record.integration.test.ts
+[22m[39m[WARN] [2026-05-25T21:33:23.288Z] Supabase credentials missing. Running database in simulation/offline mode. 
+
+[90mstderr[2m | tests/integration/model-sales-write.integration.test.ts[2m > [22m[2mmodel_sales_insert Integration Tests[2m > [22m[2mR3: should bubble up 'DB_CONNECTION_FAILURE' when database is unreachable
+[22m[39m[ERROR] [2026-05-25T21:33:23.431Z] Database error in SalesModel.insertTransaction {
+  message: [32m'TypeError: fetch failed'[39m,
+  details: [32m'TypeError: fetch failed\n'[39m +
+    [32m'\n'[39m +
+    [32m'Caused by: Error: connect ECONNREFUSED 127.0.0.1:11111 (ECONNREFUSED)\n'[39m +
+    [32m'Error: connect ECONNREFUSED 127.0.0.1:11111\n'[39m +
+    [32m'    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)'[39m,
+  hint: [32m''[39m,
+  code: [32m''[39m
+}
+[ERROR] [2026-05-25T21:33:23.432Z] Exception in SalesModel.insertTransaction Error: DB_CONNECTION_FAILURE
+    at Function.insertTransaction [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/models/sales.model.ts:59:17[90m)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/model-sales-write.integration.test.ts:106:5
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:20
+
+[90mstderr[2m | tests/integration/controller_promotions_segments.integration.test.ts[2m > [22m[2mcontroller_promotions_segments Integration Tests[2m > [22m[2mR3: should return status 500 with DB_CONNECTION_FAILURE error
+[22m[39m[ERROR] [2026-05-25T21:33:23.439Z] PromotionsController.getSegments failed Error: DB_CONNECTION_FAILURE
+    at Function.__vite_ssr_import_3__.ClientModel.getCustomerSegments [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_segments.integration.test.ts:63:60[90m)[39m
+    at Function.getSegments [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/controllers/promotions.controller.ts:58:38[90m)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_segments.integration.test.ts:66:46
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:302:11
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:26
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel [90m(file:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2323:10[90m)[39m
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+
+[90mstderr[2m | tests/integration/controller_promotions_segments.integration.test.ts[2m > [22m[2mcontroller_promotions_segments Integration Tests[2m > [22m[2mR4: should return status 500 with generic error message
+[22m[39m[ERROR] [2026-05-25T21:33:23.442Z] PromotionsController.getSegments failed Error: UNEXPECTED_ERROR
+    at Function.__vite_ssr_import_3__.ClientModel.getCustomerSegments [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_segments.integration.test.ts:82:60[90m)[39m
+    at Function.getSegments [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/controllers/promotions.controller.ts:58:38[90m)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_segments.integration.test.ts:85:46
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:302:11
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:26
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel [90m(file:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2323:10[90m)[39m
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+
+[90mstderr[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR5: should catch DB connection failures and map them to a status 500 error packet
+[22m[39m[ERROR] [2026-05-25T21:33:23.441Z] SalesController.recordTransaction failed Error: DB_CONNECTION_FAILURE
+    at Function.__vite_ssr_import_3__.SalesModel.insertTransaction [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller-sales-record.integration.test.ts:165:57[90m)[39m
+    at Function.recordTransaction [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/controllers/sales.controller.ts:63:37[90m)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller-sales-record.integration.test.ts:171:41
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:302:11
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:26
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel [90m(file:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2323:10[90m)[39m
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+
+[90mstderr[2m | tests/integration/controller_promotions_segments.integration.test.ts[2m > [22m[2mcontroller_promotions_segments Integration Tests[2m > [22m[2mR6: should log error via logger.error when exception occurs
+[22m[39m[ERROR] [2026-05-25T21:33:23.526Z] PromotionsController.getSegments failed Error: DB_CONNECTION_FAILURE
+    at Function.__vite_ssr_import_3__.ClientModel.getCustomerSegments [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_segments.integration.test.ts:117:60[90m)[39m
+    at Function.getSegments [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/controllers/promotions.controller.ts:58:38[90m)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_segments.integration.test.ts:122:34
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:302:11
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:26
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel [90m(file:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2323:10[90m)[39m
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+
+[90mstderr[2m | tests/integration/model-sales-read.integration.test.ts[2m > [22m[2mmodel_sales_query Integration Tests[2m > [22m[2mR3: should bubble up 'DB_CONNECTION_FAILURE' when database is unreachable
+[22m[39m[ERROR] [2026-05-25T21:33:23.537Z] Exception in SalesModel.getSalesAggregate TypeError: fetch failed
+    at Object.eq [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/model-sales-read.integration.test.ts:141:59[90m)[39m
+    at Function.getSalesAggregate [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/models/sales.model.ts:215:10[90m)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/model-sales-read.integration.test.ts:151:31
+[90m    at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:20
+
+[90mstderr[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR6, R12: Malformed JSON fallback[2m > [22m[2mR6: SHALL return simulated SocialIdea[] when Gemini returns malformed JSON
+[22m[39m[WARN] [2026-05-25T21:33:23.621Z] generateSocialPostSuggestions: malformed JSON response 
+
+[90mstderr[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR6, R12: Malformed JSON fallback[2m > [22m[2mR6: SHALL log warning on malformed JSON
+[22m[39m[WARN] [2026-05-25T21:33:23.622Z] generateSocialPostSuggestions: malformed JSON response 
+
+[90mstderr[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR6, R12: Malformed JSON fallback[2m > [22m[2mR6: SHALL return simulated response when Gemini returns empty string
+[22m[39m[WARN] [2026-05-25T21:33:23.622Z] generateSocialPostSuggestions: empty Gemini response 
+
+[90mstderr[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR7, R12: Gemini API error fallback[2m > [22m[2mR7: SHALL return simulated SocialIdea[] when Gemini throws
+[22m[39m[ERROR] [2026-05-25T21:33:23.622Z] generateSocialPostSuggestions: Gemini call failed { error: [32m'Network timeout'[39m }
+
+[90mstderr[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR7, R12: Gemini API error fallback[2m > [22m[2mR7: SHALL log error when Gemini call fails
+[22m[39m[ERROR] [2026-05-25T21:33:23.623Z] generateSocialPostSuggestions: Gemini call failed { error: [32m'API error 503'[39m }
+
+[90mstderr[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR8, R12: Empty prompt handling[2m > [22m[2mR8: SHALL return single default idea when prompt is empty string
+[22m[39m[WARN] [2026-05-25T21:33:23.625Z] generateSocialPostSuggestions: empty prompt 
+
+[90mstderr[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR8, R12: Empty prompt handling[2m > [22m[2mR8: SHALL return single default idea when prompt is whitespace
+[22m[39m[WARN] [2026-05-25T21:33:23.626Z] generateSocialPostSuggestions: empty prompt 
+
+[90mstderr[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR8, R12: Empty prompt handling[2m > [22m[2mR8: SHALL log warning on empty prompt
+[22m[39m[WARN] [2026-05-25T21:33:23.626Z] generateSocialPostSuggestions: empty prompt 
+
+[90mstderr[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR11: Logs per-response failure[2m > [22m[2mR11: SHALL log warning when JSON parse fails
+[22m[39m[WARN] [2026-05-25T21:33:23.630Z] generateSocialPostSuggestions: malformed JSON response 
+
+[90mstderr[2m | tests/integration/api-sales-record-route.integration.test.ts
+[22m[39m[WARN] [2026-05-25T21:33:23.633Z] Supabase credentials missing. Running database in simulation/offline mode. 
+
+[90mstderr[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR10: mock Gemini rejects[2m > [22m[2mSHALL return fallback message when Gemini call fails
+[22m[39m[ERROR] [2026-05-25T21:33:23.689Z] generateRecoveryPrompts call failed { phone_number: [32m'+51900111000'[39m, error: [32m'API error'[39m }
+
+[90mstderr[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR10: mock Gemini rejects[2m > [22m[2mSHALL log error with phone number when Gemini call fails
+[22m[39m[ERROR] [2026-05-25T21:33:23.690Z] generateRecoveryPrompts call failed { phone_number: [32m'+51900111000'[39m, error: [32m'API error'[39m }
+
+[90mstderr[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR5: fallback message[2m > [22m[2mSHALL return fallback when Gemini returns empty string
+[22m[39m[ERROR] [2026-05-25T21:33:23.693Z] generateRecoveryPrompts call failed { phone_number: [32m'+51900111000'[39m, error: [32m'Empty response'[39m }
+
+[90mstderr[2m | tests/integration/api-sales-record-route.integration.test.ts[2m > [22m[2mapi_sales_record_route Integration Tests[2m > [22m[2mR3: should reject malformed JSON input with 400 Bad Request
+[22m[39m[ERROR] [2026-05-25T21:33:23.700Z] Failed to parse request JSON body in API route SyntaxError: Unexpected token 'o', "not-a-json-payload{" is not valid JSON
+    at JSON.parse (<anonymous>)
+[90m    at parseJSONFromBytes (node:internal/deps/undici/undici:5472:19)[39m
+[90m    at successSteps (node:internal/deps/undici/undici:5454:27)[39m
+[90m    at fullyReadBody (node:internal/deps/undici/undici:4381:9)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+[90m    at consumeBody (node:internal/deps/undici/undici:5463:7)[39m
+    at POST [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/app/api/v1/sales/record/route.ts:14:12[90m)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/api-sales-record-route.integration.test.ts:92:17
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:20
+
+[90mstderr[2m | tests/integration/api-sales-record-route.integration.test.ts[2m > [22m[2mapi_sales_record_route Integration Tests[2m > [22m[2mR5: should bubble database connection failures as 500 Internal Server Error
+[22m[39m[ERROR] [2026-05-25T21:33:23.715Z] SalesController.recordTransaction failed Error: DB_CONNECTION_FAILURE
+    at Function.__vite_ssr_import_3__.SalesModel.insertTransaction [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/api-sales-record-route.integration.test.ts:131:57[90m)[39m
+    at Function.recordTransaction [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/controllers/sales.controller.ts:63:37[90m)[39m
+    at POST [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/app/api/v1/sales/record/route.ts:27:40[90m)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/api-sales-record-route.integration.test.ts:147:19
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:20
+
+[90mstderr[2m | tests/integration/controller_promotions_generate.integration.test.ts
+[22m[39m[WARN] [2026-05-25T21:33:23.728Z] Supabase credentials missing. Running database in simulation/offline mode. 
+
+[90mstderr[2m | tests/integration/model_customer_segmentation.integration.test.ts[2m > [22m[2mmodel_customer_segmentation Integration Tests[2m > [22m[2mR10: should propagate DB_CONNECTION_FAILURE when database is unreachable
+[22m[39m[ERROR] [2026-05-25T21:33:23.756Z] Exception in ClientModel.getCustomerSegments TypeError: fetch failed
+    at Object.order [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/model_customer_segmentation.integration.test.ts:252:41[90m)[39m
+    at Function.getCustomerSegments [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/models/client.model.ts:273:10[90m)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/model_customer_segmentation.integration.test.ts:260:32
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:20
+
+[90mstderr[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT11: AIService rejection fallback (R11)[2m > [22m[2mR11: should inject fallback discount campaigns when AIService rejects
+[22m[39m[ERROR] [2026-05-25T21:33:23.744Z] PromotionsController.generate AIService failed Error: Gemini API rate limit exceeded
+    at Function.__vite_ssr_import_2__.AIService.generateRecoveryPrompts [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_generate.integration.test.ts:82:64[90m)[39m
+    at Function.generate [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/controllers/promotions.controller.ts:19:41[90m)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_generate.integration.test.ts:85:21
+
+[90mstderr[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT13: DB_CONNECTION_FAILURE (R9)[2m > [22m[2mR9: should return { success: false, status: 500, error: 'DB_CONNECTION_FAILURE' }
+[22m[39m[ERROR] [2026-05-25T21:33:23.762Z] PromotionsController.generate failed Error: DB_CONNECTION_FAILURE
+    at Function.__vite_ssr_import_1__.ClientModel.getCustomerSegments [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_generate.integration.test.ts:135:62[90m)[39m
+    at Function.generate [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/controllers/promotions.controller.ts:11:46[90m)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_generate.integration.test.ts:138:48
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:302:11
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:26
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel [90m(file:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2323:10[90m)[39m
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+
+[90mstderr[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT14: generic error from ClientModel (R8, R9)[2m > [22m[2mR8/R9: should propagate generic error with status 500
+[22m[39m[ERROR] [2026-05-25T21:33:23.763Z] PromotionsController.generate failed Error: UNEXPECTED_DB_ERROR
+    at Function.__vite_ssr_import_1__.ClientModel.getCustomerSegments [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_generate.integration.test.ts:153:62[90m)[39m
+    at Function.generate [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/controllers/promotions.controller.ts:11:46[90m)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_generate.integration.test.ts:156:48
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:302:11
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:26
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel [90m(file:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2323:10[90m)[39m
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+
+[90mstderr[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT15: logger spy tests (R7, R8)[2m > [22m[2mR8: should log error via logger.error when AIService fails
+[22m[39m[ERROR] [2026-05-25T21:33:23.765Z] PromotionsController.generate AIService failed Error: Gemini API error
+    at Function.__vite_ssr_import_2__.AIService.generateRecoveryPrompts [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_generate.integration.test.ts:195:64[90m)[39m
+    at Function.generate [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/controllers/promotions.controller.ts:19:41[90m)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_generate.integration.test.ts:200:9
+
+[90mstderr[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT15: logger spy tests (R7, R8)[2m > [22m[2mR8: should log error via logger.error when ClientModel fails
+[22m[39m[ERROR] [2026-05-25T21:33:23.769Z] PromotionsController.generate failed Error: DB_CONNECTION_FAILURE
+    at Function.__vite_ssr_import_1__.ClientModel.getCustomerSegments [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_generate.integration.test.ts:215:62[90m)[39m
+    at Function.generate [90m(/Users/juarpla/Documents/Code Practice/loyalty/[39msrc/backend/controllers/promotions.controller.ts:11:46[90m)[39m
+    at [90m/Users/juarpla/Documents/Code Practice/loyalty/[39mtests/integration/controller_promotions_generate.integration.test.ts:220:36
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:302:11
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:1903:26
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel [90m(file:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2323:10[90m)[39m
+    at [90mfile:///Users/juarpla/Documents/Code%20Practice/loyalty/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.1.6/node_modules/[4m@vitest[24m/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+
+Connecting to local database...
+A new version of Supabase CLI is available: v2.101.0 (currently installed v)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
+Connecting to local database...
+A new version of Supabase CLI is available: v2.101.0 (currently installed v)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
+[WARN] [2026-05-25T21:33:31.113Z] Supabase credentials missing. Running database in simulation/offline mode. 
+[WARN] [2026-05-25T21:33:31.122Z] Supabase credentials missing. Running database in simulation/offline mode. 
+[WARN] [2026-05-25T21:33:31.128Z] Supabase credentials missing. Running database in simulation/offline mode. 
+[WARN] [2026-05-25T21:33:31.130Z] Supabase credentials missing. Running database in simulation/offline mode. 
+[WARN] [2026-05-25T21:33:31.144Z] Supabase credentials missing. Running database in simulation/offline mode. 
+[WARN] [2026-05-25T21:33:31.145Z] Supabase credentials missing. Running database in simulation/offline mode. 
+[WARN] [2026-05-25T21:33:31.203Z] Supabase credentials missing. Running database in simulation/offline mode. 

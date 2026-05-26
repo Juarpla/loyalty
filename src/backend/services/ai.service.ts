@@ -1,5 +1,11 @@
 import { logger } from "../utils/logger.utils";
-import { AIAnalysisReport, SegmentedCustomer, GeminiRecoveryPromptResult, SocialIdea } from "../types/models.type";
+import {
+  AIAnalysisReport,
+  SegmentedCustomer,
+  GeminiRecoveryPromptResult,
+  SocialIdea,
+  SOCIAL_POST_LIMITS,
+} from "../types/models.type";
 
 /**
  * Isolated AI Integration Service (Gemini API / LLMs)
@@ -111,6 +117,158 @@ export class AIService {
         hashtags: ["#customerlove", "#thankyou", "#communityfirst"],
       },
     ];
+  }
+
+  static truncateAtWordBoundary(text: string, maxLength: number): string {
+    const trimmed = text.trim();
+    if (trimmed.length <= maxLength) return trimmed;
+    const truncated = trimmed.slice(0, maxLength);
+    const lastSpace = truncated.lastIndexOf(" ");
+    if (lastSpace <= 0) return truncated.slice(0, maxLength - 1) + "\u2026";
+    return truncated.slice(0, lastSpace) + "\u2026";
+  }
+
+  static validateSocialIdea(item: unknown): SocialIdea {
+    const obj = item && typeof item === "object" ? (item as Record<string, unknown>) : {};
+
+    const title =
+      typeof obj.title === "string" && obj.title.trim()
+        ? obj.title.trim()
+        : "New Post";
+
+    const body =
+      typeof obj.body === "string" && obj.body.trim()
+        ? obj.body.trim()
+        : "Check out what\u2019s happening at our store!";
+
+    const visualPrompt =
+      typeof obj.visualPrompt === "string" && obj.visualPrompt.trim()
+        ? obj.visualPrompt.trim()
+        : "A photo of our team at work";
+
+    let hashtags: string[];
+    if (Array.isArray(obj.hashtags) && obj.hashtags.length > 0) {
+      hashtags = obj.hashtags
+        .filter((t): t is string => typeof t === "string" && t.trim().length > 0)
+        .slice(0, SOCIAL_POST_LIMITS.HASHTAGS_MAX)
+        .map((t) => AIService.truncateAtWordBoundary(t.trim(), SOCIAL_POST_LIMITS.HASHTAG_MAX_LENGTH));
+    } else {
+      hashtags = ["#localbusiness", "#shoplocal"];
+    }
+
+    return {
+      title: AIService.truncateAtWordBoundary(title, SOCIAL_POST_LIMITS.TITLE_MAX),
+      body: AIService.truncateAtWordBoundary(body, SOCIAL_POST_LIMITS.BODY_MAX),
+      visualPrompt: AIService.truncateAtWordBoundary(visualPrompt, SOCIAL_POST_LIMITS.VISUAL_PROMPT_MAX),
+      hashtags,
+    };
+  }
+
+  static simulateSocialPostFallback(prompt: string): SocialIdea[] {
+    const context =
+      prompt.length > 60 ? prompt.slice(0, 60) + "..." : prompt;
+    return [
+      {
+        title: `New Post: ${context}`,
+        body: `Check out what\u2019s happening at our store! ${context}`,
+        visualPrompt: "A photo of our team working on " + context,
+        hashtags: ["#localbusiness", "#community", "#shoplocal"],
+      },
+      {
+        title: "Behind the Scenes",
+        body: "Get a sneak peek behind the scenes of what makes our business special.",
+        visualPrompt: "Behind-the-scenes photo of the team preparing for the day",
+        hashtags: ["#behindthescenes", "#smallbusiness", "#familyowned"],
+      },
+      {
+        title: "Customer Spotlight",
+        body: "We love our customers! Thanks for being part of our journey.",
+        visualPrompt: "Happy customer holding a product with a smile",
+        hashtags: ["#customerlove", "#thankyou", "#communityfirst"],
+      },
+    ];
+  }
+
+  static async generateSocialPostSuggestions(
+    prompt: string,
+  ): Promise<SocialIdea[]> {
+    if (!prompt || !prompt.trim()) {
+      logger.warn("generateSocialPostSuggestions: empty prompt");
+      return [
+        {
+          title: "New Post",
+          body: "Share what makes your business special today!",
+          visualPrompt: "A photo of our team at work",
+          hashtags: ["#localbusiness", "#shoplocal"],
+        },
+      ];
+    }
+
+    const promptPreview =
+      prompt.length > 50 ? prompt.slice(0, 50) + "..." : prompt;
+    logger.info("generateSocialPostSuggestions started", {
+      promptLength: prompt.length,
+      preview: promptPreview,
+    });
+
+    const fullPrompt = [
+      "You are a social media copywriter for a local business.",
+      `Generate up to ${SOCIAL_POST_LIMITS.MAX_IDEAS} social media post ideas.`,
+      "",
+      "For each idea, respond with a JSON object containing these fields:",
+      `- "title": string (max ${SOCIAL_POST_LIMITS.TITLE_MAX} characters, attention-grabbing headline)`,
+      `- "body": string (max ${SOCIAL_POST_LIMITS.BODY_MAX} characters, the post body text)`,
+      `- "visualPrompt": string (max ${SOCIAL_POST_LIMITS.VISUAL_PROMPT_MAX} characters, description of an image to accompany the post)`,
+      `- "hashtags": string[] (max ${SOCIAL_POST_LIMITS.HASHTAGS_MAX} tags, each max ${SOCIAL_POST_LIMITS.HASHTAG_MAX_LENGTH} characters)`,
+      "",
+      "Respond ONLY with a JSON array of objects. No markdown, no code fences, no additional text.",
+      "",
+      "Business context:",
+      prompt,
+    ].join("\n");
+
+    let raw: string;
+    try {
+      raw = await AIService.callGemini(fullPrompt);
+    } catch (err) {
+      logger.error("generateSocialPostSuggestions: Gemini call failed", {
+        error: err instanceof Error ? err.message : String(err),
+      });
+      return AIService.simulateSocialPostFallback(prompt);
+    }
+
+    if (!raw || !raw.trim()) {
+      logger.warn("generateSocialPostSuggestions: empty Gemini response");
+      return AIService.simulateSocialPostFallback(prompt);
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      logger.warn(
+        "generateSocialPostSuggestions: malformed JSON response",
+      );
+      return AIService.simulateSocialPostFallback(prompt);
+    }
+
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      logger.warn(
+        "generateSocialPostSuggestions: response is not an array or is empty",
+      );
+      return AIService.simulateSocialPostFallback(prompt);
+    }
+
+    const items = parsed.slice(0, SOCIAL_POST_LIMITS.MAX_IDEAS);
+    const ideas: SocialIdea[] = items.map((item: unknown) =>
+      AIService.validateSocialIdea(item),
+    );
+
+    logger.info("generateSocialPostSuggestions success", {
+      count: ideas.length,
+    });
+
+    return ideas;
   }
 
   static buildRecoveryPrompt(customer: SegmentedCustomer, businessName?: string): string {

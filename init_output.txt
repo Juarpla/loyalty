@@ -1,0 +1,619 @@
+== 1. Checking System Environment & Dependencies ===
+[0;32m[OK][0m node -> v20.17.0
+[0;32m[OK][0m pnpm -> 9.11.0
+
+== 2. Auditing Agent Harness & Spec Files ===
+[0;32m[OK][0m exists AGENTS.md
+[0;32m[OK][0m exists ENHANCEMENTS.md
+[0;32m[OK][0m exists CLAUDE.md
+[0;32m[OK][0m exists opencode.json
+[0;32m[OK][0m exists .cursor/rules/harness.mdc
+[0;32m[OK][0m exists .agents/subagents/leader.md
+[0;32m[OK][0m exists .agents/subagents/spec_author.md
+[0;32m[OK][0m exists .agents/subagents/implementer.md
+[0;32m[OK][0m exists .agents/subagents/reviewer.md
+[0;32m[OK][0m exists .claude/agents/leader.md
+[0;32m[OK][0m exists .claude/agents/spec_author.md
+[0;32m[OK][0m exists .claude/agents/implementer.md
+[0;32m[OK][0m exists .claude/agents/reviewer.md
+[0;32m[OK][0m exists .claude/settings.json
+[0;32m[OK][0m exists .cursor/hooks.json
+[0;32m[OK][0m exists .codex/hooks.json
+[0;32m[OK][0m exists feature_list.json
+[0;32m[OK][0m exists progress/current.md
+[0;32m[OK][0m exists progress/history.md
+[0;32m[OK][0m exists docs/architecture.md
+[0;32m[OK][0m exists docs/conventions.md
+[0;32m[OK][0m exists docs/specs.md
+[0;32m[OK][0m exists docs/verification.md
+[0;32m[OK][0m exists CHECKPOINTS.md
+[0;32m[OK][0m executable init.sh
+
+== 3. Validating Git Hooks & Agent Automation Settings ===
+[OK] Agent hook settings valid (.claude, .cursor, .codex)
+
+== 4. Analyzing Feature Lifecycle State & SDD Spec Completeness ===
+
+== 4.5. Validating feature_list.json Integrity Against Snapshot ===
+[OK] Feature list integrity verified against snapshot (66 features)
+
+== 4.6. Auditing Supabase & Vercel Configuration ===
+[0;32m[OK][0m Supabase directory detected
+[0;32m[OK][0m Supabase migrations lint passed
+[0;33m[WARN][0m Vercel project is not yet linked. Run 'pnpm exec vercel link' when ready.
+
+== 5. Running Integration Tests (Vitest) ===
+
+> loyalty@0.1.0 test /Users/juarpla/Documents/Code Practice/loyalty
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.6 [39m[90m/Users/juarpla/Documents/Code Practice/loyalty[39m
+
+[90mstdout[2m | tests/integration/model-sales-read.integration.test.ts[2m > [22m[2mmodel_sales_query Integration Tests[2m > [22m[2mR4: should return successfully generated mock aggregation in offline/simulation mode
+[22m[39m[INFO] [2026-05-25T21:33:23.310Z] SalesModel.getSalesAggregate invoked {
+  "phoneNumber": "123456789"
+}
+[INFO] [2026-05-25T21:33:23.311Z] Database Executing Query: [getSalesAggregate] 
+
+[90mstdout[2m | tests/integration/model-sales-write.integration.test.ts[2m > [22m[2mmodel_sales_insert Integration Tests[2m > [22m[2mR4: should return successfully generated mock record in offline/simulation mode
+[22m[39m[INFO] [2026-05-25T21:33:23.310Z] SalesModel.insertTransaction invoked {
+  "phoneNumber": "123456789",
+  "amount": 100.5
+}
+[INFO] [2026-05-25T21:33:23.310Z] Database Executing Query: [insertTransaction] 
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR1, R3: should reject missing or invalid phone numbers with 400 validation error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.326Z] SalesController.recordTransaction started {
+  "amount": 100
+}
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR1, R3: should reject missing or invalid phone numbers with 400 validation error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.327Z] SalesController.recordTransaction started {
+  "phone_number": 123456789,
+  "amount": 100
+}
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR1, R3: should reject missing or invalid phone numbers with 400 validation error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.327Z] SalesController.recordTransaction started {
+  "phone_number": "+51999888",
+  "amount": 100
+}
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR1, R3: should reject missing or invalid phone numbers with 400 validation error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.327Z] SalesController.recordTransaction started {
+  "phone_number": "+519998887777",
+  "amount": 100
+}
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR1, R3: should reject missing or invalid phone numbers with 400 validation error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.327Z] SalesController.recordTransaction started {
+  "phone_number": "51999888777",
+  "amount": 100
+}
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR2, R3: should reject missing, non-numeric, or negative/zero amounts with 400 validation error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.327Z] SalesController.recordTransaction started {
+  "phone_number": "+51999888777"
+}
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR2, R3: should reject missing, non-numeric, or negative/zero amounts with 400 validation error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.327Z] SalesController.recordTransaction started {
+  "phone_number": "+51999888777",
+  "amount": "abc"
+}
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR2, R3: should reject missing, non-numeric, or negative/zero amounts with 400 validation error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.327Z] SalesController.recordTransaction started {
+  "phone_number": "+51999888777",
+  "amount": true
+}
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR2, R3: should reject missing, non-numeric, or negative/zero amounts with 400 validation error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.328Z] SalesController.recordTransaction started {
+  "phone_number": "+51999888777",
+  "amount": 0
+}
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR2, R3: should reject missing, non-numeric, or negative/zero amounts with 400 validation error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.328Z] SalesController.recordTransaction started {
+  "phone_number": "+51999888777",
+  "amount": -15.5
+}
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR4: should return successfully generated mock record in offline/simulation mode
+[22m[39m[INFO] [2026-05-25T21:33:23.328Z] SalesController.recordTransaction started {
+  "phone_number": "+51999888777",
+  "amount": 85.5
+}
+[INFO] [2026-05-25T21:33:23.328Z] SalesModel.insertTransaction invoked {
+  "phoneNumber": "+51999888777",
+  "amount": 85.5
+}
+[INFO] [2026-05-25T21:33:23.328Z] Database Executing Query: [insertTransaction] 
+
+[90mstdout[2m | tests/integration/model_customer_segmentation.integration.test.ts[2m > [22m[2mmodel_customer_segmentation Integration Tests[2m > [22m[2mR1,R8: should return CustomerSegmentationResult with segments and summary in offline mode
+[22m[39m[INFO] [2026-05-25T21:33:23.329Z] ClientModel.getCustomerSegments invoked 
+[INFO] [2026-05-25T21:33:23.330Z] Database Executing Query: [getCustomerSegments] 
+
+[90mstdout[2m | tests/integration/controller_promotions_segments.integration.test.ts[2m > [22m[2mcontroller_promotions_segments Integration Tests[2m > [22m[2mR2: should return success response with data containing segments and summary
+[22m[39m[INFO] [2026-05-25T21:33:23.356Z] PromotionsController.getSegments started 
+[INFO] [2026-05-25T21:33:23.356Z] ClientModel.getCustomerSegments invoked 
+[INFO] [2026-05-25T21:33:23.356Z] Database Executing Query: [getCustomerSegments] 
+
+[90mstdout[2m | tests/integration/model-sales-read.integration.test.ts[2m > [22m[2mmodel_sales_query Integration Tests[2m > [22m[2mR4: should return successfully generated mock aggregation in offline/simulation mode
+[22m[39m[INFO] [2026-05-25T21:33:23.393Z] SalesModel.getSalesAggregate invoked {
+  "phoneNumber": "987654321"
+}
+[INFO] [2026-05-25T21:33:23.393Z] Database Executing Query: [getSalesAggregate] 
+
+[90mstdout[2m | tests/integration/model-sales-write.integration.test.ts[2m > [22m[2mmodel_sales_insert Integration Tests[2m > [22m[2mR1, R2: should successfully insert transaction details into local database when connected
+[22m[39m[INFO] [2026-05-25T21:33:23.408Z] SalesModel.insertTransaction invoked {
+  "phoneNumber": "+51999888777",
+  "amount": 55.8
+}
+
+[90mstdout[2m | tests/integration/model_customer_segmentation.integration.test.ts[2m > [22m[2mmodel_customer_segmentation Integration Tests[2m > [22m[2mR3: should tag customer with no transactions as inactive_30d
+[22m[39m[INFO] [2026-05-25T21:33:23.412Z] ClientModel.getCustomerSegments invoked 
+[INFO] [2026-05-25T21:33:23.413Z] Database Executing Query: [getCustomerSegments] 
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR4: should successfully insert transaction details into local database when connected
+[22m[39m[INFO] [2026-05-25T21:33:23.422Z] SalesController.recordTransaction started {
+  "phone_number": "+51923478616",
+  "amount": 120
+}
+[INFO] [2026-05-25T21:33:23.422Z] SalesModel.insertTransaction invoked {
+  "phoneNumber": "+51923478616",
+  "amount": 120
+}
+
+[90mstdout[2m | tests/integration/model-sales-write.integration.test.ts[2m > [22m[2mmodel_sales_insert Integration Tests[2m > [22m[2mR3: should bubble up 'DB_CONNECTION_FAILURE' when database is unreachable
+[22m[39m[INFO] [2026-05-25T21:33:23.429Z] SalesModel.insertTransaction invoked {
+  "phoneNumber": "+51999888777",
+  "amount": 10
+}
+
+ [32m✓[39m tests/integration/model-sales-write.integration.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 129[2mms[22m[39m
+[90mstdout[2m | tests/integration/controller_promotions_segments.integration.test.ts[2m > [22m[2mcontroller_promotions_segments Integration Tests[2m > [22m[2mR3: should return status 500 with DB_CONNECTION_FAILURE error
+[22m[39m[INFO] [2026-05-25T21:33:23.439Z] PromotionsController.getSegments started 
+
+[90mstdout[2m | tests/integration/controller-sales-record.integration.test.ts[2m > [22m[2mcontroller_sales_record Integration Tests[2m > [22m[2mR5: should catch DB connection failures and map them to a status 500 error packet
+[22m[39m[INFO] [2026-05-25T21:33:23.441Z] SalesController.recordTransaction started {
+  "phone_number": "+51999888777",
+  "amount": 50
+}
+
+[90mstdout[2m | tests/integration/controller_promotions_segments.integration.test.ts[2m > [22m[2mcontroller_promotions_segments Integration Tests[2m > [22m[2mR4: should return status 500 with generic error message
+[22m[39m[INFO] [2026-05-25T21:33:23.442Z] PromotionsController.getSegments started 
+
+[90mstdout[2m | tests/integration/controller_promotions_segments.integration.test.ts[2m > [22m[2mcontroller_promotions_segments Integration Tests[2m > [22m[2mR1: should log invocation via logger.info
+[22m[39m[INFO] [2026-05-25T21:33:23.443Z] PromotionsController.getSegments started 
+[INFO] [2026-05-25T21:33:23.443Z] ClientModel.getCustomerSegments invoked 
+[INFO] [2026-05-25T21:33:23.443Z] Database Executing Query: [getCustomerSegments] 
+
+ [32m✓[39m tests/integration/controller-sales-record.integration.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 121[2mms[22m[39m
+[90mstdout[2m | tests/integration/model-sales-read.integration.test.ts[2m > [22m[2mmodel_sales_query Integration Tests[2m > [22m[2mR1: should successfully calculate cumulative transaction count and average ticket size when connected
+[22m[39m[INFO] [2026-05-25T21:33:23.485Z] SalesModel.insertTransaction invoked {
+  "phoneNumber": "+51999771779744803485",
+  "amount": 100
+}
+
+[90mstdout[2m | tests/integration/model_customer_segmentation.integration.test.ts[2m > [22m[2mmodel_customer_segmentation Integration Tests[2m > [22m[2mR4: should tag customer with last transaction > 30 days ago as inactive_30d
+[22m[39m[INFO] [2026-05-25T21:33:23.495Z] ClientModel.getCustomerSegments invoked 
+[INFO] [2026-05-25T21:33:23.496Z] Database Executing Query: [getCustomerSegments] 
+
+[90mstdout[2m | tests/integration/model-sales-read.integration.test.ts[2m > [22m[2mmodel_sales_query Integration Tests[2m > [22m[2mR1: should successfully calculate cumulative transaction count and average ticket size when connected
+[22m[39m[INFO] [2026-05-25T21:33:23.511Z] SalesModel.insertTransaction invoked {
+  "phoneNumber": "+51999771779744803485",
+  "amount": 50
+}
+
+[90mstdout[2m | tests/integration/model-sales-read.integration.test.ts[2m > [22m[2mmodel_sales_query Integration Tests[2m > [22m[2mR1: should successfully calculate cumulative transaction count and average ticket size when connected
+[22m[39m[INFO] [2026-05-25T21:33:23.519Z] SalesModel.getSalesAggregate invoked {
+  "phoneNumber": "+51999771779744803485"
+}
+
+[90mstdout[2m | tests/integration/controller_promotions_segments.integration.test.ts[2m > [22m[2mcontroller_promotions_segments Integration Tests[2m > [22m[2mR6: should log error via logger.error when exception occurs
+[22m[39m[INFO] [2026-05-25T21:33:23.526Z] PromotionsController.getSegments started 
+
+[90mstdout[2m | tests/integration/model-sales-read.integration.test.ts[2m > [22m[2mmodel_sales_query Integration Tests[2m > [22m[2mR2: should return zero count and zero average ticket when no transactions exist for the phone number
+[22m[39m[INFO] [2026-05-25T21:33:23.527Z] SalesModel.getSalesAggregate invoked {
+  "phoneNumber": "+51000001779744803527"
+}
+
+ [32m✓[39m tests/integration/controller_promotions_segments.integration.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 173[2mms[22m[39m
+[90mstdout[2m | tests/integration/model-sales-read.integration.test.ts[2m > [22m[2mmodel_sales_query Integration Tests[2m > [22m[2mR3: should bubble up 'DB_CONNECTION_FAILURE' when database is unreachable
+[22m[39m[INFO] [2026-05-25T21:33:23.536Z] SalesModel.getSalesAggregate invoked {
+  "phoneNumber": "+51999888777"
+}
+
+ [32m✓[39m tests/integration/model-sales-read.integration.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 233[2mms[22m[39m
+[90mstdout[2m | tests/integration/model_customer_segmentation.integration.test.ts[2m > [22m[2mmodel_customer_segmentation Integration Tests[2m > [22m[2mR5: should tag customer with visit_count >= 5 as frequent
+[22m[39m[INFO] [2026-05-25T21:33:23.579Z] ClientModel.getCustomerSegments invoked 
+[INFO] [2026-05-25T21:33:23.579Z] Database Executing Query: [getCustomerSegments] 
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR3, R12: Valid Gemini JSON response[2m > [22m[2mR3: SHALL return correctly shaped SocialIdea[] when Gemini returns valid JSON
+[22m[39m[INFO] [2026-05-25T21:33:23.617Z] generateSocialPostSuggestions started {
+  "promptLength": 21,
+  "preview": "coffee shop promotion"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR3, R12: Valid Gemini JSON response[2m > [22m[2mR3: SHALL return correctly shaped SocialIdea[] when Gemini returns valid JSON
+[22m[39m[INFO] [2026-05-25T21:33:23.619Z] generateSocialPostSuggestions success {
+  "count": 2
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR3: Response with more than 3 items[2m > [22m[2mR3: SHALL return only first 3 items when Gemini returns more than 3
+[22m[39m[INFO] [2026-05-25T21:33:23.620Z] generateSocialPostSuggestions started {
+  "promptLength": 12,
+  "preview": "test context"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR3: Response with more than 3 items[2m > [22m[2mR3: SHALL return only first 3 items when Gemini returns more than 3
+[22m[39m[INFO] [2026-05-25T21:33:23.621Z] generateSocialPostSuggestions success {
+  "count": 3
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR6, R12: Malformed JSON fallback[2m > [22m[2mR6: SHALL return simulated SocialIdea[] when Gemini returns malformed JSON
+[22m[39m[INFO] [2026-05-25T21:33:23.621Z] generateSocialPostSuggestions started {
+  "promptLength": 10,
+  "preview": "pizza shop"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR6, R12: Malformed JSON fallback[2m > [22m[2mR6: SHALL log warning on malformed JSON
+[22m[39m[INFO] [2026-05-25T21:33:23.621Z] generateSocialPostSuggestions started {
+  "promptLength": 4,
+  "preview": "test"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR6, R12: Malformed JSON fallback[2m > [22m[2mR6: SHALL return simulated response when Gemini returns empty string
+[22m[39m[INFO] [2026-05-25T21:33:23.622Z] generateSocialPostSuggestions started {
+  "promptLength": 6,
+  "preview": "bakery"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR7, R12: Gemini API error fallback[2m > [22m[2mR7: SHALL return simulated SocialIdea[] when Gemini throws
+[22m[39m[INFO] [2026-05-25T21:33:23.622Z] generateSocialPostSuggestions started {
+  "promptLength": 9,
+  "preview": "bookstore"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR7, R12: Gemini API error fallback[2m > [22m[2mR7: SHALL log error when Gemini call fails
+[22m[39m[INFO] [2026-05-25T21:33:23.623Z] generateSocialPostSuggestions started {
+  "promptLength": 4,
+  "preview": "test"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR4, R12: Missing fields filled with defaults[2m > [22m[2mR4: SHALL fill missing body and visualPrompt with defaults
+[22m[39m[INFO] [2026-05-25T21:33:23.624Z] generateSocialPostSuggestions started {
+  "promptLength": 12,
+  "preview": "test context"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR4, R12: Missing fields filled with defaults[2m > [22m[2mR4: SHALL fill missing body and visualPrompt with defaults
+[22m[39m[INFO] [2026-05-25T21:33:23.624Z] generateSocialPostSuggestions success {
+  "count": 2
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR4, R12: Missing fields filled with defaults[2m > [22m[2mR4: SHALL fill completely empty object with all defaults
+[22m[39m[INFO] [2026-05-25T21:33:23.624Z] generateSocialPostSuggestions started {
+  "promptLength": 4,
+  "preview": "test"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR4, R12: Missing fields filled with defaults[2m > [22m[2mR4: SHALL fill completely empty object with all defaults
+[22m[39m[INFO] [2026-05-25T21:33:23.624Z] generateSocialPostSuggestions success {
+  "count": 2
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR5, R12: Character limit enforcement[2m > [22m[2mR5: SHALL truncate over-limit fields at word boundary
+[22m[39m[INFO] [2026-05-25T21:33:23.625Z] generateSocialPostSuggestions started {
+  "promptLength": 4,
+  "preview": "test"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR5, R12: Character limit enforcement[2m > [22m[2mR5: SHALL truncate over-limit fields at word boundary
+[22m[39m[INFO] [2026-05-25T21:33:23.625Z] generateSocialPostSuggestions success {
+  "count": 1
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR9: Logs method invocation[2m > [22m[2mR9: SHALL log at start with prompt length and preview
+[22m[39m[INFO] [2026-05-25T21:33:23.626Z] generateSocialPostSuggestions started {
+  "promptLength": 14,
+  "preview": "test promotion"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR9: Logs method invocation[2m > [22m[2mR9: SHALL log at start with prompt length and preview
+[22m[39m[INFO] [2026-05-25T21:33:23.626Z] generateSocialPostSuggestions success {
+  "count": 2
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR10: Logs success[2m > [22m[2mR10: SHALL log count of returned ideas on success
+[22m[39m[INFO] [2026-05-25T21:33:23.627Z] generateSocialPostSuggestions started {
+  "promptLength": 14,
+  "preview": "test promotion"
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR10: Logs success[2m > [22m[2mR10: SHALL log count of returned ideas on success
+[22m[39m[INFO] [2026-05-25T21:33:23.630Z] generateSocialPostSuggestions success {
+  "count": 2
+}
+
+[90mstdout[2m | tests/integration/service_social_gemini_copywriter.integration.test.ts[2m > [22m[2mAIService.generateSocialPostSuggestions[2m > [22m[2mR11: Logs per-response failure[2m > [22m[2mR11: SHALL log warning when JSON parse fails
+[22m[39m[INFO] [2026-05-25T21:33:23.630Z] generateSocialPostSuggestions started {
+  "promptLength": 4,
+  "preview": "test"
+}
+
+ [32m✓[39m tests/integration/service_social_gemini_copywriter.integration.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/integration/hook_social_content.integration.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 72[2mms[22m[39m
+[90mstdout[2m | tests/integration/model_customer_segmentation.integration.test.ts[2m > [22m[2mmodel_customer_segmentation Integration Tests[2m > [22m[2mR6: should tag customer with average_ticket >= 50 as high_spender
+[22m[39m[INFO] [2026-05-25T21:33:23.660Z] ClientModel.getCustomerSegments invoked 
+[INFO] [2026-05-25T21:33:23.661Z] Database Executing Query: [getCustomerSegments] 
+
+ [32m✓[39m tests/integration/whatsapp-redirect.integration.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 62[2mms[22m[39m
+ [32m✓[39m tests/integration/hook-cashier-sales.integration.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 79[2mms[22m[39m
+[90mstdout[2m | tests/integration/api-sales-record-route.integration.test.ts[2m > [22m[2mapi_sales_record_route Integration Tests[2m > [22m[2mR1, R2, R4: should process a valid request, insert into DB, and return 201 Created
+[22m[39m[INFO] [2026-05-25T21:33:23.679Z] POST /api/v1/sales/record API route invoked 
+
+[90mstdout[2m | tests/integration/api-sales-record-route.integration.test.ts[2m > [22m[2mapi_sales_record_route Integration Tests[2m > [22m[2mR1, R2, R4: should process a valid request, insert into DB, and return 201 Created
+[22m[39m[INFO] [2026-05-25T21:33:23.681Z] SalesController.recordTransaction started {
+  "phone_number": "+51948153311",
+  "amount": 150
+}
+[INFO] [2026-05-25T21:33:23.682Z] SalesModel.insertTransaction invoked {
+  "phoneNumber": "+51948153311",
+  "amount": 150
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR1: accepts customers and returns recovery copy[2m > [22m[2mSHALL return an array of GeminiRecoveryPromptResult with same length as input
+[22m[39m[INFO] [2026-05-25T21:33:23.686Z] generateRecoveryPrompts started {
+  "count": 2
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR1: accepts customers and returns recovery copy[2m > [22m[2mSHALL return an array of GeminiRecoveryPromptResult with same length as input
+[22m[39m[INFO] [2026-05-25T21:33:23.686Z] generateRecoveryPrompts success {
+  "phone_number": "+51900111000",
+  "charCount": 28
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR1: accepts customers and returns recovery copy[2m > [22m[2mSHALL return an array of GeminiRecoveryPromptResult with same length as input
+[22m[39m[INFO] [2026-05-25T21:33:23.687Z] generateRecoveryPrompts success {
+  "phone_number": "+51900222000",
+  "charCount": 28
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR9: mock Gemini returns valid copy[2m > [22m[2mSHALL return recoveryCopy for each customer
+[22m[39m[INFO] [2026-05-25T21:33:23.688Z] generateRecoveryPrompts started {
+  "count": 1
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR9: mock Gemini returns valid copy[2m > [22m[2mSHALL return recoveryCopy for each customer
+[22m[39m[INFO] [2026-05-25T21:33:23.688Z] generateRecoveryPrompts success {
+  "phone_number": "+51900111000",
+  "charCount": 56
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR9: mock Gemini returns valid copy[2m > [22m[2mSHALL enforce 180-character limit on recoveryCopy
+[22m[39m[INFO] [2026-05-25T21:33:23.688Z] generateRecoveryPrompts started {
+  "count": 1
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR9: mock Gemini returns valid copy[2m > [22m[2mSHALL enforce 180-character limit on recoveryCopy
+[22m[39m[INFO] [2026-05-25T21:33:23.688Z] generateRecoveryPrompts success {
+  "phone_number": "+51900111000",
+  "charCount": 181
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR9: mock Gemini returns valid copy[2m > [22m[2mSHALL log success with phone number and character count
+[22m[39m[INFO] [2026-05-25T21:33:23.688Z] generateRecoveryPrompts started {
+  "count": 1
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR9: mock Gemini returns valid copy[2m > [22m[2mSHALL log success with phone number and character count
+[22m[39m[INFO] [2026-05-25T21:33:23.689Z] generateRecoveryPrompts success {
+  "phone_number": "+51900111000",
+  "charCount": 18
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR10: mock Gemini rejects[2m > [22m[2mSHALL return fallback message when Gemini call fails
+[22m[39m[INFO] [2026-05-25T21:33:23.689Z] generateRecoveryPrompts started {
+  "count": 1
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR10: mock Gemini rejects[2m > [22m[2mSHALL log error with phone number when Gemini call fails
+[22m[39m[INFO] [2026-05-25T21:33:23.690Z] generateRecoveryPrompts started {
+  "count": 1
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR6: logs method invocation[2m > [22m[2mSHALL log start with customer count
+[22m[39m[INFO] [2026-05-25T21:33:23.691Z] generateRecoveryPrompts started {
+  "count": 2
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR6: logs method invocation[2m > [22m[2mSHALL log start with customer count
+[22m[39m[INFO] [2026-05-25T21:33:23.691Z] generateRecoveryPrompts success {
+  "phone_number": "+51900111000",
+  "charCount": 4
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR6: logs method invocation[2m > [22m[2mSHALL log start with customer count
+[22m[39m[INFO] [2026-05-25T21:33:23.691Z] generateRecoveryPrompts success {
+  "phone_number": "+51900111000",
+  "charCount": 4
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mEmpty array[2m > [22m[2mSHALL return empty array when no customers provided
+[22m[39m[INFO] [2026-05-25T21:33:23.691Z] generateRecoveryPrompts started {
+  "count": 0
+}
+
+[90mstdout[2m | tests/integration/service_gemini_recovery_prompt.integration.test.ts[2m > [22m[2mAIService.generateRecoveryPrompts[2m > [22m[2mR5: fallback message[2m > [22m[2mSHALL return fallback when Gemini returns empty string
+[22m[39m[INFO] [2026-05-25T21:33:23.693Z] generateRecoveryPrompts started {
+  "count": 1
+}
+
+ [32m✓[39m tests/integration/service_gemini_recovery_prompt.integration.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+[90mstdout[2m | tests/integration/api-sales-record-route.integration.test.ts[2m > [22m[2mapi_sales_record_route Integration Tests[2m > [22m[2mR3: should reject malformed JSON input with 400 Bad Request
+[22m[39m[INFO] [2026-05-25T21:33:23.700Z] POST /api/v1/sales/record API route invoked 
+
+[90mstdout[2m | tests/integration/api-sales-record-route.integration.test.ts[2m > [22m[2mapi_sales_record_route Integration Tests[2m > [22m[2mR5: should bubble validation errors with controller response status
+[22m[39m[INFO] [2026-05-25T21:33:23.704Z] POST /api/v1/sales/record API route invoked 
+
+[90mstdout[2m | tests/integration/api-sales-record-route.integration.test.ts[2m > [22m[2mapi_sales_record_route Integration Tests[2m > [22m[2mR5: should bubble validation errors with controller response status
+[22m[39m[INFO] [2026-05-25T21:33:23.705Z] SalesController.recordTransaction started {
+  "phone_number": "+5199988",
+  "amount": -10
+}
+
+[90mstdout[2m | tests/integration/api-sales-record-route.integration.test.ts[2m > [22m[2mapi_sales_record_route Integration Tests[2m > [22m[2mR5: should bubble database connection failures as 500 Internal Server Error
+[22m[39m[INFO] [2026-05-25T21:33:23.715Z] POST /api/v1/sales/record API route invoked 
+
+[90mstdout[2m | tests/integration/api-sales-record-route.integration.test.ts[2m > [22m[2mapi_sales_record_route Integration Tests[2m > [22m[2mR5: should bubble database connection failures as 500 Internal Server Error
+[22m[39m[INFO] [2026-05-25T21:33:23.715Z] SalesController.recordTransaction started {
+  "phone_number": "+51999888777",
+  "amount": 45
+}
+
+ [32m✓[39m tests/integration/api-sales-record-route.integration.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 48[2mms[22m[39m
+[90mstdout[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT10: successful generation flow (R10)[2m > [22m[2mR10: should return success: true with non-empty campaigns when AIService resolves
+[22m[39m[INFO] [2026-05-25T21:33:23.742Z] PromotionsController.generate started 
+
+[90mstdout[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT11: AIService rejection fallback (R11)[2m > [22m[2mR11: should inject fallback discount campaigns when AIService rejects
+[22m[39m[INFO] [2026-05-25T21:33:23.744Z] PromotionsController.generate started 
+
+[90mstdout[2m | tests/integration/model_customer_segmentation.integration.test.ts[2m > [22m[2mmodel_customer_segmentation Integration Tests[2m > [22m[2mR2: inactive_30d takes priority over frequent and high_spender when customer qualifies for multiple
+[22m[39m[INFO] [2026-05-25T21:33:23.753Z] ClientModel.getCustomerSegments invoked 
+
+[90mstdout[2m | tests/integration/model_customer_segmentation.integration.test.ts[2m > [22m[2mmodel_customer_segmentation Integration Tests[2m > [22m[2mR9: should return empty segments and zero summary when no customers exist
+[22m[39m[INFO] [2026-05-25T21:33:23.755Z] ClientModel.getCustomerSegments invoked 
+
+[90mstdout[2m | tests/integration/model_customer_segmentation.integration.test.ts[2m > [22m[2mmodel_customer_segmentation Integration Tests[2m > [22m[2mR10: should propagate DB_CONNECTION_FAILURE when database is unreachable
+[22m[39m[INFO] [2026-05-25T21:33:23.756Z] ClientModel.getCustomerSegments invoked 
+
+ [32m✓[39m tests/integration/model_customer_segmentation.integration.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 435[2mms[22m[39m
+[90mstdout[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT12: zero inactive customers (R12)[2m > [22m[2mR12: should return empty campaigns and NOT call AIService when no inactive_30d customers exist
+[22m[39m[INFO] [2026-05-25T21:33:23.761Z] PromotionsController.generate started 
+
+[90mstdout[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT13: DB_CONNECTION_FAILURE (R9)[2m > [22m[2mR9: should return { success: false, status: 500, error: 'DB_CONNECTION_FAILURE' }
+[22m[39m[INFO] [2026-05-25T21:33:23.762Z] PromotionsController.generate started 
+
+[90mstdout[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT14: generic error from ClientModel (R8, R9)[2m > [22m[2mR8/R9: should propagate generic error with status 500
+[22m[39m[INFO] [2026-05-25T21:33:23.763Z] PromotionsController.generate started 
+
+[90mstdout[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT15: logger spy tests (R7, R8)[2m > [22m[2mR7: should log 'PromotionsController.generate started' via logger.info
+[22m[39m[INFO] [2026-05-25T21:33:23.765Z] PromotionsController.generate started 
+
+[90mstdout[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT15: logger spy tests (R7, R8)[2m > [22m[2mR8: should log error via logger.error when AIService fails
+[22m[39m[INFO] [2026-05-25T21:33:23.765Z] PromotionsController.generate started 
+
+[90mstdout[2m | tests/integration/controller_promotions_generate.integration.test.ts[2m > [22m[2mcontroller_promotions_generate Integration Tests[2m > [22m[2mT15: logger spy tests (R7, R8)[2m > [22m[2mR8: should log error via logger.error when ClientModel fails
+[22m[39m[INFO] [2026-05-25T21:33:23.769Z] PromotionsController.generate started 
+
+ [32m✓[39m tests/integration/controller_promotions_generate.integration.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m tests/integration/service_predictive_alerts.integration.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/integration/component_traffic_charts.integration.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m tests/integration/predictive_alerts_flow.integration.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | tests/integration/controller_social_ideas.integration.test.ts[2m > [22m[2mcontroller_social_ideas Integration Tests[2m > [22m[2mR1, R2: Input validation[2m > [22m[2mR1, R2: should return 400 when context is null
+[22m[39m[INFO] [2026-05-25T21:33:23.843Z] SocialController.handleSocialIdeas started {
+  "context": null
+}
+
+[90mstdout[2m | tests/integration/controller_social_ideas.integration.test.ts[2m > [22m[2mcontroller_social_ideas Integration Tests[2m > [22m[2mR1, R2: Input validation[2m > [22m[2mR1, R2: should return 400 when context is empty string
+[22m[39m[INFO] [2026-05-25T21:33:23.845Z] SocialController.handleSocialIdeas started {
+  "context": ""
+}
+
+[90mstdout[2m | tests/integration/controller_social_ideas.integration.test.ts[2m > [22m[2mcontroller_social_ideas Integration Tests[2m > [22m[2mR1, R2: Input validation[2m > [22m[2mR1, R2: should return 400 when context is shorter than 3 characters
+[22m[39m[INFO] [2026-05-25T21:33:23.845Z] SocialController.handleSocialIdeas started {
+  "context": "ab"
+}
+
+[90mstdout[2m | tests/integration/controller_social_ideas.integration.test.ts[2m > [22m[2mcontroller_social_ideas Integration Tests[2m > [22m[2mR3: successful generation[2m > [22m[2mR3: should return 200 with ideas when context is valid
+[22m[39m[INFO] [2026-05-25T21:33:23.846Z] SocialController.handleSocialIdeas started {
+  "context": "coffee shop promotion"
+}
+
+[90mstdout[2m | tests/integration/controller_social_ideas.integration.test.ts[2m > [22m[2mcontroller_social_ideas Integration Tests[2m > [22m[2mR3: successful generation[2m > [22m[2mR5: should accept a valid context string of 3+ characters
+[22m[39m[INFO] [2026-05-25T21:33:23.847Z] SocialController.handleSocialIdeas started {
+  "context": "cafe"
+}
+
+ [32m✓[39m tests/integration/controller_social_ideas.integration.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m tests/integration/service-traffic-distribution.integration.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/integration/page-manager-reports.integration.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m tests/integration/service_low_traffic_detector.integration.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m tests/integration/low_traffic_decorator_flow.integration.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m tests/integration/smoke.integration.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m tests/integration/logic_flash_sale_injection.integration.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m tests/integration/hook-manager-traffic.integration.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 398[2mms[22m[39m
+ [32m✓[39m tests/integration/hook-manager-campaigns.integration.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 555[2mms[22m[39m
+ [32m✓[39m tests/integration/db-migration-sales.integration.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 1056[2mms[22m[39m
+     [33m[2m✓[22m[39m R1, R2, R3: should create sales_transactions table with correct columns and index [33m 1055[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m25 passed[39m[22m[90m (25)[39m
+[2m      Tests [22m [1m[32m204 passed[39m[22m[90m (204)[39m
+[2m   Start at [22m 16:33:22
+[2m   Duration [22m 1.29s[2m (transform 918ms, setup 0ms, import 2.02s, tests 3.48s, environment 1.56s)[22m
+
+[0;32m[OK][0m pnpm test passed
+
+== 6. Executing Next.js Linter & Production Build Compilations ===
+
+> loyalty@0.1.0 lint /Users/juarpla/Documents/Code Practice/loyalty
+> eslint
+
+
+/Users/juarpla/Documents/Code Practice/loyalty/src/app/test/context-form/page.tsx
+  6:8  warning  'ContextFormProps' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 1 problem (0 errors, 1 warning)
+
+[0;32m[OK][0m pnpm lint passed
+
+> loyalty@0.1.0 build /Users/juarpla/Documents/Code Practice/loyalty
+> next build
+
+▲ Next.js 16.2.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1377ms
+  Running TypeScript ...
+  Finished TypeScript in 2.1s ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/20) ...
+  Generating static pages using 11 workers (5/20) 
+  Generating static pages using 11 workers (10/20) 
+  Generating static pages using 11 workers (15/20) 
+✓ Generating static pages using 11 workers (20/20) in 221ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /admin/cash
+├ ○ /admin/cash/preview
+├ ○ /admin/dashboard
+├ ○ /admin/promotions
+├ ○ /admin/social
+├ ƒ /api/ai
+├ ƒ /api/traffic
+├ ƒ /api/v1/promotions/generate
+├ ƒ /api/v1/promotions/segments
+├ ƒ /api/v1/sales/metrics
+├ ƒ /api/v1/sales/record
+├ ƒ /api/v1/social/ideas
+├ ○ /test-social-cards
+├ ○ /test/context-form
+├ ○ /test/predictive-card
+└ ○ /test/segment-cards
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+[0;32m[OK][0m pnpm build passed
+
+== 7. Final Harness Health Verification Summary ===
+[0;31m[FAIL][0m harness is not ready (full)

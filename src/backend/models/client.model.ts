@@ -67,6 +67,76 @@ export class ClientModel {
   }
 
   /**
+   * Register a portal login (upsert client and insert login record)
+   */
+  static async registerPortalLogin(phone_number: string, name?: string): Promise<{
+    clientId: string;
+    loginId: string;
+  }> {
+    logger.info("ClientModel.registerPortalLogin invoked", { phone_number, name });
+    const status = supabaseModel.getStatus();
+
+    if (status.mode === "offline_simulation") {
+      const mockResult = {
+        clientId: `cli-${Math.random().toString(36).substr(2, 9)}`,
+        loginId: `log-${Math.random().toString(36).substr(2, 9)}`
+      };
+      return supabaseModel.executeQuery("registerPortalLogin", mockResult);
+    }
+
+    try {
+      const client = supabaseModel.getClient();
+      
+      // Upsert client
+      const { data: clientData, error: clientError } = await client
+        .from("clients")
+        .upsert(
+          { phone_number, ...(name ? { name } : {}) },
+          { onConflict: 'phone_number' }
+        )
+        .select('id')
+        .single();
+
+      if (clientError) {
+        throw clientError;
+      }
+
+      const clientId = clientData.id;
+
+      // Insert wifi login log
+      const { data: loginData, error: loginError } = await client
+        .from("wifi_logins")
+        .insert({ client_id: clientId })
+        .select('id')
+        .single();
+
+      if (loginError) {
+        throw loginError;
+      }
+
+      return {
+        clientId,
+        loginId: loginData.id
+      };
+    } catch (err: unknown) {
+      const error = err as Error;
+      logger.error("Exception in ClientModel.registerPortalLogin", error);
+
+      if (
+        error.message?.includes("fetch failed") ||
+        error.message?.includes("ECONNREFUSED") ||
+        error.message?.includes("Failed to fetch") ||
+        error.message?.includes("NetworkError")
+      ) {
+        throw new Error("DB_CONNECTION_FAILURE");
+      }
+
+      const errorCode = (err as Record<string, unknown>)?.code;
+      throw new Error(typeof errorCode === "string" ? errorCode : "DB_QUERY_ERROR");
+    }
+  }
+
+  /**
    * Compute customer segmentation from raw transaction records.
    * Assigns mutually exclusive segment tags with priority: inactive_30d > frequent > high_spender.
    */

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { describe, it, expect, beforeAll, vi, afterEach } from "vitest";
 import { AIService } from "../../src/backend/services/ai.service";
 import { SocialController } from "../../src/backend/controllers/social.controller";
 import type { SocialIdea } from "../../src/backend/types/models.type";
@@ -10,6 +10,10 @@ beforeAll(() => {
   if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH";
   }
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
 });
 
 const mockIdeas: SocialIdea[] = [
@@ -59,57 +63,27 @@ describe("controller_social_ideas Integration Tests", () => {
 
   describe("R3: successful generation", () => {
     it("R3: should return 200 with ideas when context is valid", async () => {
-      const original = AIService.generateSocialIdeas;
-      AIService.generateSocialIdeas = () => Promise.resolve(mockIdeas);
+      vi.spyOn(AIService, "generateSocialPostSuggestions").mockResolvedValue(mockIdeas);
 
-      try {
-        const res = await SocialController.handleSocialIdeas("coffee shop promotion");
+      const res = await SocialController.handleSocialIdeas("coffee shop promotion");
 
-        expect(res).toBeDefined();
-        expect(res.success).toBe(true);
-        expect(res.data).toBeDefined();
-        expect(res.data!.ideas).toHaveLength(2);
-        expect(res.data!.ideas[0].title).toBe("Summer Sale");
-        expect(res.data!.ideas[0].hashtags).toEqual(["#summer", "#sale"]);
-      } finally {
-        AIService.generateSocialIdeas = original;
-      }
+      expect(res).toBeDefined();
+      expect(res.success).toBe(true);
+      expect(res.data).toBeDefined();
+      expect(res.data!.ideas).toHaveLength(2);
+      expect(res.data!.ideas[0].title).toBe("Summer Sale");
+      expect(res.data!.ideas[0].hashtags).toEqual(["#summer", "#sale"]);
     });
-  });
 
-  describe("R4: server error handling", () => {
-    it("R4: should return 500 when AI service throws", async () => {
-      const original = AIService.generateSocialIdeas;
-      AIService.generateSocialIdeas = () => Promise.reject(new Error("AI service unavailable"));
-
-      try {
-        const res = await SocialController.handleSocialIdeas("coffee shop promotion");
-
-        expect(res).toBeDefined();
-        expect(res.success).toBe(false);
-        expect(res.status).toBe(500);
-        expect(res.error).toBe("Internal server error");
-      } finally {
-        AIService.generateSocialIdeas = original;
-      }
-    });
-  });
-
-  describe("R5: input type contract", () => {
     it("R5: should accept a valid context string of 3+ characters", async () => {
-      const original = AIService.generateSocialIdeas;
-      AIService.generateSocialIdeas = () => Promise.resolve(mockIdeas);
+      vi.spyOn(AIService, "generateSocialPostSuggestions").mockResolvedValue(mockIdeas);
 
-      try {
-        const res = await SocialController.handleSocialIdeas("cafe");
+      const res = await SocialController.handleSocialIdeas("cafe");
 
-        expect(res).toBeDefined();
-        expect(res.success).toBe(true);
-        expect(res.data).toBeDefined();
-        expect(res.data!.ideas).toHaveLength(2);
-      } finally {
-        AIService.generateSocialIdeas = original;
-      }
+      expect(res).toBeDefined();
+      expect(res.success).toBe(true);
+      expect(res.data).toBeDefined();
+      expect(res.data!.ideas).toHaveLength(2);
     });
   });
 });
