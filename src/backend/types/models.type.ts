@@ -116,6 +116,20 @@ export interface SocialIdea {
   hashtags: string[];
 }
 
+export interface ArrivalNotificationInput {
+  phone_number: string;
+  name?: string;
+  businessName?: string;
+}
+
+export interface ArrivalNotification {
+  phone_number: string;
+  name: string;
+  greetingText: string;
+  whatsappUrl: string;
+  generatedAt: string;
+}
+
 export const SEGMENTATION_THRESHOLDS = {
   INACTIVE_DAYS: 30,
   FREQUENT_VISIT_COUNT: 5,

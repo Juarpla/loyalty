@@ -675,7 +675,7 @@
         "Playwright tests in `tests/e2e/portal_onboarding_flow.spec.ts` SHALL register visitors, check passwords, and assert onboarding completions."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 52,
@@ -688,7 +688,7 @@
         "Integration tests in `tests/integration/service_arrival_notification_builder.test.ts` SHALL verify greeting formatting."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 53,

@@ -1,0 +1,3 @@
+description = "Writes SDD requirements, design, and tasks for pending features."
+developer_instructions = "Follow `AGENTS.md` and the canonical role contract in `.agents/subagents/spec_author.md`."
+name = "spec_author"
