@@ -727,7 +727,7 @@
         "Integration tests in `tests/integration/hook_manager_arrivals.test.ts` SHALL assert state updates."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 56,
