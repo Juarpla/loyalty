@@ -740,7 +740,7 @@
         "Playwright E2E tests in `tests/e2e/component_manager_arrivals_feed.spec.ts` SHALL verify component structure."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 57,
@@ -752,7 +752,7 @@
         "Playwright tests in `tests/e2e/manager_arrivals_feed_flow.spec.ts` SHALL assert lists append new elements and verify WhatsApp redirect formats."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "spec_ready"
     },
     {
       "id": 58,
