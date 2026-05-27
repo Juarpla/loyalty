@@ -4,9 +4,18 @@ import Link from "next/link";
 
 import { useTraffic } from "@/hooks/use-traffic.hook";
 import { TrafficChartComponent } from "@/components/traffic/chart.component";
+import { useArrivals } from "@/hooks/use-arrivals.hook";
+import { ArrivalsFeedComponent } from "@/components/dashboard/arrivals-feed.component";
 
 export function DashboardClient() {
   const { data, loading, error } = useTraffic();
+  const {
+    notifications,
+    summary,
+    loading: arrivalsLoading,
+    error: arrivalsError,
+    refresh: refreshArrivals,
+  } = useArrivals();
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
@@ -51,8 +60,15 @@ export function DashboardClient() {
       </nav>
 
       {/* Main content — R2, R4, R5 */}
-      <main className="flex-1 px-4 py-8 max-w-2xl mx-auto w-full">
+      <main className="flex-1 px-4 py-8 max-w-2xl mx-auto w-full flex flex-col gap-8">
         <TrafficChartComponent data={data} loading={loading} error={error} />
+        <ArrivalsFeedComponent
+          notifications={notifications}
+          summary={summary}
+          loading={arrivalsLoading}
+          error={arrivalsError}
+          onRefresh={refreshArrivals}
+        />
       </main>
     </div>
   );

@@ -223,3 +223,8 @@ Append completed session summaries below.
 - **Status:** Done
 - **Summary:** Implemented `ArrivalsFeedComponent` client component (`src/components/dashboard/arrivals-feed.component.tsx`) — renders manager-facing arrivals lists with loading skeletons (R2), error banners with retry triggers (R3), zero-state informational views (R4), and populated feeds with real-time stats and green WhatsApp prefilled greeting buttons (R5, R6). Created `/test/arrivals-feed` test harness page (`src/app/test/arrivals-feed/page.tsx`) and 5/5 Playwright E2E tests (`tests/e2e/component_manager_arrivals_feed.e2e.test.ts`) covering all viewports (R7). Fixed pre-existing E2E recursion bug in `tests/e2e/component_whatsapp_share_button.e2e.test.ts`. Full SDD workflow: pending → spec_author → spec_ready → in_progress → in_review → done. Full harness green (all integration/E2E tests pass, build ✅, lint ✅). Reviewer ACCEPTED.
 
+## Feature: test_e2e_manager_arrivals_feed_flow
+- **Status:** Done
+- **Summary:** Implemented comprehensive Playwright E2E integration tests in `tests/e2e/manager_arrivals_feed_flow.spec.ts` asserting the full stream flow: initial empty feed on `/admin/dashboard`, Captive Portal customer registration at `/portal`, data persistence in database, and top-of-feed list appending on manual refresh with correct names, phone numbers, greeting previews, and green WhatsApp prefilled URL links. Integrated the `ArrivalsFeedComponent` in `src/app/admin/dashboard/dashboard.client.tsx` using `useArrivals()`. Verified all 243/243 Vitest integration tests, ESLint, Next.js build, and E2E tests pass 100% green. Reviewer ACCEPTED.
+
+

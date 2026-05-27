@@ -37,7 +37,7 @@ test.describe("WhatsAppShareButton", () => {
         const capturedCalls: Array<{ url: string; target: string }> = [];
         window.open = (url?: string, target?: string) => {
           capturedCalls.push({ url: url ?? "", target: target ?? "" });
-          return null as any;
+          return null as Window | null;
         };
 
         const phone = "521234567890";

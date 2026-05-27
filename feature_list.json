@@ -752,7 +752,7 @@
         "Playwright tests in `tests/e2e/manager_arrivals_feed_flow.spec.ts` SHALL assert lists append new elements and verify WhatsApp redirect formats."
       ],
       "sdd": true,
-      "status": "spec_ready"
+      "status": "done"
     },
     {
       "id": 58,
@@ -765,7 +765,7 @@
         "Integration tests in `tests/integration/service_visit_milestone_counter.test.ts` SHALL verify Boolean outputs."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "spec_ready"
     },
     {
       "id": 59,

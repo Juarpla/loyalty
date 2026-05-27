@@ -4,13 +4,13 @@ This task list maps out the implementation and E2E verification steps required t
 
 ## Task List
 
-- [ ] **T1: Integrate Arrivals Feed in Manager Dashboard**
+- [x] **T1: Integrate Arrivals Feed in Manager Dashboard**
   - Edit `src/app/admin/dashboard/dashboard.client.tsx` to import and render `ArrivalsFeedComponent` alongside `TrafficChartComponent`.
   - Wire it up with the state and actions returned by the `useArrivals()` hook.
   - Ensure visual padding, margins, and responsiveness are consistent with existing sections.
   - *Covers: R1*
 
-- [ ] **T2: Implement Manager Arrivals Feed Integration E2E Tests**
+- [x] **T2: Implement Manager Arrivals Feed Integration E2E Tests**
   - Create the Playwright E2E test file `tests/e2e/manager_arrivals_feed_flow.spec.ts`.
   - Implement a complete flow:
     1. Navigate to `/admin/dashboard` to verify it loads.
@@ -23,7 +23,7 @@ This task list maps out the implementation and E2E verification steps required t
     8. Assert the WhatsApp link's `href` attribute matches the format `https://wa.me/<phone>?text=<encoded_greeting>`.
   - *Covers: R2, R3, R4, R5*
 
-- [ ] **T3: Run Diagnostics and Verify All Tests Pass**
+- [x] **T3: Run Diagnostics and Verify All Tests Pass**
   - Execute `./init.sh --quick` to check syntax, lints, and type safety.
   - Execute `pnpm test` to run all Vitest integration tests.
   - Execute `pnpm test:e2e` (or the specific playwright test command) to verify the Playwright E2E suite passes green.
