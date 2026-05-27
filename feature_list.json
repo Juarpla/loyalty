@@ -765,7 +765,7 @@
         "Integration tests in `tests/integration/service_visit_milestone_counter.test.ts` SHALL verify Boolean outputs."
       ],
       "sdd": true,
-      "status": "spec_ready"
+      "status": "done"
     },
     {
       "id": 59,
@@ -778,7 +778,7 @@
         "Integration tests in `tests/integration/controller_reward_claim.test.ts` SHALL verify claim logs."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "spec_author"
     },
     {
       "id": 60,

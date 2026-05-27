@@ -227,4 +227,9 @@ Append completed session summaries below.
 - **Status:** Done
 - **Summary:** Implemented comprehensive Playwright E2E integration tests in `tests/e2e/manager_arrivals_feed_flow.spec.ts` asserting the full stream flow: initial empty feed on `/admin/dashboard`, Captive Portal customer registration at `/portal`, data persistence in database, and top-of-feed list appending on manual refresh with correct names, phone numbers, greeting previews, and green WhatsApp prefilled URL links. Integrated the `ArrivalsFeedComponent` in `src/app/admin/dashboard/dashboard.client.tsx` using `useArrivals()`. Verified all 243/243 Vitest integration tests, ESLint, Next.js build, and E2E tests pass 100% green. Reviewer ACCEPTED.
 
+## Feature: service_visit_milestone_counter
+- **Status:** Done
+- **Summary:** Implemented `MilestoneService.evaluateMilestone(clientId)` in `src/backend/services/milestone.service.ts` to evaluate if a client has reached their 10th visit milestone (`MILESTONE_THRESHOLD = 10`), returning a type-safe `MilestoneEvaluation` response. Implemented `ClientModel.getWifiLoginCount(clientId)` in `src/backend/models/client.model.ts` which counts login logs joined from `wifi_logins` table using Supabase secure production queries, supporting offline simulation parsing from `-count-<number>` suffixes, throw guards on empty parameter, and logging query/network errors into structured error codes (`DB_CONNECTION_FAILURE` or `DB_QUERY_ERROR`). Created 6 comprehensive integration tests in `tests/integration/service_visit_milestone_counter.integration.test.ts` covering boundary count evaluations (9, 10, 11), validation checks, and error transformations. Full harness verification passed successfully with exit code 0 (`./init.sh` green).
+
+
 

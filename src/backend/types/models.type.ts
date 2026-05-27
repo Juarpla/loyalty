@@ -175,3 +175,12 @@ export const SOCIAL_POST_LIMITS = {
   HASHTAG_MAX_LENGTH: 30,
   MAX_IDEAS: 3,
 } as const;
+
+export const MILESTONE_THRESHOLD = 10;
+
+export interface MilestoneEvaluation {
+  clientId: string;
+  visitCount: number;
+  isMilestone: boolean;
+}
+
