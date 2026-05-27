@@ -804,7 +804,7 @@
         "Integration tests in `tests/integration/hook_cashier_rewards.test.ts` SHALL assert state toggles."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 62,
