@@ -701,7 +701,7 @@
         "Integration tests in `tests/integration/controller_arrival_notifications.test.ts` SHALL verify aggregate metrics and outputs."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 54,
@@ -714,7 +714,7 @@
         "Integration tests in `tests/integration/api_arrival_notifications_route.test.ts` SHALL assert route maps."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": 55,

@@ -6,6 +6,7 @@ import {
   CustomerSegment,
   SegmentedCustomer,
   TransactionRecord,
+  PortalArrivalRecord,
   SEGMENTATION_THRESHOLDS
 } from "../types/models.type";
 import { logger } from "../utils/logger.utils";
@@ -133,6 +134,99 @@ export class ClientModel {
 
       const errorCode = (err as Record<string, unknown>)?.code;
       throw new Error(typeof errorCode === "string" ? errorCode : "DB_QUERY_ERROR");
+    }
+  }
+
+  /**
+   * Fetch recent captive portal arrivals for manager notifications.
+   */
+  static async getRecentPortalArrivals(limit: number = 10): Promise<PortalArrivalRecord[]> {
+    logger.info("ClientModel.getRecentPortalArrivals invoked", { limit });
+    const status = supabaseModel.getStatus();
+
+    if (status.mode === "offline_simulation") {
+      const now = Date.now();
+      const mockArrivals: PortalArrivalRecord[] = [
+        {
+          clientId: "cli-arrival-001",
+          loginId: "log-arrival-001",
+          phone_number: "+51900111222",
+          name: "Ana Torres",
+          arrivedAt: new Date(now - 2 * 60 * 1000).toISOString(),
+        },
+        {
+          clientId: "cli-arrival-002",
+          loginId: "log-arrival-002",
+          phone_number: "+51900333444",
+          name: null,
+          arrivedAt: new Date(now - 8 * 60 * 1000).toISOString(),
+        },
+      ].slice(0, limit);
+
+      return supabaseModel.executeQuery<PortalArrivalRecord[]>(
+        "getRecentPortalArrivals",
+        mockArrivals
+      );
+    }
+
+    try {
+      const client = supabaseModel.getClient();
+      const { data, error } = await client
+        .from("wifi_logins")
+        .select("id, created_at, clients(id, phone_number, name)")
+        .order("created_at", { ascending: false })
+        .limit(limit);
+
+      if (error) {
+        logger.error("Database error in ClientModel.getRecentPortalArrivals", error);
+
+        if (
+          error.message?.includes("fetch failed") ||
+          error.message?.includes("ECONNREFUSED") ||
+          error.message?.includes("Failed to fetch") ||
+          error.message?.includes("NetworkError")
+        ) {
+          throw new Error("DB_CONNECTION_FAILURE");
+        }
+
+        throw new Error(error.code || "DB_QUERY_ERROR");
+      }
+
+      type SupabaseArrivalRow = {
+        id: string;
+        created_at: string | null;
+        clients: {
+          id: string;
+          phone_number: string;
+          name: string | null;
+        } | null;
+      };
+
+      const rows = (data ?? []) as SupabaseArrivalRow[];
+
+      return rows
+        .filter((row) => row.clients !== null)
+        .map((row) => ({
+          clientId: row.clients?.id ?? "",
+          loginId: row.id,
+          phone_number: row.clients?.phone_number ?? "",
+          name: row.clients?.name ?? null,
+          arrivedAt: row.created_at ?? new Date(0).toISOString(),
+        }));
+    } catch (err: unknown) {
+      const error = err as Error;
+      logger.error("Exception in ClientModel.getRecentPortalArrivals", error);
+
+      if (
+        error.message?.includes("fetch failed") ||
+        error.message?.includes("ECONNREFUSED") ||
+        error.message?.includes("Failed to fetch") ||
+        error.message?.includes("NetworkError")
+      ) {
+        throw new Error("DB_CONNECTION_FAILURE");
+      }
+
+      throw error;
     }
   }
 

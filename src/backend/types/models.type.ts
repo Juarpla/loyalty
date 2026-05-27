@@ -130,6 +130,37 @@ export interface ArrivalNotification {
   generatedAt: string;
 }
 
+export interface PortalArrivalRecord {
+  clientId: string;
+  loginId: string;
+  phone_number: string;
+  name: string | null;
+  arrivedAt: string;
+}
+
+export interface ArrivalNotificationWithMeta extends ArrivalNotification {
+  clientId: string;
+  loginId: string;
+  arrivedAt: string;
+}
+
+export interface ArrivalNotificationsSummary {
+  total: number;
+  named: number;
+  anonymous: number;
+  generatedAt: string;
+  latestArrivalAt: string | null;
+}
+
+export interface ArrivalNotificationsResult {
+  notifications: ArrivalNotificationWithMeta[];
+  summary: ArrivalNotificationsSummary;
+}
+
+export type ArrivalControllerResponse =
+  | { success: true; data: ArrivalNotificationsResult }
+  | { success: false; status: number; error: string };
+
 export const SEGMENTATION_THRESHOLDS = {
   INACTIVE_DAYS: 30,
   FREQUENT_VISIT_COUNT: 5,
