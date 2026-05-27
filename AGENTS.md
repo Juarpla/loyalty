@@ -73,6 +73,8 @@ Useful local guides:
   existing feature. You must never add, delete, reorder features, or modify any field other
   than `status` on any feature entry. The `init.sh` snapshot validator will detect and block
   violations.
+- Do not add comments during code implementation unless strictly necessary. Instead, name functions, constants, and variables very descriptively. If a function name cannot be made fully comprehensive, split it into as many functions as possible to ensure the reviewer can easily understand the logic. All code, naming, and comments must be in English only.
+
 
 ## Progress Tracking (progress/current.md)
 
