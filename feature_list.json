@@ -791,7 +791,7 @@
         "Integration tests in `tests/integration/api_reward_claim_route.test.ts` SHALL assert routing maps."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 61,

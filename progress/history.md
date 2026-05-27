@@ -235,7 +235,6 @@ Append completed session summaries below.
 - **Status:** Done
 - **Summary:** Implemented `MilestoneController.claimReward` in `src/backend/controllers/milestone.controller.ts` to manage customer reward claiming. The controller validates incoming body parameters, extracts client IDs supporting camelCase and snake_case format fallbacks, invokes `MilestoneService.evaluateMilestone` to check eligibility (exactly 10 visits), writes success audit logs, and resets the milestone counter. Added `ClientModel.resetWifiLoginCount(clientId)` inside `src/backend/models/client.model.ts` to clear matching `wifi_logins` records, supporting both production and simulation environments. Created 13 integration tests in `tests/integration/controller_reward_claim.integration.test.ts` verifying validations, milestones qualifying, audit tracing, counter resets, and network failures. All 262 Vitest checks, the linter, and production build Turbopack pass cleanly.
 
-
-
-
-
+## Feature: api_reward_claim_route
+- **Status:** Done
+- **Summary:** Implemented `POST /api/v1/rewards/claim` route handler in `src/app/api/v1/rewards/claim/route.ts` as a thin App Router pasamanos route that logs invocation, parses and handles malformed JSON request bodies with status 400, delegates validation/claims to `MilestoneController.claimReward()`, and properly propagates validation errors (e.g. status 400) and connection/server failures (e.g. status 500) to the caller. Created the integration test suite in `tests/integration/api_reward_claim_route.integration.test.ts` containing 4 tests verifying happy path claims, malformed JSON inputs, validation/milestone failures, and DB connection errors. Full SDD workflow completed: pending -> spec_author -> spec_ready (human approved) -> in_progress -> in_review -> done. The entire project linter, Vitest integration test suite (35 test files, 266 tests), and Next.js production compilation build passed cleanly with exit code 0. Reviewer ACCEPTED.
