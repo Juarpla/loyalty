@@ -94,7 +94,7 @@ The implementer documented in `progress/impl_29_test_e2e_manager_promotions_flow
 - [ ] `progress/history.md` final summary — pending (leader marks `done` first)
 - [x] `feature_list.json` has correct state (`in_review`)
 - [x] No unexplained temporary files or TODOs
-- [ ] Note: `progress/harness_maintenance_notes.md` exists in git staging area but not on disk — harmless leftover, not a blocker
+- [x] Note: `progress/harness_maintenance_notes.md` has been unstaged and resolved — git status is clean
 
 ### C6 — Spec Driven Development
 - [x] Role contracts followed
