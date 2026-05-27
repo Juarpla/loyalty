@@ -534,5 +534,61 @@ export class ClientModel {
       throw new Error("DB_QUERY_ERROR");
     }
   }
+
+  static async resetWifiLoginCount(clientId: string): Promise<void> {
+    logger.info("ClientModel.resetWifiLoginCount invoked", { clientId });
+
+    if (!clientId || clientId.trim() === "") {
+      throw new Error("INVALID_CLIENT_ID");
+    }
+
+    const status = supabaseModel.getStatus();
+
+    if (status.mode === "offline_simulation") {
+      await supabaseModel.executeQuery<void>("resetWifiLoginCount", undefined);
+      return;
+    }
+
+    try {
+      const client = supabaseModel.getClient();
+      const { error } = await client
+        .from("wifi_logins")
+        .delete()
+        .eq("client_id", clientId);
+
+      if (error) {
+        logger.error("Database error in ClientModel.resetWifiLoginCount", error);
+
+        if (
+          error.message?.includes("fetch failed") ||
+          error.message?.includes("ECONNREFUSED") ||
+          error.message?.includes("Failed to fetch") ||
+          error.message?.includes("NetworkError")
+        ) {
+          throw new Error("DB_CONNECTION_FAILURE");
+        }
+
+        throw new Error(error.code || "DB_QUERY_ERROR");
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      logger.error("Exception in ClientModel.resetWifiLoginCount", error);
+
+      if (
+        error.message?.includes("fetch failed") ||
+        error.message?.includes("ECONNREFUSED") ||
+        error.message?.includes("Failed to fetch") ||
+        error.message?.includes("NetworkError")
+      ) {
+        throw new Error("DB_CONNECTION_FAILURE");
+      }
+
+      if (error.message === "INVALID_CLIENT_ID" || error.message === "DB_QUERY_ERROR" || error.message === "DB_CONNECTION_FAILURE") {
+        throw error;
+      }
+
+      throw new Error("DB_QUERY_ERROR");
+    }
+  }
 }
 

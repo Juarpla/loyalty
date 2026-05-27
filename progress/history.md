@@ -231,5 +231,11 @@ Append completed session summaries below.
 - **Status:** Done
 - **Summary:** Implemented `MilestoneService.evaluateMilestone(clientId)` in `src/backend/services/milestone.service.ts` to evaluate if a client has reached their 10th visit milestone (`MILESTONE_THRESHOLD = 10`), returning a type-safe `MilestoneEvaluation` response. Implemented `ClientModel.getWifiLoginCount(clientId)` in `src/backend/models/client.model.ts` which counts login logs joined from `wifi_logins` table using Supabase secure production queries, supporting offline simulation parsing from `-count-<number>` suffixes, throw guards on empty parameter, and logging query/network errors into structured error codes (`DB_CONNECTION_FAILURE` or `DB_QUERY_ERROR`). Created 6 comprehensive integration tests in `tests/integration/service_visit_milestone_counter.integration.test.ts` covering boundary count evaluations (9, 10, 11), validation checks, and error transformations. Full harness verification passed successfully with exit code 0 (`./init.sh` green).
 
+## Feature: controller_reward_claim
+- **Status:** Done
+- **Summary:** Implemented `MilestoneController.claimReward` in `src/backend/controllers/milestone.controller.ts` to manage customer reward claiming. The controller validates incoming body parameters, extracts client IDs supporting camelCase and snake_case format fallbacks, invokes `MilestoneService.evaluateMilestone` to check eligibility (exactly 10 visits), writes success audit logs, and resets the milestone counter. Added `ClientModel.resetWifiLoginCount(clientId)` inside `src/backend/models/client.model.ts` to clear matching `wifi_logins` records, supporting both production and simulation environments. Created 13 integration tests in `tests/integration/controller_reward_claim.integration.test.ts` verifying validations, milestones qualifying, audit tracing, counter resets, and network failures. All 262 Vitest checks, the linter, and production build Turbopack pass cleanly.
+
+
+
 
 
