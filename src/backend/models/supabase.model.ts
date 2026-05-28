@@ -12,7 +12,7 @@ if (typeof global.WebSocket === "undefined") {
  * Isolated Supabase Client Interface
  * Wraps database credentials securely. Easy to extract.
  */
-class SupabaseModelClient {
+export class SupabaseModelClient {
   private isInitialized: boolean = false;
   private supabaseUrl: string | null = null;
   private supabaseAnonKey: string | null = null;
@@ -46,7 +46,7 @@ class SupabaseModelClient {
   public getStatus() {
     return {
       initialized: this.isInitialized,
-      mode: this.isInitialized ? "production" : "offline_simulation"
+      mode: this.isInitialized ? "production" as const : "offline_simulation" as const
     };
   }
 
@@ -67,10 +67,12 @@ class SupabaseModelClient {
     logger.info(`Database Executing Query: [${queryName}]`);
     
     // Simulate minor delay representing network roundtrip
-    await new Promise((resolve) => setTimeout(resolve, 80));
+    const delay = 50 + Math.random() * 100;
+    await new Promise((resolve) => setTimeout(resolve, delay));
     
     return mockData;
   }
 }
 
 export const supabaseModel = new SupabaseModelClient();
+

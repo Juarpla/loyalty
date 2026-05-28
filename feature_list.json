@@ -868,7 +868,7 @@
         "Integration tests in `tests/integration/db_supabase_instantiation.test.ts` SHALL verify client objects."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 67,
