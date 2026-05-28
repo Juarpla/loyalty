@@ -55,6 +55,65 @@ export type Database = {
         }
         Relationships: []
       }
+      companies: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      company_wifi_settings: {
+        Row: {
+          brand_color: string
+          company_id: string
+          created_at: string | null
+          id: string
+          ssid: string
+          welcome_message: string
+          welcome_title: string
+          wifi_password: string
+        }
+        Insert: {
+          brand_color?: string
+          company_id: string
+          created_at?: string | null
+          id?: string
+          ssid: string
+          welcome_message?: string
+          welcome_title?: string
+          wifi_password: string
+        }
+        Update: {
+          brand_color?: string
+          company_id?: string
+          created_at?: string | null
+          id?: string
+          ssid?: string
+          welcome_message?: string
+          welcome_title?: string
+          wifi_password?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_wifi_settings_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: true
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sales_transactions: {
         Row: {
           amount: number

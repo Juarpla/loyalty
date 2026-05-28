@@ -882,7 +882,7 @@
         "Integration tests in `tests/integration/db_migration_company_wifi.test.ts` SHALL assert schema configurations."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 68,
@@ -896,7 +896,7 @@
         "Integration tests in `tests/integration/model_company_wifi_settings.test.ts` SHALL verify CRUD integrations."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "spec_ready"
     },
     {
       "id": 69,

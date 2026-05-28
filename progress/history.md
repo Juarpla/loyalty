@@ -261,3 +261,7 @@ Append completed session summaries below.
 ## Feature: util_logger_integration
 - **Status:** Done
 - **Summary:** Refined the decoupled backend logging utility in `src/backend/utils/logger.utils.ts` to output formatted standard streams (`console.log`, `console.warn`, and `console.error`) with clean tags (`[INFO]`, `[WARN]`, `[ERROR]`) and ISO 8601 timestamps. Prevented trailing spaces and empty string parameters when context/error arguments are omitted. Implemented 100% type-safe integration tests in `tests/integration/util_logger.test.ts` verifying all 8 requirements (R1–R8) including context serialization, exception mapping, and null-handling. All tests, ESLint checks, and production compilations passed cleanly with exit code 0. Reviewer ACCEPTED.
+
+## Feature: db_migration_company_wifi
+- **Status:** Done
+- **Summary:** Implemented the Supabase migration `supabase/migrations/20260528000000_company_wifi_schema.sql` creating `companies` and `company_wifi_settings` with UUID primary keys, required WiFi credentials, default portal branding values, a one-to-one unique `company_id` relationship, and `ON DELETE CASCADE` foreign key behavior. Regenerated `src/backend/types/database.type.ts` so the new tables and relationship are available to backend TypeScript code. Added integration coverage in `tests/integration/db_migration_company_wifi.integration.test.ts` and `tests/integration/db_migration_company_wifi.test.ts` covering R1-R6. Full harness passed (`./init.sh`: 38 test files, 287 tests, DB lint, ESLint, and production build). Reviewer ACCEPTED.
