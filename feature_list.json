@@ -817,7 +817,7 @@
         "Playwright E2E tests in `tests/e2e/component_cashier_milestone_modal.spec.ts` SHALL verify structure."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 63,
