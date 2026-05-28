@@ -5,14 +5,26 @@
 export const logger = {
   info: (message: string, context?: unknown) => {
     const timestamp = new Date().toISOString();
-    console.log(`[INFO] [${timestamp}] ${message}`, context ? JSON.stringify(context, null, 2) : "");
+    if (context !== undefined) {
+      console.log(`[INFO] [${timestamp}] ${message}`, JSON.stringify(context, null, 2));
+    } else {
+      console.log(`[INFO] [${timestamp}] ${message}`);
+    }
   },
   warn: (message: string, context?: unknown) => {
     const timestamp = new Date().toISOString();
-    console.warn(`[WARN] [${timestamp}] ${message}`, context ? JSON.stringify(context, null, 2) : "");
+    if (context !== undefined) {
+      console.warn(`[WARN] [${timestamp}] ${message}`, JSON.stringify(context, null, 2));
+    } else {
+      console.warn(`[WARN] [${timestamp}] ${message}`);
+    }
   },
   error: (message: string, error?: unknown) => {
     const timestamp = new Date().toISOString();
-    console.error(`[ERROR] [${timestamp}] ${message}`, error ? error : "");
+    if (error !== undefined) {
+      console.error(`[ERROR] [${timestamp}] ${message}`, error);
+    } else {
+      console.error(`[ERROR] [${timestamp}] ${message}`);
+    }
   }
 };

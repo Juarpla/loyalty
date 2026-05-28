@@ -855,7 +855,7 @@
         "Integration tests in `tests/integration/util_logger.test.ts` SHALL verify logger outputs."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 66,
