@@ -830,7 +830,7 @@
         "Playwright E2E tests in `tests/e2e/page_cashier_dashboard_milestones.spec.ts` SHALL verify modal inclusions."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "spec_author"
     },
     {
       "id": 64,
@@ -866,6 +866,87 @@
       "acceptance": [
         "WHEN the database helper is executed, it SHALL return instantiated Supabase adapter models.",
         "Integration tests in `tests/integration/db_supabase_instantiation.test.ts` SHALL verify client objects."
+      ],
+      "sdd": true,
+      "status": "pending"
+    },
+    {
+      "id": 67,
+      "name": "db_migration_company_wifi",
+      "title": "PostgreSQL Migration for Company WiFi Settings Schema",
+      "description": "Creates `companies` and `company_wifi_settings` tables in Supabase with foreign key constraints, default branding values, and unique indexes.",
+      "history": "F5 - Dynamic Portals: Multi-company customized WiFi portal",
+      "acceptance": [
+        "WHEN querying the DB schema, the `companies` table and `company_wifi_settings` table SHALL exist.",
+        "WHEN metadata is inspected, `company_wifi_settings` SHALL contain a foreign key reference pointing to the `companies` primary key and columns for `ssid` and `wifi_password`.",
+        "Integration tests in `tests/integration/db_migration_company_wifi.test.ts` SHALL assert schema configurations."
+      ],
+      "sdd": true,
+      "status": "pending"
+    },
+    {
+      "id": 68,
+      "name": "model_company_wifi_settings",
+      "title": "Company WiFi Settings Database Model Layer",
+      "description": "Implements reading and writing operations for company settings records in `src/backend/models/company.model.ts`.",
+      "history": "F5 - Dynamic Portals: Multi-company customized WiFi portal",
+      "acceptance": [
+        "WHEN a company ID is provided, the read model SHALL return associated SSID, branding text, and password details.",
+        "WHEN a config object is submitted, the write model SHALL upsert the details under the targeted company ID.",
+        "Integration tests in `tests/integration/model_company_wifi_settings.test.ts` SHALL verify CRUD integrations."
+      ],
+      "sdd": true,
+      "status": "pending"
+    },
+    {
+      "id": 69,
+      "name": "controller_company_wifi",
+      "title": "Company settings Custom HTTP Coordinator Action",
+      "description": "Validates, sanitizes, and matches request payloads to the model layers inside `src/backend/controllers/company.controller.ts`.",
+      "history": "F5 - Dynamic Portals: Multi-company customized WiFi portal",
+      "acceptance": [
+        "WHEN validating WiFi settings parameters, the controller SHALL verify that SSID length is strictly non-empty and password conforms to security bounds.",
+        "IF validation fails, THEN the controller SHALL output a 400 validation error packet.",
+        "Integration tests in `tests/integration/controller_company_wifi.test.ts` SHALL check request parameters."
+      ],
+      "sdd": true,
+      "status": "pending"
+    },
+    {
+      "id": 70,
+      "name": "api_company_wifi_routes",
+      "title": "Dynamic Company Settings API Route Pasamanos",
+      "description": "Thin App Router API route `src/app/api/v1/company/[companyId]/wifi/route.ts` mapping request actions to the controller layer.",
+      "history": "F5 - Dynamic Portals: Multi-company customized WiFi portal",
+      "acceptance": [
+        "WHEN GET or POST requests are sent to `/api/v1/company/[companyId]/wifi`, the route SHALL map queries dynamically and execute coordinator methods.",
+        "Integration tests in `tests/integration/api_company_wifi_routes.test.ts` SHALL assert endpoint routing parameters."
+      ],
+      "sdd": true,
+      "status": "pending"
+    },
+    {
+      "id": 71,
+      "name": "page_portal_dynamic_landing",
+      "title": "Dynamic Client Landing Page and WiFi Onboarding",
+      "description": "Implements the dynamic dynamic routing route `/portal/[companyId]` to display premium visual layouts, customized company SSID, and QR workflows.",
+      "history": "F5 - Dynamic Portals: Multi-company customized WiFi portal",
+      "acceptance": [
+        "WHEN dynamic portal route is accessed, the component SHALL fetch dynamic configurations and render premium CTA blocks customized for the client.",
+        "Playwright E2E tests in `tests/e2e/page_portal_dynamic_landing.spec.ts` SHALL verify layout renders successfully on mobile browsers."
+      ],
+      "sdd": true,
+      "status": "pending"
+    },
+    {
+      "id": 72,
+      "name": "page_company_wifi_dashboard",
+      "title": "Company Settings Management UI View",
+      "description": "Creates a modern premium layout dashboard inside `src/app/admin/company/settings/page.tsx` for updating WiFi credentials.",
+      "history": "F5 - Dynamic Portals: Multi-company customized WiFi portal",
+      "acceptance": [
+        "WHEN managers visit the layout panel, the components SHALL present input triggers, tactile credentials submit actions, and secure previews.",
+        "Playwright E2E tests in `tests/e2e/page_company_wifi_dashboard.spec.ts` SHALL assert panel functions and layout styling."
       ],
       "sdd": true,
       "status": "pending"
