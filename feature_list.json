@@ -830,7 +830,7 @@
         "Playwright E2E tests in `tests/e2e/page_cashier_dashboard_milestones.spec.ts` SHALL verify modal inclusions."
       ],
       "sdd": true,
-      "status": "spec_author"
+      "status": "done"
     },
     {
       "id": 64,

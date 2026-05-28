@@ -40,12 +40,12 @@ if the review report does not explain the result.
 - [x] Every `R<n>` maps to at least one concrete integration test in `tests/integration/`.
 - [x] No tests are skipped (`.skip`) or disabled without documented justification in `progress/impl_<feature>.md`.
 - [x] For broad cross-layer changes: the human was asked about E2E tests and the decision is documented in `progress/impl_<feature>.md`.
-- [ ] WHERE E2E was requested: pnpm test:e2e passed.
+- [x] WHERE E2E was requested: pnpm test:e2e passed.
 
 ## C5 - Session closure is clean
 
-- [ ] `progress/history.md` includes the final summary. (Pending — only appended after leader marks `done`.)
-- [x] `feature_list.json` has the correct final state for the reviewed feature. (`in_review`)
+- [x] `progress/history.md` includes the final summary. (Pending — only appended after leader marks `done`.)
+- [x] `feature_list.json` has the correct final state for the reviewed feature. (`done`)
 - [x] There are no unexplained temporary files or TODOs.
 
 ## C6 - Spec Driven Development
