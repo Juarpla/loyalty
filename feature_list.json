@@ -842,7 +842,7 @@
         "Playwright tests in `tests/e2e/cashier_rewards_modal_flow.spec.ts` SHALL trigger 10th logins, assert modal visibility, and click claims."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 65,

@@ -251,3 +251,8 @@ Append completed session summaries below.
 - **Status:** Done
 - **Summary:** Extended the Cashier Dashboard Client page component (`src/app/admin/cash/cashier-dashboard.client.tsx`) to integrate the portal arrivals feed (`useArrivals` hook) and the rewards state (`useRewards` hook) to dynamically monitor incoming WiFi registrations. When a new customer completes their 10th visit, the dashboard automatically renders the glassmorphic `CashierMilestoneModal` overlay. Uses a `useRef` cache registry to prevent duplicate check calls for the same arrival session. Handled success/error feedback notifications cleanly. Wrote robust Playwright E2E integration tests (`tests/e2e/page_cashier_dashboard_milestones.e2e.test.ts`) covering initial states, auto-activation, reward claiming, and closing actions. Full SDD workflow completed. All unit, integration, and E2E tests pass 100% green. Reviewer ACCEPTED.
 
+## Feature: test_e2e_cashier_rewards_modal_flow
+- **Status:** Done
+- **Summary:** Implemented a comprehensive E2E Playwright integration test suite in `tests/e2e/cashier_rewards_modal_flow.e2e.test.ts` (matching our active Playwright suffix config) validating the complete Cashier Milestone Reward Alert Modal flow: verified the modal overlay is hidden initially, doesn't trigger on normal client arrivals, automatically displays on a client's 10th visit (`R1`), renders Name, Phone, "Free Coffee & Donut" reward description, and Visit Count = 10 (`R2`), successfully calls the POST claim API on "Claim Reward" click, dismissing the modal and showing the "Reward claimed successfully" success banner (`R3`), and closes the modal without claims on "Dismiss" click (`R4`). All tests, ESLint, and Next.js builds compiled 100% successfully. Reviewer ACCEPTED.
+
+
