@@ -1,0 +1,5 @@
+# Tasks - page_marketing_landing_hub (Feature ID: 73)
+
+- [x] **T1**: Update `src/app/page.tsx` by importing the `Metadata` type from `"next"`, defining and exporting the static `metadata` object at the page level. Ensure all interactive links and cards utilize appropriate padding (`p-4` or higher) or height boundaries (`min-h-11` or `h-12`) to strictly meet the W3C 44px touch tap standard. Covers: R1, R2, R3, R4.
+- [x] **T2**: Create the E2E verification test file `tests/e2e/page_marketing_landing_hub.e2e.test.ts`. This file should verify page loading at `/`, check the metadata title matches, assert the presence and visibility of all 5 interactive landing hub cards, verify their navigation endpoints (links), and assert that their bounding boxes measure at least 44px in both width and height. Covers: R6.
+- [x] **T3**: Run local project validation via `pnpm lint` and executing the `./init.sh --quick` and full `./init.sh` validation scripts to guarantee zero lint warnings, successful production builds, and green unit/integration test suites. Covers: R5.

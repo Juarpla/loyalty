@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { 
   ArrowRight, 
@@ -11,6 +12,11 @@ import {
   TrendingUp,
   MessageSquare
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Loyalty Engine Hub | Enterprise Core",
+  description: "Enterprise local business customer loyalty platform core dashboard, featuring cashier operations, AI marketing promotion drafting, live traffic analytics, and guest captive wifi logins.",
+};
 
 export default function Home() {
   return (
@@ -42,7 +48,7 @@ export default function Home() {
             href="https://github.com"
             target="_blank"
             rel="noreferrer"
-            className="text-xs text-zinc-400 hover:text-white transition-colors font-medium border border-zinc-800 rounded-lg px-3 py-1.5 bg-zinc-950/30 backdrop-blur"
+            className="inline-flex items-center justify-center text-xs text-zinc-400 hover:text-white transition-colors font-medium border border-zinc-800 rounded-lg px-4 bg-zinc-950/30 backdrop-blur min-h-[44px] min-w-[44px]"
           >
             v1.0.0
           </a>
@@ -115,7 +121,7 @@ export default function Home() {
           {/* Cashier Dashboard Link */}
           <Link
             href="/admin/cash"
-            className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-indigo-950/20 border border-zinc-800/60 hover:border-indigo-500/40 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
+            className="flex min-h-[44px] items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-indigo-950/20 border border-zinc-800/60 hover:border-indigo-500/40 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">
@@ -137,7 +143,7 @@ export default function Home() {
           {/* Manager Analytics Control Panel */}
           <Link
             href="/admin/dashboard"
-            className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-purple-950/20 border border-zinc-800/60 hover:border-purple-500/40 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
+            className="flex min-h-[44px] items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-purple-950/20 border border-zinc-800/60 hover:border-purple-500/40 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">
@@ -159,7 +165,7 @@ export default function Home() {
           {/* AI Promotions campaign writer */}
           <Link
             href="/admin/promotions"
-            className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-emerald-950/20 border border-zinc-800/60 hover:border-emerald-500/40 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
+            className="flex min-h-[44px] items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-emerald-950/20 border border-zinc-800/60 hover:border-emerald-500/40 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">
@@ -181,7 +187,7 @@ export default function Home() {
           {/* Social content creation planner */}
           <Link
             href="/admin/social"
-            className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-blue-950/20 border border-zinc-800/60 hover:border-blue-500/40 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
+            className="flex min-h-[44px] items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-blue-950/20 border border-zinc-800/60 hover:border-blue-500/40 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">
@@ -203,7 +209,7 @@ export default function Home() {
           {/* Customer Captive WiFi Onboarding Portal */}
           <Link
             href="/portal"
-            className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-zinc-800/40 border border-zinc-800/60 hover:border-zinc-700 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
+            className="flex min-h-[44px] items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-zinc-800/40 border border-zinc-800/60 hover:border-zinc-700 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-zinc-800/40 text-zinc-300 border border-zinc-700 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">

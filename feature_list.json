@@ -963,7 +963,7 @@
         "THE page SHALL pass all Next.js App Router metadata conventions, build pipeline compiliations, and ESLint rule checks."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 74,
@@ -976,7 +976,7 @@
         "IF not authenticated, the system SHALL redirect to the login gateway."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "spec_author"
     },
     {
       "id": 75,
