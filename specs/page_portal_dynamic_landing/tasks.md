@@ -1,0 +1,7 @@
+# Tasks - page_portal_dynamic_landing (Feature ID: 71)
+
+- [x] T1 - Create `src/app/portal/[companyId]/page.tsx` as a Server Component that awaits dynamic params, fetches `/api/v1/company/<companyId>/wifi`, validates the response shape, normalizes settings into a dynamic portal config, and falls back to safe defaults on fetch or payload failure. Covers: R1, R2, R3, R4, R7.
+- [x] T2 - Create `src/app/portal/[companyId]/portal-dynamic.client.tsx` as a Client Component that accepts the normalized config, renders premium mobile CTA content with welcome copy, SSID, and brand color, preserves the existing portal registration controls, and delegates registration to `usePortal()`. Covers: R3, R5, R7.
+- [x] T3 - Render `WifiInfoQrComponent` from the dynamic Client Component after successful registration using the company-specific `ssid` and `password`. Covers: R6.
+- [x] T4 - Add `tests/e2e/page_portal_dynamic_landing.e2e.test.ts` covering dynamic route navigation, settings endpoint fetch, customized landing copy, mobile layout/no-overflow checks, successful registration-to-QR behavior, and failed-settings fallback behavior. Covers: R1, R2, R3, R4, R5, R6, R8.
+- [x] T5 - Run `pnpm test:agent`, run the required Playwright E2E test for this feature, run `./init.sh`, update this task list, and write `progress/impl_page_portal_dynamic_landing.md` with summary, verification evidence, E2E result, and requirement traceability. Covers: R8.

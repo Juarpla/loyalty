@@ -174,6 +174,12 @@ export function PromotionsClient() {
           >
             Social
           </Link>
+          <Link
+            href="/admin/company/settings"
+            className="text-sm text-zinc-400 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 rounded-md px-2 py-1 transition-colors"
+          >
+            WiFi Settings
+          </Link>
         </div>
       </nav>
 

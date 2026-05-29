@@ -936,7 +936,7 @@
         "Playwright E2E tests in `tests/e2e/page_portal_dynamic_landing.spec.ts` SHALL verify layout renders successfully on mobile browsers."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 72,
@@ -949,7 +949,7 @@
         "Playwright E2E tests in `tests/e2e/page_company_wifi_dashboard.spec.ts` SHALL assert panel functions and layout styling."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     }
   ]
 }
