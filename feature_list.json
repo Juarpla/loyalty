@@ -896,7 +896,7 @@
         "Integration tests in `tests/integration/model_company_wifi_settings.test.ts` SHALL verify CRUD integrations."
       ],
       "sdd": true,
-      "status": "spec_ready"
+      "status": "done"
     },
     {
       "id": 69,
