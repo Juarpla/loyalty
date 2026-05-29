@@ -923,7 +923,7 @@
         "Integration tests in `tests/integration/api_company_wifi_routes.test.ts` SHALL assert endpoint routing parameters."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 71,
