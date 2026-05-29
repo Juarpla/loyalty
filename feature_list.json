@@ -962,8 +962,8 @@
         "ALL card portals SHALL conform to a minimum 44px touch tap target standard.",
         "THE page SHALL pass all Next.js App Router metadata conventions, build pipeline compiliations, and ESLint rule checks."
       ],
-      "sdd": false,
-      "status": "done"
+      "sdd": true,
+      "status": "pending"
     },
     {
       "id": 74,
@@ -971,8 +971,12 @@
       "title": "Tactile Cashier Ledger Gateway",
       "description": "Provides the touch-first transactional input ledgers for cashier actions linked directly to customer logs.",
       "target_route": "/admin/cash",
-      "sdd": false,
-      "status": "done"
+      "acceptance": [
+        "WHEN /admin/cash is requested, the system SHALL check if the user is authenticated.",
+        "IF not authenticated, the system SHALL redirect to the login gateway."
+      ],
+      "sdd": true,
+      "status": "pending"
     },
     {
       "id": 75,
@@ -980,8 +984,12 @@
       "title": "Executive Operational Control Center",
       "description": "Consolidates weekend traffic analysis, real-time arrival logs, and automated visit count metric projections.",
       "target_route": "/admin/dashboard",
-      "sdd": false,
-      "status": "done"
+      "acceptance": [
+        "WHEN /admin/dashboard is requested, the system SHALL check if the user is authenticated.",
+        "IF not authenticated, the system SHALL redirect to the login gateway."
+      ],
+      "sdd": true,
+      "status": "pending"
     },
     {
       "id": 76,
@@ -989,8 +997,12 @@
       "title": "Public Guest Network Captive Portal",
       "description": "Handles visitor registration, password matrices, and inline SVG QR code connections for dynamic WiFi onboarding.",
       "target_route": "/portal",
-      "sdd": false,
-      "status": "done"
+      "acceptance": [
+        "WHEN /portal is requested, the system SHALL load the public captive portal onboarding flow.",
+        "THE guest customer is able to register their name and phone to get WiFi credentials."
+      ],
+      "sdd": true,
+      "status": "pending"
     }
   ]
 }
