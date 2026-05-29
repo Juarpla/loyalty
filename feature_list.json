@@ -910,7 +910,7 @@
         "Integration tests in `tests/integration/controller_company_wifi.test.ts` SHALL check request parameters."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 70,
