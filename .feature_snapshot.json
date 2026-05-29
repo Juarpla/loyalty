@@ -865,5 +865,42 @@
       "Playwright E2E tests in `tests/e2e/page_company_wifi_dashboard.spec.ts` SHALL assert panel functions and layout styling."
     ],
     "sdd": true
+  },
+  {
+    "id": 73,
+    "name": "page_marketing_landing_hub",
+    "title": "Universal Marketing Landing & Hub Route",
+    "description": "Implements the core landing page at `/` routing managers, cashiers, and customers dynamically into their corresponding subsystems.",
+    "acceptance_criteria": [
+      "WHEN the root URL `/` is visited, a premium dark-mode glassmorphic page SHALL render.",
+      "THE layout SHALL include visual entry points for Cashier, Manager Dashboard, Promotions Manager, Social Planner, and Captive Portal.",
+      "ALL card portals SHALL conform to a minimum 44px touch tap target standard.",
+      "THE page SHALL pass all Next.js App Router metadata conventions, build pipeline compiliations, and ESLint rule checks."
+    ],
+    "sdd": false
+  },
+  {
+    "id": 74,
+    "name": "subsystem_cashier_gateway",
+    "title": "Tactile Cashier Ledger Gateway",
+    "description": "Provides the touch-first transactional input ledgers for cashier actions linked directly to customer logs.",
+    "target_route": "/admin/cash",
+    "sdd": false
+  },
+  {
+    "id": 75,
+    "name": "subsystem_manager_analytics",
+    "title": "Executive Operational Control Center",
+    "description": "Consolidates weekend traffic analysis, real-time arrival logs, and automated visit count metric projections.",
+    "target_route": "/admin/dashboard",
+    "sdd": false
+  },
+  {
+    "id": 76,
+    "name": "subsystem_captive_portal",
+    "title": "Public Guest Network Captive Portal",
+    "description": "Handles visitor registration, password matrices, and inline SVG QR code connections for dynamic WiFi onboarding.",
+    "target_route": "/portal",
+    "sdd": false
   }
 ]
