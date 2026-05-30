@@ -989,7 +989,7 @@
         "IF not authenticated, the system SHALL redirect to the login gateway."
       ],
       "sdd": true,
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": 76,
