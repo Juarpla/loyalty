@@ -976,7 +976,7 @@
         "IF not authenticated, the system SHALL redirect to the login gateway."
       ],
       "sdd": true,
-      "status": "spec_author"
+      "status": "done"
     },
     {
       "id": 75,
