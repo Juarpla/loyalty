@@ -21,6 +21,7 @@ const CONNECTION_FAILURE_MARKERS = [
   "NetworkError",
   "Supabase client is not initialized",
 ];
+const simulatedWifiSettingsByCompanyId = new Map<string, CompanyWifiSettings>();
 
 function isBlank(value: string | undefined): boolean {
   return !value || value.trim() === "";
@@ -75,6 +76,15 @@ export class CompanyModel {
     const status = supabaseModel.getStatus();
 
     if (status.mode === "offline_simulation") {
+      const persistedMockSettings = simulatedWifiSettingsByCompanyId.get(companyId);
+
+      if (persistedMockSettings) {
+        return supabaseModel.executeQuery<CompanyWifiSettings | null>(
+          "getCompanyWifiSettings",
+          persistedMockSettings
+        );
+      }
+
       const mockSettings: CompanyWifiSettings | null = companyId.includes("without-settings")
         ? null
         : {
@@ -141,6 +151,8 @@ export class CompanyModel {
         welcome_message: input.welcome_message ?? "Please sign in to connect",
         brand_color: input.brand_color ?? "#000000",
       };
+
+      simulatedWifiSettingsByCompanyId.set(input.company_id, mockSettings);
 
       return supabaseModel.executeQuery<CompanyWifiSettings>(
         "upsertCompanyWifiSettings",

@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ShieldCheck, ArrowRight, Loader2, Sparkles } from "lucide-react";
+import { ShieldCheck, ArrowRight, Loader2, Sparkles, UserPlus } from "lucide-react";
 
 export default function LoginClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/admin/dashboard";
 
+  const [username, setUsername] = useState("");
   const [passcode, setPasscode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +26,7 @@ export default function LoginClient() {
       const response = await fetch("/api/v1/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ passcode }),
+        body: JSON.stringify({ username, passcode }),
       });
 
       const data = await response.json();
@@ -45,11 +46,9 @@ export default function LoginClient() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-br from-[#090b16] via-[#05060c] to-[#010103] text-zinc-100 font-sans relative overflow-hidden">
-      {/* Background ambient light */}
       <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-indigo-500/10 blur-[130px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-emerald-500/5 blur-[130px] pointer-events-none" />
 
-      {/* Main Container */}
       <div className="z-10 w-full max-w-md bg-zinc-900/30 border border-zinc-800/60 rounded-3xl p-6 sm:p-8 backdrop-blur-2xl shadow-2xl relative">
         <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-indigo-500 via-indigo-600 to-emerald-500 opacity-60 rounded-t-3xl" />
 
@@ -68,8 +67,23 @@ export default function LoginClient() {
           </div>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="username-input" className="text-xs font-semibold text-zinc-400 px-1">
+              User
+            </label>
+            <input
+              id="username-input"
+              type="text"
+              placeholder="Registered user"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              disabled={loading}
+              className="w-full bg-zinc-950/60 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 min-h-11 transition-all"
+              autoFocus
+            />
+          </div>
+
           <div className="flex flex-col gap-2">
             <label htmlFor="passcode-input" className="text-xs font-semibold text-zinc-400 px-1">
               Passcode
@@ -82,12 +96,10 @@ export default function LoginClient() {
               onChange={(e) => setPasscode(e.target.value)}
               disabled={loading}
               className="w-full bg-zinc-950/60 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 min-h-11 transition-all"
-              autoFocus
               required
             />
           </div>
 
-          {/* Feedback message */}
           {error && (
             <div
               role="alert"
@@ -97,7 +109,6 @@ export default function LoginClient() {
             </div>
           )}
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading || !passcode}
@@ -116,13 +127,21 @@ export default function LoginClient() {
 
         <div className="mt-6 pt-6 border-t border-zinc-900/60 text-center flex flex-col gap-2">
           <Link
+            href="/register"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-xs font-semibold text-emerald-300 transition-colors hover:border-emerald-400/40 hover:bg-emerald-500/15"
+          >
+            <UserPlus className="h-4 w-4" />
+            Create new Gateway user
+          </Link>
+          <Link
             href="/"
             className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors inline-block"
           >
             ← Back to Marketing Hub
           </Link>
           <p className="text-[10px] text-zinc-600 font-mono">
-            Secure offline simulation bypass code: <code className="text-zinc-500 font-bold bg-zinc-950 px-1 py-0.5 rounded">loyalty2026</code>
+            Secure offline simulation bypass user: <code className="text-zinc-500 font-bold bg-zinc-950 px-1 py-0.5 rounded">demo</code>
+            {" "}code: <code className="text-zinc-500 font-bold bg-zinc-950 px-1 py-0.5 rounded">loyalty2026</code>
           </p>
         </div>
       </div>

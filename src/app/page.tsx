@@ -14,14 +14,30 @@ import {
   MessageSquare
 } from "lucide-react";
 
+import { RegistrationToast } from "@/components/home/registration-toast.component";
+import {
+  authorizedAdminSession,
+  getAdminCompanyIdFromCookieHeader,
+} from "@/backend/utils/admin-auth.utils";
+
 export const metadata: Metadata = {
   title: "Loyalty Engine Hub | Enterprise Core",
   description: "Enterprise local business customer loyalty platform core dashboard, featuring cashier operations, AI marketing promotion drafting, live traffic analytics, and guest captive wifi logins.",
 };
 
-export default async function Home() {
-  const adminSession = (await cookies()).get("admin_session")?.value;
-  const isAdminUserLoggedIn = adminSession === "authorized_admin_session";
+type HomeProps = {
+  searchParams?: Promise<{ registered?: string | string[] | undefined }>;
+};
+
+export default async function Home({ searchParams }: HomeProps = {}) {
+  const cookieStore = await cookies();
+  const adminSession = cookieStore.get("admin_session")?.value;
+  const adminCompanyId = getAdminCompanyIdFromCookieHeader(cookieStore.toString());
+  const registrationStatus = (await searchParams)?.registered;
+  const isAdminUserLoggedIn = adminSession === authorizedAdminSession;
+  const portalHref = isAdminUserLoggedIn && adminCompanyId ? `/portal/${adminCompanyId}` : "/portal";
+  const portalLabel = isAdminUserLoggedIn ? "Open Your Captive Portal" : "Demo Captive Portal";
+  const shouldShowRegistrationToast = registrationStatus === "1";
   const sessionIndicatorClassName = isAdminUserLoggedIn
     ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
     : "bg-red-500/10 text-red-400 border-red-500/20";
@@ -30,6 +46,8 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-6 md:p-16 bg-gradient-to-br from-[#090b16] via-[#05060c] to-[#010103] text-zinc-100 font-sans selection:bg-indigo-500/40 selection:text-white overflow-hidden relative">
+      <RegistrationToast visible={shouldShowRegistrationToast} />
+
       {/* Background Glowing Ambient Orbs */}
       <div className="absolute top-[-20%] left-[-15%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-br from-indigo-500/10 via-indigo-600/5 to-transparent blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-15%] right-[-15%] w-[80vw] h-[80vw] rounded-full bg-gradient-to-tr from-emerald-500/5 via-indigo-500/10 to-transparent blur-[160px] pointer-events-none" />
@@ -94,10 +112,10 @@ export default async function Home() {
               <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
-              href="/portal"
+              href={portalHref}
               className="inline-flex items-center justify-center gap-2 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800/80 hover:border-zinc-700 text-zinc-300 hover:text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 text-sm min-h-11 cursor-pointer"
             >
-              Demo Captive Portal
+              {portalLabel}
               <Wifi className="w-4 h-4 text-zinc-500" />
             </Link>
           </div>
@@ -217,7 +235,7 @@ export default async function Home() {
 
           {/* Customer Captive WiFi Onboarding Portal */}
           <Link
-            href="/portal"
+            href={portalHref}
             className="flex min-h-[44px] items-center justify-between p-4 rounded-2xl bg-zinc-900/30 hover:bg-zinc-800/40 border border-zinc-800/60 hover:border-zinc-700 backdrop-blur-xl group transition-all duration-300 hover:-translate-y-0.5"
           >
             <div className="flex items-center gap-4">
@@ -227,10 +245,14 @@ export default async function Home() {
               <div className="text-left">
                 <div className="font-bold text-sm text-white group-hover:text-zinc-200 transition-colors flex items-center gap-1.5">
                   WiFi Captive Portal
-                  <span className="text-[10px] bg-zinc-800/80 text-zinc-300 px-2 py-0.5 rounded-full font-semibold">User QR</span>
+                  <span className="text-[10px] bg-zinc-800/80 text-zinc-300 px-2 py-0.5 rounded-full font-semibold">
+                    {isAdminUserLoggedIn ? "Your QR" : "Demo"}
+                  </span>
                 </div>
                 <p className="text-xs text-zinc-500 leading-normal mt-0.5">
-                  Public customer onboarding, interactive QR and SSID flows.
+                  {isAdminUserLoggedIn
+                    ? "Customer onboarding with your WiFi settings and QR."
+                    : "Mock customer onboarding, interactive QR and SSID flows."}
                 </p>
               </div>
             </div>

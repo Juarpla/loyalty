@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 
 import type { CompanyWifiSettings } from "@/backend/types/company.type";
 
-const DEFAULT_COMPANY_ID = "demo-company";
+const ADMIN_COMPANY_ID_COOKIE_NAME = "admin_company_id";
+const DEMO_ADMIN_COMPANY_ID = "demo-company";
 const SETTINGS_ERROR_MESSAGE = "An unexpected error occurred while loading company settings";
 
 export interface UseCompanySettingsResult {
@@ -26,7 +27,20 @@ export interface UseCompanySettingsResult {
   refresh: () => Promise<void>;
 }
 
-export function useCompanySettings(companyId: string = DEFAULT_COMPANY_ID): UseCompanySettingsResult {
+function getCompanyIdFromSessionCookie() {
+  if (typeof document === "undefined") {
+    return DEMO_ADMIN_COMPANY_ID;
+  }
+
+  return document.cookie
+    .split(";")
+    .map((cookie) => cookie.trim())
+    .find((cookie) => cookie.startsWith(`${ADMIN_COMPANY_ID_COOKIE_NAME}=`))
+    ?.slice(ADMIN_COMPANY_ID_COOKIE_NAME.length + 1) || DEMO_ADMIN_COMPANY_ID;
+}
+
+export function useCompanySettings(companyId?: string): UseCompanySettingsResult {
+  const [resolvedCompanyId] = useState(() => companyId || getCompanyIdFromSessionCookie());
   const [loading, setLoading] = useState<boolean>(true);
   const [saving, setSaving] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +58,7 @@ export function useCompanySettings(companyId: string = DEFAULT_COMPANY_ID): UseC
     setSuccess(false);
 
     try {
-      const response = await fetch(`/api/v1/company/${companyId}/wifi`);
+      const response = await fetch(`/api/v1/company/${resolvedCompanyId}/wifi`);
       const payload = await response.json();
 
       if (!response.ok || !payload.success) {
@@ -65,7 +79,7 @@ export function useCompanySettings(companyId: string = DEFAULT_COMPANY_ID): UseC
     } finally {
       setLoading(false);
     }
-  }, [companyId]);
+  }, [resolvedCompanyId]);
 
   useEffect(() => {
     let active = true;
@@ -125,7 +139,7 @@ export function useCompanySettings(companyId: string = DEFAULT_COMPANY_ID): UseC
     }
 
     try {
-      const response = await fetch(`/api/v1/company/${companyId}/wifi`, {
+      const response = await fetch(`/api/v1/company/${resolvedCompanyId}/wifi`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
