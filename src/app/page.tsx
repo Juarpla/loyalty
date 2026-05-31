@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { 
   ArrowRight, 
@@ -18,7 +19,15 @@ export const metadata: Metadata = {
   description: "Enterprise local business customer loyalty platform core dashboard, featuring cashier operations, AI marketing promotion drafting, live traffic analytics, and guest captive wifi logins.",
 };
 
-export default function Home() {
+export default async function Home() {
+  const adminSession = (await cookies()).get("admin_session")?.value;
+  const isAdminUserLoggedIn = adminSession === "authorized_admin_session";
+  const sessionIndicatorClassName = isAdminUserLoggedIn
+    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+    : "bg-red-500/10 text-red-400 border-red-500/20";
+  const sessionDotClassName = isAdminUserLoggedIn ? "bg-emerald-400" : "bg-red-400";
+  const sessionIndicatorLabel = isAdminUserLoggedIn ? "Session active" : "Session inactive";
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-6 md:p-16 bg-gradient-to-br from-[#090b16] via-[#05060c] to-[#010103] text-zinc-100 font-sans selection:bg-indigo-500/40 selection:text-white overflow-hidden relative">
       {/* Background Glowing Ambient Orbs */}
@@ -33,19 +42,19 @@ export default function Home() {
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-              LoyaltyEngine
+              Loyalty
             </h1>
-            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Enterprise Core Hub</p>
+            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">AI Enterprise Core Hub</p>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Harness Live
+          <div className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${sessionIndicatorClassName}`}>
+            <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${sessionDotClassName}`} />
+            {sessionIndicatorLabel}
           </div>
           <a
-            href="https://github.com"
+            href="https://github.com/Juarpla/loyalty"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center justify-center text-xs text-zinc-400 hover:text-white transition-colors font-medium border border-zinc-800 rounded-lg px-4 bg-zinc-950/30 backdrop-blur min-h-[44px] min-w-[44px]"
@@ -96,11 +105,11 @@ export default function Home() {
           <div className="grid grid-cols-3 gap-6 pt-8 border-t border-zinc-900/80 text-center lg:text-left mt-4">
             <div>
               <div className="text-2xl sm:text-3xl font-black text-white">100%</div>
-              <div className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Decoupled Core</div>
+              <div className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Scalable to your needs</div>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl font-black text-indigo-400">Gemini</div>
-              <div className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">AI Copywriting</div>
+              <div className="text-2xl sm:text-3xl font-black text-indigo-400">LLMs</div>
+              <div className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Cloud AI Models</div>
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-black text-emerald-400">Direct</div>
@@ -114,7 +123,7 @@ export default function Home() {
           <div className="text-xs uppercase font-bold tracking-wider text-zinc-500 px-2 flex items-center justify-between">
             <span>Select System Interface</span>
             <span className="flex items-center gap-1.5 text-indigo-400 normal-case font-semibold">
-              <Activity className="w-3.5 h-3.5 animate-pulse" /> Live Deployment
+              <Activity className="w-3.5 h-3.5 animate-pulse" /> Powered by AI
             </span>
           </div>
 
@@ -233,7 +242,7 @@ export default function Home() {
       {/* Footer System Info */}
       <footer className="z-10 w-full max-w-6xl border-t border-zinc-900/80 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-xs text-zinc-500">
-          © 2026 Loyalty Engine Hub. Built under Spec Driven Development protocols.
+          © 2026 Zenit AI. Built under Spec Driven Development protocols.
         </p>
         <div className="flex gap-4">
           <span className="text-[10px] text-zinc-600 font-mono">Next.js App Router (16.2.6)</span>
