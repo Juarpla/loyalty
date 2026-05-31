@@ -120,6 +120,8 @@ function CampaignResults({
   );
 }
 
+import { LogoutButton } from "@/components/ui/logout-button.component";
+
 export function PromotionsClient() {
   const {
     segments,
@@ -135,18 +137,21 @@ export function PromotionsClient() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
       {/* Header */}
       <header className="border-b border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-sm text-white">
-            L
+        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-sm text-white">
+              L
+            </div>
+            <div>
+              <h1 className="text-base font-bold text-zinc-100">
+                Promotions Manager
+              </h1>
+              <p className="text-xs text-zinc-500">
+                Customer segments and campaign generation
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-base font-bold text-zinc-100">
-              Promotions Manager
-            </h1>
-            <p className="text-xs text-zinc-500">
-              Customer segments and campaign generation
-            </p>
-          </div>
+          <LogoutButton />
         </div>
       </header>
 

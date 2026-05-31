@@ -7,6 +7,8 @@ import { TrafficChartComponent } from "@/components/traffic/chart.component";
 import { useArrivals } from "@/hooks/use-arrivals.hook";
 import { ArrivalsFeedComponent } from "@/components/dashboard/arrivals-feed.component";
 
+import { LogoutButton } from "@/components/ui/logout-button.component";
+
 export function DashboardClient() {
   const { data, loading, error } = useTraffic();
   const {
@@ -21,14 +23,17 @@ export function DashboardClient() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
       {/* Header — R1 */}
       <header className="border-b border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-sm text-white">
-            L
+        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-sm text-white">
+              L
+            </div>
+            <div>
+              <h1 className="text-base font-bold text-zinc-100">Manager Dashboard</h1>
+              <p className="text-xs text-zinc-500">Traffic and peak hours analytics</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-base font-bold text-zinc-100">Manager Dashboard</h1>
-            <p className="text-xs text-zinc-500">Traffic and peak hours analytics</p>
-          </div>
+          <LogoutButton />
         </div>
       </header>
 

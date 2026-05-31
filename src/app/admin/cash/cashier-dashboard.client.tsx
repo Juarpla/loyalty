@@ -6,6 +6,7 @@ import { CashierForm } from "@/components/cashier/form.component";
 import { useArrivals } from "@/hooks/use-arrivals.hook";
 import { useRewards } from "@/hooks/use-rewards.hook";
 import { CashierMilestoneModal } from "@/components/cashier/milestone-modal.component";
+import { LogoutButton } from "@/components/ui/logout-button.component";
 
 export function CashierDashboardClient() {
   const {
@@ -60,14 +61,17 @@ export function CashierDashboardClient() {
     <main className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
       {/* Page header */}
       <div className="border-b border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm">
-        <div className="max-w-lg mx-auto px-4 py-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-sm text-white">
-            L
+        <div className="max-w-lg mx-auto px-4 py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-sm text-white">
+              L
+            </div>
+            <div>
+              <h1 className="text-base font-bold text-zinc-100">Cashier Dashboard</h1>
+              <p className="text-xs text-zinc-500">Register customer transactions</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-base font-bold text-zinc-100">Cashier Dashboard</h1>
-            <p className="text-xs text-zinc-500">Register customer transactions</p>
-          </div>
+          <LogoutButton />
         </div>
       </div>
 

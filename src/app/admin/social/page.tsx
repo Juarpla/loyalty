@@ -5,6 +5,8 @@ import { ContextForm } from "@/components/social/context-form.component";
 import { SuggestionsCards } from "@/components/social/suggestions-cards.component";
 import type { Suggestion } from "@/components/social/suggestions-cards.component";
 
+import { LogoutButton } from "@/components/ui/logout-button.component";
+
 export default function ManagerSocialPage() {
   const {
     context,
@@ -27,9 +29,12 @@ export default function ManagerSocialPage() {
   return (
     <div className="min-h-screen bg-zinc-950 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-zinc-100 mb-8 tracking-tight">
-          Social Content Ideas
-        </h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">
+            Social Content Ideas
+          </h1>
+          <LogoutButton />
+        </div>
         
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8">
           {/* Left Column: Form */}

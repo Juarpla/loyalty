@@ -5,6 +5,7 @@ import { Settings, CheckCircle2, AlertCircle } from "lucide-react";
 
 import { useCompanySettings } from "@/hooks/use-company-settings.hook";
 import { ColorSwatch } from "@/components/company/color-swatch.component";
+import { LogoutButton } from "@/components/ui/logout-button.component";
 
 export function CompanySettingsClient() {
   const {
@@ -35,14 +36,17 @@ export function CompanySettingsClient() {
       <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
         {/* Header */}
         <header className="border-b border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm">
-          <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-sm text-white">
-              S
+          <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-sm text-white">
+                S
+              </div>
+              <div>
+                <h1 className="text-base font-bold text-zinc-100">WiFi Settings Manager</h1>
+                <p className="text-xs text-zinc-500">Configure WiFi credentials and onboarding portal styling</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-base font-bold text-zinc-100">WiFi Settings Manager</h1>
-              <p className="text-xs text-zinc-500">Configure WiFi credentials and onboarding portal styling</p>
-            </div>
+            <LogoutButton />
           </div>
         </header>
 
@@ -77,14 +81,17 @@ export function CompanySettingsClient() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
       {/* Header */}
       <header className="border-b border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-sm text-white">
-            S
+        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-sm text-white">
+              S
+            </div>
+            <div>
+              <h1 className="text-base font-bold text-zinc-100">WiFi Settings Manager</h1>
+              <p className="text-xs text-zinc-500">Configure WiFi credentials and onboarding portal styling</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-base font-bold text-zinc-100">WiFi Settings Manager</h1>
-            <p className="text-xs text-zinc-500">Configure WiFi credentials and onboarding portal styling</p>
-          </div>
+          <LogoutButton />
         </div>
       </header>
 
@@ -277,7 +284,11 @@ export function CompanySettingsClient() {
             <div className="text-center mb-6 relative z-10">
               <div
                 className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl text-white mx-auto mb-4"
-                style={{ backgroundColor: brandColor }}
+                style={{
+                  backgroundColor: brandColor,
+                  textShadow:
+                    "1px 0 0 #09090b, -1px 0 0 #09090b, 0 1px 0 #09090b, 0 -1px 0 #09090b",
+                }}
               >
                 {welcomeTitle.charAt(0) || "W"}
               </div>
@@ -312,9 +323,16 @@ export function CompanySettingsClient() {
                   backgroundColor: brandColor,
                   boxShadow: `0 4px 14px 0 ${brandColor}33`,
                 }}
-                className="w-full min-h-[44px] rounded-xl text-zinc-900 text-sm font-extrabold flex items-center justify-center gap-2 select-none"
+                className="w-full min-h-[44px] rounded-xl text-white text-sm font-extrabold flex items-center justify-center gap-2 select-none"
               >
-                Connect to WiFi
+                <span
+                  style={{
+                    textShadow:
+                      "1px 0 0 #09090b, -1px 0 0 #09090b, 0 1px 0 #09090b, 0 -1px 0 #09090b",
+                  }}
+                >
+                  Connect to WiFi
+                </span>
               </div>
             </div>
           </div>
