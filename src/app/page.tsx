@@ -233,7 +233,7 @@ export default function Home() {
       {/* Footer System Info */}
       <footer className="z-10 w-full max-w-6xl border-t border-zinc-900/80 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-xs text-zinc-500">
-          © {new Date().getFullYear()} Loyalty Engine Hub. Built under Spec Driven Development protocols.
+          © 2026 Loyalty Engine Hub. Built under Spec Driven Development protocols.
         </p>
         <div className="flex gap-4">
           <span className="text-[10px] text-zinc-600 font-mono">Next.js App Router (16.2.6)</span>
