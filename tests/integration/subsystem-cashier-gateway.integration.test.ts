@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { NextRequest } from "next/server";
 
 import CashierPage, { metadata } from "../../src/app/admin/cash/page";
-import { middleware } from "../../src/middleware";
+import { proxy } from "../../src/proxy";
 
 const cashierRouteUrl = "http://localhost/admin/cash";
 
@@ -14,7 +14,7 @@ function createCashierGatewayRequest(cookie?: string) {
 
 describe("subsystem_cashier_gateway", () => {
   it("R1: redirects unauthenticated cashier requests to the login gateway with callbackUrl", () => {
-    const response = middleware(createCashierGatewayRequest());
+    const response = proxy(createCashierGatewayRequest());
 
     expect(response.status).toBe(307);
     expect(response.headers.get("location")).toBe(
@@ -23,7 +23,7 @@ describe("subsystem_cashier_gateway", () => {
   });
 
   it("R2: allows cashier requests with the valid administrative session cookie", () => {
-    const response = middleware(
+    const response = proxy(
       createCashierGatewayRequest("admin_session=authorized_admin_session"),
     );
 

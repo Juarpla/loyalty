@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { NextRequest } from "next/server";
 
 import AdminDashboardPage, { metadata } from "../../src/app/admin/dashboard/page";
-import { middleware } from "../../src/middleware";
+import { proxy } from "../../src/proxy";
 
 const managerDashboardRouteUrl = "http://localhost/admin/dashboard";
 
@@ -14,7 +14,7 @@ function createManagerAnalyticsGatewayRequest(cookie?: string) {
 
 describe("subsystem_manager_analytics", () => {
   it("R1: redirects unauthenticated manager analytics requests to the login gateway with callbackUrl", () => {
-    const response = middleware(createManagerAnalyticsGatewayRequest());
+    const response = proxy(createManagerAnalyticsGatewayRequest());
 
     expect(response.status).toBe(307);
     expect(response.headers.get("location")).toBe(
@@ -23,7 +23,7 @@ describe("subsystem_manager_analytics", () => {
   });
 
   it("R2: allows manager analytics requests with the valid administrative session cookie", () => {
-    const response = middleware(
+    const response = proxy(
       createManagerAnalyticsGatewayRequest(
         "admin_session=authorized_admin_session",
       ),
